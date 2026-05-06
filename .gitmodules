@@ -1,6 +1,6 @@
 [submodule "app/src/main/cpp/NetHack"]
 	path = app/src/main/cpp/NetHack
-	url = https://github.com/yywSpace/NetHack.git
+	url = git@github.com:StackC00ki3/Nethack-cn.git
 [submodule "app/src/main/cpp/Lua/lua"]
 	path = app/src/main/cpp/Lua/lua
 	url = https://github.com/lua/lua.git
