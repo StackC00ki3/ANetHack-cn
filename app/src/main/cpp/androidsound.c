@@ -23,7 +23,7 @@ static void andsound_ambience(int32_t, int32_t, int32_t);
 static void andsound_verbal(char *, int32_t, int32_t, int32_t, int32_t);
 
 struct sound_procs andsound_procs = {
-    SOUNDID(andsound),
+    "andsound", soundlib_notused,
     SOUND_TRIGGER_USERSOUNDS | SOUND_TRIGGER_SOUNDEFFECTS
     | SOUND_TRIGGER_HEROMUSIC | SOUND_TRIGGER_AMBIENCE
     | SOUND_TRIGGER_ACHIEVEMENTS | SOUND_TRIGGER_VERBAL,

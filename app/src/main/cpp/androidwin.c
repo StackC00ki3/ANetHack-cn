@@ -73,7 +73,7 @@ static int cond_attr(long, const unsigned long *);
 
 struct window_procs and_procs = {
         "and",
-        wp_and,
+        wp_guistubs,
         WC_COLOR | WC_HILITE_PET | WC_INVERSE,	/* window port capability options supported */
         WC2_HILITE_STATUS | WC2_FLUSH_STATUS | WC2_HITPOINTBAR,	/* additional window port capability options supported */
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},   /* color availability */
