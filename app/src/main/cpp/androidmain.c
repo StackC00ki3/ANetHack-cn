@@ -359,10 +359,16 @@ prune_broken_savefiles(void)
         return;
     while ((entry = readdir(dir)) != 0) {
         struct stat st;
+        size_t namelen;
 
         if (sscanf(entry->d_name, "%d%63s", &uid, name) != 2 || uid != myuid)
             continue;
         Snprintf(savefile, sizeof savefile, "save/%s", entry->d_name);
+        namelen = strlen(entry->d_name);
+        if (namelen > 2 && strcmp(&entry->d_name[namelen - 2], ".Z") == 0) {
+            (void) unlink(savefile);
+            continue;
+        }
         if (stat(savefile, &st) == 0 && S_ISREG(st.st_mode)
             && st.st_size < min_save_header) {
             (void) unlink(savefile);

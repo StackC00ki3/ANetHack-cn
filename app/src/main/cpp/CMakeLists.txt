@@ -20,6 +20,7 @@ add_compile_definitions(
         NOCRASHREPORT
         NOPANICTRACE
         SELF_RECOVER
+        ZLIB_COMP
         TEXT_TOMBSTONE
         DLB
         NOTTYGRAPHICS
@@ -189,4 +190,4 @@ target_include_directories(
         ${CMAKE_PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/NetHack/include
         ${LUA_INCLUDE} Lua)
 
-target_link_libraries(${CMAKE_PROJECT_NAME} ${TOPLUALIB} android log)
+target_link_libraries(${CMAKE_PROJECT_NAME} ${TOPLUALIB} android log z)
