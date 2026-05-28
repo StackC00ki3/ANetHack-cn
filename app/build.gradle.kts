@@ -35,12 +35,17 @@ val updateNetHackResources by tasks.registering(Exec::class) {
             fi
         fi
 
-        if [ ! -f Makefile ] || [ ! -f dat/Makefile ] || [ ! -f util/Makefile ] || [ ! -f src/Makefile ]; then
-            (cd sys/unix && ./setup.sh hints/linux-minimal)
-        fi
+        (cd sys/unix && ./setup.sh hints/linux.500)
+
+        rm -f util/makedefs util/makedefs.o util/dlb util/dlb_main.o src/dlb.o dat/options dat/nhdat
 
         make -C dat all options
         make dlb
+        if [ ! -s dat/nhdat ]; then
+            echo "NetHack dat/nhdat was not generated." >&2
+            find dat util -maxdepth 1 \( -name nhdat -o -name dlb \) -ls >&2
+            exit 1
+        fi
         make -C util ../src/tile.c
         make -C dat nhtiles.bmp
 
