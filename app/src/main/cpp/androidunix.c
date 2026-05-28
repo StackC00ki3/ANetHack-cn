@@ -111,6 +111,89 @@ regularize(char *s)
         *lp = '_';
 }
 
+boolean
+whoami(void)
+{
+    if (!*svp.plname) {
+        const char *s = nh_getenv("USER");
+
+        if (!s || !*s)
+            s = nh_getenv("LOGNAME");
+        if (s && *s) {
+            (void) strncpy(svp.plname, s, sizeof svp.plname - 1);
+            svp.plname[sizeof svp.plname - 1] = '\0';
+            if (strchr(svp.plname, '-'))
+                return TRUE;
+        }
+    }
+    return FALSE;
+}
+
+void
+sethanguphandler(void (*handler)(int))
+{
+#ifndef NO_SIGNAL
+    (void) signal(SIGHUP, (SIG_RET_TYPE) handler);
+#else
+    nhUse(handler);
+#endif
+}
+
+void
+intron(void)
+{
+}
+
+void
+introff(void)
+{
+}
+
+int
+dosh(void)
+{
+    Norep("Unavailable command '!'.");
+    return 0;
+}
+
+int
+child(int wt)
+{
+    nhUse(wt);
+    return 0;
+}
+
+void
+get_nhuuid(void)
+{
+#ifdef NHUUID
+    unsigned long seed;
+
+    if (svn.nhuuid[0])
+        return;
+
+    seed = (unsigned long) getnow() ^ ((unsigned long) getpid() << 16);
+    Snprintf(svn.nhuuid, sizeof svn.nhuuid,
+             "%08lx-%04lx-%04lx-%04lx-%08lx%04lx",
+             seed & 0xffffffffUL,
+             (seed >> 16) & 0xffffUL,
+             ((unsigned long) svh.hackpid) & 0xffffUL,
+             ((unsigned long) getuid()) & 0xffffUL,
+             ((seed * 1103515245UL) + 12345UL) & 0xffffffffUL,
+             ((unsigned long) getpid()) & 0xffffUL);
+#endif
+}
+
+void
+free_nhuuid(void)
+{
+    int i;
+
+    for (i = 0; i < SIZE(svn.nhuuid); i++) {
+        svn.nhuuid[i] = 0;
+    }
+}
+
 
 /* XXX should be ifdef PANICTRACE_GDB, but there's no such symbol yet */
 #ifdef PANICTRACE

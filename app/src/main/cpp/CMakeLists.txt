@@ -15,6 +15,10 @@ add_compile_definitions(
         SND_SOUNDEFFECTS_AUTOMAP
         SND_SPEECH
         USER_SOUNDS
+        NOSHELL
+        NOMAIL
+        NOCRASHREPORT
+        NOPANICTRACE
         DLB
         NOTTYGRAPHICS
         EDIT_GETLIN
@@ -59,6 +63,7 @@ set(NETHACK_SRC
         "NetHack/src/drawing.c"
         "NetHack/src/dungeon.c"
         "NetHack/src/eat.c"
+        "NetHack/src/earlyarg.c"
         "NetHack/src/end.c"
         "NetHack/src/engrave.c"
         "NetHack/src/exper.c"
@@ -68,6 +73,7 @@ set(NETHACK_SRC
         "NetHack/src/fountain.c"
         "NetHack/src/hack.c"
         "NetHack/src/hacklib.c"
+        "NetHack/src/iactions.c"
         "NetHack/src/insight.c"
         "NetHack/src/invent.c"
         "NetHack/src/isaac64.c"

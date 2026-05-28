@@ -375,30 +375,3 @@ append_slash(char *name)
         *++ptr = '\0';
     }
 }
-
-
-/* for command-line options that perform some immediate action and then
-   terminate the program without starting play, like 'nethack --version'
-   or 'nethack -s Zelda'; do some cleanup before that termination */
-ATTRNORETURN static void
-opt_terminate(void)
-{
-    config_error_done(); /* free memory allocated by config_error_init() */
-
-    nh_terminate(EXIT_SUCCESS);
-    /*NOTREACHED*/
-}
-
-/* show the sysconf file name, playground directory, run-time configuration
-   file name, dumplog file name if applicable, and some other things */
-ATTRNORETURN void
-after_opt_showpaths(const char *dir)
-{
-#ifdef CHDIR
-    chdirx(dir, FALSE);
-#else
-    nhUse(dir);
-#endif
-    opt_terminate();
-    /*NOTREACHED*/
-}
