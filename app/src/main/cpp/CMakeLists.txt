@@ -163,7 +163,7 @@ set(NETHACK_SRC
         "NetHack/src/sfbase.c"
         "NetHack/sys/share/posixregex.c"
         "NetHack/sys/share/ioctl.c"
-        "NetHack/sys/share/unixtty.c"
+        # "NetHack/sys/share/unixtty.c"
         # "NetHack/sys/unix/unixmain.c"
         # "NetHack/sys/unix/unixunix.c"
         "NetHack/sys/unix/unixres.c"

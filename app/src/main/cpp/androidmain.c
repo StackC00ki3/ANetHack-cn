@@ -17,7 +17,7 @@
 #include <fcntl.h>
 #endif
 #ifdef CHDIR
-static void chdirx(const char *);
+void chdirx(const char *, boolean);
 #endif /* CHDIR */
 
 #include <android/log.h>
@@ -67,7 +67,7 @@ int NetHackMain(int argc, char** argv)
      * Change directories before we initialize the window system so
      * we can find the tile file.
      */
-    chdirx(dir);
+    chdirx(dir, TRUE);
 #endif
 
 #ifdef ENHANCED_SYMBOLS
@@ -272,8 +272,8 @@ boolean authorize_explore_mode(void)
 }
 
 #ifdef CHDIR
-static void
-chdirx(const char *dir)
+void
+chdirx(const char *dir, boolean wr)
 {
 
 #ifdef HACKDIR
@@ -287,7 +287,8 @@ chdirx(const char *dir)
         /*NOTREACHED*/
     }
 
-    check_recordfile(dir);
+    if (wr)
+        check_recordfile(dir);
 }
 #endif /* CHDIR */
 
@@ -394,7 +395,7 @@ ATTRNORETURN void
 after_opt_showpaths(const char *dir)
 {
 #ifdef CHDIR
-    chdirx(dir);
+    chdirx(dir, FALSE);
 #else
     nhUse(dir);
 #endif
