@@ -14,6 +14,7 @@ add_compile_definitions(
         SND_LIB_ANDSOUND
         SND_SOUNDEFFECTS_AUTOMAP
         SND_SPEECH
+        USER_SOUNDS
         DLB
         NOTTYGRAPHICS
         EDIT_GETLIN
