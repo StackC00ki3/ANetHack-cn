@@ -21,6 +21,7 @@
 #include "rect.h"
 #include "dungeon.h"
 #include "hack.h"
+#include "savefile.h"
 
 #if !defined(O_WRONLY) && !defined(LSC) && !defined(AZTEC_C)
 #include <fcntl.h>
@@ -331,10 +332,10 @@ and_restore_savefile(char *basename)
     if (snhfp.structlevel)
         bufoff(snhfp.fd);
 
-    Sfo_int(&snhfp, &pltmpsiz, "plname-size");
+    sfo_int(&snhfp, &pltmpsiz, "plname-size");
 
     assert((size_t) pltmpsiz <= sizeof plbuf);
-    Sfo_char(&snhfp, plbuf, "plname", pltmpsiz);
+    sfo_char(&snhfp, plbuf, "plname", pltmpsiz);
 
     if (!copy_bytes(lfd, sfd)) {
         Fprintf(stderr, "file copy failed!\n");
