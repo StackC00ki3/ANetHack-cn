@@ -23,17 +23,8 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Checkout submodules
-        env:
-          SUBMODULE_TOKEN: ${{ secrets.SUBMODULE_TOKEN }}
         run: |
           set -euo pipefail
-
-          if [ -n "${SUBMODULE_TOKEN}" ]; then
-            git config --global url."https://x-access-token:${SUBMODULE_TOKEN}@github.com/".insteadOf "git@github.com:"
-          else
-            git config --global url."https://github.com/".insteadOf "git@github.com:"
-          fi
-          git config --global url."https://github.com/".insteadOf "ssh://git@github.com/"
 
           git submodule sync --recursive
           git submodule update --init --recursive
