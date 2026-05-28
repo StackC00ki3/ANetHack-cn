@@ -23,7 +23,9 @@ class NHWMap (wid: Int, type:NHWindowType, val nh: NetHack) : NHWindow(wid, type
     private val updatedTilesList = CopyOnWriteArrayList<List<Tile>>()
 
     init {
-        mapView.initMap(nh,this)
+        nh.runOnUi { _, _ ->
+            mapView.initMap(nh, this@NHWMap)
+        }
     }
 
     fun getTileList(c:Char):List<Tile> {

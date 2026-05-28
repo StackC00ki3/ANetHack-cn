@@ -8,6 +8,7 @@ import android.graphics.PorterDuff
 import android.text.DynamicLayout
 import android.text.TextPaint
 import android.util.AttributeSet
+import android.util.Log
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import android.widget.LinearLayout
@@ -30,7 +31,8 @@ class NHMessageSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
 
     private var holder: SurfaceHolder? = null
     private var canvas: Canvas? = null
-    private var isDrawing = false
+    @Volatile private var isDrawing = false
+    private var drawThread: Thread? = null
 
     constructor(context: Context) : this(context, null, 0)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
@@ -57,7 +59,9 @@ class NHMessageSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
     }
     override fun surfaceCreated(holder: SurfaceHolder) {
         isDrawing = true
-        Thread(this).start()
+        if (drawThread?.isAlive != true) {
+            drawThread = Thread(this, "NHMessageSurfaceView").also { it.start() }
+        }
     }
 
     override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
@@ -65,6 +69,7 @@ class NHMessageSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
 
     override fun surfaceDestroyed(holder: SurfaceHolder) {
         isDrawing = false
+        drawThread?.interrupt()
     }
     private fun drawMessageList(canvas: Canvas?) {
         canvas?.apply {
@@ -94,19 +99,39 @@ class NHMessageSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
     }
 
     private fun draw() {
+        val surfaceHolder = holder ?: return
+        if (!surfaceHolder.surface.isValid) {
+            return
+        }
         try {
-            canvas = holder?.lockCanvas()
+            canvas = try {
+                surfaceHolder.lockCanvas()
+            } catch (e: RuntimeException) {
+                Log.w("NHMessageSurfaceView", "lockCanvas failed", e)
+                return
+            }
             canvas?.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
             drawMessageList(canvas)
         } finally {
-            if (canvas != null)
-                holder?.unlockCanvasAndPost(canvas)
+            canvas?.let {
+                try {
+                    surfaceHolder.unlockCanvasAndPost(it)
+                } catch (e: RuntimeException) {
+                    Log.w("NHMessageSurfaceView", "unlockCanvasAndPost failed", e)
+                }
+            }
+            canvas = null
         }
     }
     override fun run() {
-        while (isDrawing) {
+        while (isDrawing && !Thread.currentThread().isInterrupted) {
             draw()
-            Thread.sleep(100)
+            try {
+                Thread.sleep(100)
+            } catch (_: InterruptedException) {
+                Thread.currentThread().interrupt()
+                break
+            }
         }
     }
 }

@@ -11,7 +11,9 @@ class NHWStatus(wid: Int, type:NHWindowType, nh: NetHack) : NHWindow(wid, type) 
     private var statusView: NHStatusSurfaceView = nh.binding.statusView
 
     init {
-        statusView.initStatus(nh, status)
+        nh.runOnUi { _, _ ->
+            statusView.initStatus(nh, status)
+        }
     }
     override fun curs(x: Int, y: Int) {
 

@@ -27,11 +27,13 @@ class NHWMessage(wid: Int, type:NHWindowType, private val nh: NetHack) : NHWindo
     private var lastClickTime = 0L
 
     init {
-        messageView.initMessage(nh,this)
-        messageView.setOnClickListener {
-            if (System.currentTimeMillis() - lastClickTime >= 1000) {
-                displayWindow(true)
-                lastClickTime = System.currentTimeMillis()
+        nh.runOnUi { _, _ ->
+            messageView.initMessage(nh, this@NHWMessage)
+            messageView.setOnClickListener {
+                if (System.currentTimeMillis() - lastClickTime >= 1000) {
+                    displayWindow(true)
+                    lastClickTime = System.currentTimeMillis()
+                }
             }
         }
     }

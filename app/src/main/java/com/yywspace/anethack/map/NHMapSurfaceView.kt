@@ -66,7 +66,8 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
     private var tileWidth:Float = 0F
     private var tileHeight:Float = 0F
     private var holder: SurfaceHolder? = null
-    private var isDrawing = false
+    @Volatile private var isDrawing = false
+    private var drawThread: Thread? = null
     private lateinit var indicatorController:NHMapIndicatorController
 
     private var mapTouchListener: NHMapTouchListener = NHMapTouchListener().apply {
@@ -551,7 +552,9 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
 
     override fun surfaceCreated(holder: SurfaceHolder) {
         isDrawing = true
-        Thread(this).start()
+        if (drawThread?.isAlive != true) {
+            drawThread = Thread(this, "NHMapSurfaceView").also { it.start() }
+        }
     }
 
     override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
@@ -559,66 +562,82 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
 
     override fun surfaceDestroyed(holder: SurfaceHolder) {
         isDrawing = false
+        drawThread?.interrupt()
     }
 
     private fun draw() {
-        holder?.apply {
-            if (mapInit) {
-                val canvas = lockCanvas()
-                try {
-                    // 绘制前检测是否改变了TileSet
-                    if (nh.tileSet.isTileSetChange())
-                        initMapParam()
-                    // 每一帧获取所有Scale和Transform操作并处理
-                    while (operationQueue.isNotEmpty()) {
-                        val op = operationQueue.pop()
-                        if (op is NHMapTransform) {
-                            mapTranslated = true
-                            transformMapWithGesture(op.dx, op.dy)
-                        }
-                        if (op is NHMapScale)
-                            scaleMap(op.scale, op.cx, op.cy)
-                    }
+        val surfaceHolder = holder ?: return
+        if (!mapInit || !surfaceHolder.surface.isValid) {
+            return
+        }
+        val canvas = try {
+            surfaceHolder.lockCanvas()
+        } catch (e: RuntimeException) {
+            Log.w("NHMapSurfaceView", "lockCanvas failed", e)
+            return
+        }
+        try {
+            // 绘制前检测是否改变了TileSet
+            if (nh.tileSet.isTileSetChange())
+                initMapParam()
+            // 每一帧获取所有Scale和Transform操作并处理
+            while (operationQueue.isNotEmpty()) {
+                val op = operationQueue.pop()
+                if (op is NHMapTransform) {
+                    mapTranslated = true
+                    transformMapWithGesture(op.dx, op.dy)
+                }
+                if (op is NHMapScale)
+                    scaleMap(op.scale, op.cx, op.cy)
+            }
 
-                    if (lastCurse != map.curse) {
-                        transformMapWithMove(nh.prefs.walkRange)
-                        lastCurse = Point(map.curse)
-                    }
-                    if (mapTranslated && nh.prefs.travelAfterPanned && !playerInWalkRange(nh.prefs.walkRange))
-                        nh.status.runMode = NHStatus.RunMode.RUN
-                    else
-                        nh.status.runMode = NHStatus.RunMode.WALK
-                    // 绘制
-                    canvas?.drawColor(Color.BLACK)
-                    if (nh.tileSet.isTTY()) {
-                        drawAscii(canvas)
-                        drawAsciiCurse(canvas)
-                    } else {
-                        drawTile(canvas)
-                        drawTileCurse(canvas)
-                    }
-                    drawLastTouchTile(canvas)
-                    drawBorder(canvas)
-                    // drawWalkRange(canvas)
-                    drawIndicator(canvas)
-                    // 每一帧绘制完成后才更新Tile
-                    map.updateTiles()
-                } finally {
-                    if (canvas != null)
-                        unlockCanvasAndPost(canvas)
+            if (lastCurse != map.curse) {
+                transformMapWithMove(nh.prefs.walkRange)
+                lastCurse = Point(map.curse)
+            }
+            if (mapTranslated && nh.prefs.travelAfterPanned && !playerInWalkRange(nh.prefs.walkRange))
+                nh.status.runMode = NHStatus.RunMode.RUN
+            else
+                nh.status.runMode = NHStatus.RunMode.WALK
+            // 绘制
+            canvas?.drawColor(Color.BLACK)
+            if (nh.tileSet.isTTY()) {
+                drawAscii(canvas)
+                drawAsciiCurse(canvas)
+            } else {
+                drawTile(canvas)
+                drawTileCurse(canvas)
+            }
+            drawLastTouchTile(canvas)
+            drawBorder(canvas)
+            // drawWalkRange(canvas)
+            drawIndicator(canvas)
+            // 每一帧绘制完成后才更新Tile
+            map.updateTiles()
+        } finally {
+            if (canvas != null) {
+                try {
+                    surfaceHolder.unlockCanvasAndPost(canvas)
+                } catch (e: RuntimeException) {
+                    Log.w("NHMapSurfaceView", "unlockCanvasAndPost failed", e)
                 }
             }
         }
     }
     override fun run() {
-        while (isDrawing) {
+        while (isDrawing && !Thread.currentThread().isInterrupted) {
             val startMs = System.currentTimeMillis()
             draw()
             val endMs = System.currentTimeMillis()
             val needTime = 1000 / fps
             val usedTime = endMs - startMs
             if (usedTime < needTime) {
-                Thread.sleep(needTime - usedTime)
+                try {
+                    Thread.sleep(needTime - usedTime)
+                } catch (_: InterruptedException) {
+                    Thread.currentThread().interrupt()
+                    break
+                }
             }
         }
     }
