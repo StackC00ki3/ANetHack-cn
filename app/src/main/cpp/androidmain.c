@@ -26,6 +26,7 @@ void chdirx(const char *, boolean);
 #define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, "Tag", __VA_ARGS__)
 #define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, "Tag", __VA_ARGS__)
 
+extern struct window_procs and_procs;
 
 static void process_options(int, char **);
 static void wd_message(void);
@@ -42,7 +43,7 @@ int NetHackMain(int argc, char** argv)
     gh.hname = argv[0];
     svh.hackpid = getpid();
     (void) umask(0777 & ~FCMASK);
-    choose_windows(DEFAULT_WINDOW_SYS);
+    windowprocs = and_procs;
 
 #ifdef SND_LIB_INTEGRATED
     /* One of the soundlib interfaces was integrated on build.
