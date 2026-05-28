@@ -149,6 +149,16 @@ introff(void)
 {
 }
 
+void
+linux_mapon(void)
+{
+}
+
+void
+linux_mapoff(void)
+{
+}
+
 int
 dosh(void)
 {

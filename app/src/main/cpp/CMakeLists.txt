@@ -19,6 +19,8 @@ add_compile_definitions(
         NOMAIL
         NOCRASHREPORT
         NOPANICTRACE
+        SELF_RECOVER
+        TEXT_TOMBSTONE
         DLB
         NOTTYGRAPHICS
         EDIT_GETLIN
