@@ -19,7 +19,6 @@ import androidx.preference.PreferenceFragmentCompat
 import com.hjq.permissions.OnPermissionCallback
 import com.hjq.permissions.Permission
 import com.hjq.permissions.XXPermissions
-import com.yywspace.anethack.BuildConfig
 import com.yywspace.anethack.R
 import java.io.File
 
@@ -155,7 +154,7 @@ class SettingsActivity : AppCompatActivity() {
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 val contentUri = FileProvider.getUriForFile(
                     this,
-                    "${BuildConfig.APPLICATION_ID}.provider",
+                    "$packageName.provider",
                     File(filesDir,relativePath)
                 )
                 intent.setDataAndType(contentUri, "text/plain")
