@@ -3,6 +3,9 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
+fun secret(name: String): String? =
+    providers.gradleProperty(name).orElse(providers.environmentVariable(name)).orNull
+
 val updateNetHackResources by tasks.registering(Exec::class) {
     group = "nethack"
     description = "Build and copy NetHack resource files before Android builds."
@@ -70,6 +73,17 @@ android {
     namespace = "com.yywspace.anethack"
     compileSdk = 34
 
+    val releaseStoreFile = secret("ANDROID_KEYSTORE_FILE")
+    val releaseStorePassword = secret("ANDROID_KEYSTORE_PASSWORD")
+    val releaseKeyAlias = secret("ANDROID_KEY_ALIAS")
+    val releaseKeyPassword = secret("ANDROID_KEY_PASSWORD")
+    val hasReleaseSigning = listOf(
+        releaseStoreFile,
+        releaseStorePassword,
+        releaseKeyAlias,
+        releaseKeyPassword
+    ).all { !it.isNullOrBlank() }
+
     defaultConfig {
         applicationId = "com.yywspace.anethack.cn"
         minSdk = 29
@@ -88,9 +102,23 @@ android {
         }
     }
 
+    signingConfigs {
+        if (hasReleaseSigning) {
+            create("release") {
+                storeFile = file(releaseStoreFile!!)
+                storePassword = releaseStorePassword
+                keyAlias = releaseKeyAlias
+                keyPassword = releaseKeyPassword
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
+            if (hasReleaseSigning) {
+                signingConfig = signingConfigs.getByName("release")
+            }
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
