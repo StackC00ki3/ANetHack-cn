@@ -30,7 +30,7 @@ add_compile_definitions(
 message(WARNING "NetHack_BINARY_DIR: ${NetHack_BINARY_DIR}.")
 
 # Lua.
-set(LUA_VERSION 5.4.3)
+set(LUA_VERSION 5.4.8)
 set(LUA_REL_PATH "Lua")
 
 set(LUA_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/${LUA_REL_PATH}/lua)
