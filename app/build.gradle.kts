@@ -3,12 +3,53 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
+val updateNetHackResources by tasks.registering(Exec::class) {
+    group = "nethack"
+    description = "Build and copy NetHack resource files before Android builds."
+
+    val nethackDir = layout.projectDirectory.dir("src/main/cpp/NetHack")
+    val cppDir = layout.projectDirectory.dir("src/main/cpp")
+    val assetsDir = layout.projectDirectory.dir("src/main/assets")
+
+    workingDir = nethackDir.asFile
+    commandLine(
+        "sh",
+        "-c",
+        """
+        set -eu
+
+        if [ ! -f Makefile ] || [ ! -f dat/Makefile ] || [ ! -f util/Makefile ] || [ ! -f src/Makefile ]; then
+            (cd sys/unix && ./setup.sh hints/linux-minimal)
+        fi
+
+        make -C dat all options
+        make dlb
+        make -C util ../src/tile.c
+        make -C dat nhtiles.bmp
+
+        mkdir -p "${assetsDir.asFile.absolutePath}/nethackdir" "${assetsDir.asFile.absolutePath}/tiles"
+
+        copy_if_changed() {
+            src="${'$'}1"
+            dst="${'$'}2"
+            if [ ! -f "${'$'}dst" ] || ! cmp -s "${'$'}src" "${'$'}dst"; then
+                cp "${'$'}src" "${'$'}dst"
+            fi
+        }
+
+        copy_if_changed dat/nhdat "${assetsDir.asFile.absolutePath}/nethackdir/nhdat"
+        copy_if_changed src/tile.c "${cppDir.asFile.absolutePath}/tile.c"
+        copy_if_changed dat/nhtiles.bmp "${assetsDir.asFile.absolutePath}/tiles/default_tiles_16.bmp"
+        """.trimIndent()
+    )
+}
+
 android {
     namespace = "com.yywspace.anethack"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.yywspace.anethack"
+        applicationId = "com.yywspace.anethack.cn"
         minSdk = 29
         targetSdk = 34
         versionCode = 4
@@ -50,6 +91,10 @@ android {
     buildFeatures {
         viewBinding = true
     }
+}
+
+tasks.named("preBuild") {
+    dependsOn(updateNetHackResources)
 }
 
 

@@ -1,0 +1,111 @@
+name: Android APK Release
+
+on:
+  push:
+    branches:
+      - "**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-prerelease
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Checkout submodules
+        env:
+          SUBMODULE_TOKEN: ${{ secrets.SUBMODULE_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          if [ -n "${SUBMODULE_TOKEN}" ]; then
+            git config --global url."https://x-access-token:${SUBMODULE_TOKEN}@github.com/".insteadOf "git@github.com:"
+          else
+            git config --global url."https://github.com/".insteadOf "git@github.com:"
+          fi
+          git config --global url."https://github.com/".insteadOf "ssh://git@github.com/"
+
+          git submodule sync --recursive
+          git submodule update --init --recursive
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Accept Android SDK licenses
+        run: yes | sdkmanager --licenses >/dev/null
+
+      - name: Install Android build tools
+        run: sdkmanager "platforms;android-34" "build-tools;34.0.0" "cmake;3.22.1" "ndk;25.1.8937393"
+
+      - name: Disable local proxy settings on CI
+        run: sed -i '/^systemProp\..*proxy/d' gradle.properties
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: Build release APK
+        run: ./gradlew --no-daemon :app:assembleRelease
+
+      - name: Rename release APK
+        run: |
+          set -euo pipefail
+
+          mkdir -p dist
+          mapfile -t apks < <(find app/build/outputs/apk/release -maxdepth 1 -type f -name "*.apk" | sort)
+          if [ "${#apks[@]}" -ne 1 ]; then
+            printf 'Expected exactly one release APK, found %s:\n' "${#apks[@]}"
+            printf '%s\n' "${apks[@]}"
+            exit 1
+          fi
+
+          cp "${apks[0]}" dist/ANetHack-cn-5.0.0-a2.0.apk
+          test -s dist/ANetHack-cn-5.0.0-a2.0.apk
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ANetHack-release-apk
+          path: dist/ANetHack-cn-5.0.0-a2.0.apk
+          if-no-files-found: error
+
+      - name: Create GitHub prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          tag="prerelease"
+          title="Prerelease ${GITHUB_SHA::7}"
+          notes="Automated prerelease APK for ${GITHUB_REF_NAME} at ${GITHUB_SHA}."
+
+          git tag -f "${tag}" "${GITHUB_SHA}"
+          git push -f origin "refs/tags/${tag}"
+
+          if gh release view "${tag}" >/dev/null 2>&1; then
+            gh release edit "${tag}" \
+              --title "${title}" \
+              --notes "${notes}" \
+              --prerelease
+            gh release upload "${tag}" dist/ANetHack-cn-5.0.0-a2.0.apk --clobber
+          else
+            gh release create "${tag}" dist/ANetHack-cn-5.0.0-a2.0.apk \
+              --title "${title}" \
+              --notes "${notes}" \
+              --prerelease
+          fi
