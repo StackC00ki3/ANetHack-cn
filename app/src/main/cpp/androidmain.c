@@ -343,10 +343,40 @@ int filter_running_game(const struct dirent* entry)
     return *entry->d_name && entry->d_name[strlen(entry->d_name)-1] == '0';
 }
 
+static void
+prune_broken_savefiles(void)
+{
+    DIR *dir;
+    struct dirent *entry;
+    int uid, myuid = getuid();
+    char name[64], savefile[BUFSZ];
+    const off_t min_save_header =
+        (off_t) (sizeof(char) + sizeof(char) + sizeof(struct version_info)
+                 + sizeof(int) + PL_NSIZ_PLUS);
+
+    dir = opendir("save");
+    if (!dir)
+        return;
+    while ((entry = readdir(dir)) != 0) {
+        struct stat st;
+
+        if (sscanf(entry->d_name, "%d%63s", &uid, name) != 2 || uid != myuid)
+            continue;
+        Snprintf(savefile, sizeof savefile, "save/%s", entry->d_name);
+        if (stat(savefile, &st) == 0 && S_ISREG(st.st_mode)
+            && st.st_size < min_save_header) {
+            (void) unlink(savefile);
+        }
+    }
+    closedir(dir);
+}
+
 void restore_aborted_games() {
     char name[64]; /* more than PL_NSIZ */
     struct dirent **namelist;
     int i, uid, myuid=getuid();
+
+    prune_broken_savefiles();
     int n = scandir(".", &namelist, filter_running_game, 0);
     if(n > 0) {
         for (i = 0; i < n; i++) {
@@ -355,7 +385,9 @@ void restore_aborted_games() {
                     and_restore_savefile(namelist[i]->d_name);
                 }
             }
+            free(namelist[i]);
         }
+        free(namelist);
     }
 }
 

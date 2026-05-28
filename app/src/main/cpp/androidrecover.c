@@ -206,10 +206,13 @@ int
 and_restore_savefile(char *basename)
 {
     int gfd, lfd, sfd;
-    int res = 0, lev, savelev, hpid, pltmpsiz;
+    int res = 0, lev, savelev, hpid, pltmpsiz,
+        cscount = get_critical_size_count();
     xint8 levc;
     struct version_info version_data;
-    char plbuf[PL_NSIZ_PLUS], indicator, cscsize;
+    NHFILE snhfp;
+    char plbuf[PL_NSIZ_PLUS], indicator, file_cscount;
+    off_t filesz = 0;
 
     /* level 0 file contains:
      *  pid of creating process (ignored here)
@@ -235,6 +238,22 @@ and_restore_savefile(char *basename)
         Fprintf(stderr, "Cannot open level 0 for %s.\n", basename);
         return -1;
     }
+    filesz = lseek(gfd, 0L, SEEK_END);
+    (void) lseek(gfd, 0L, SEEK_SET);
+    if (filesz >= 0
+        && (size_t) filesz < (sizeof hpid
+                              + sizeof savelev
+                              + sizeof savename
+                              + sizeof indicator
+                              + sizeof file_cscount
+                              + sizeof version_data
+                              + sizeof pltmpsiz)) {
+        Fprintf(stderr, "Checkpoint data in %s is too short -- can't recover.\n",
+                basename);
+        Close(gfd);
+        (void) unlink(lock);
+        return -1;
+    }
     if (read(gfd, (genericptr_t) &hpid, sizeof hpid) != sizeof hpid) {
         Fprintf(
                 stderr, "%s\n%s%s%s\n",
@@ -255,10 +274,11 @@ and_restore_savefile(char *basename)
          != sizeof savename)
         || (read(gfd, (genericptr_t) &indicator, sizeof indicator)
             != sizeof indicator)
-        || (read(gfd, (genericptr_t) &cscsize, sizeof cscsize)
-            != sizeof cscsize)
-        || (read(gfd, (genericptr_t) &cscbuf, cscsize)
-            != cscsize)
+        || (read(gfd, (genericptr_t) &file_cscount, sizeof file_cscount)
+            != sizeof file_cscount)
+        || (file_cscount <= 0 || file_cscount > cscount)
+        || (read(gfd, (genericptr_t) cscbuf, file_cscount)
+            != file_cscount)
         || (read(gfd, (genericptr_t) &version_data, sizeof version_data)
             != sizeof version_data)
         || (read(gfd, (genericptr_t) &pltmpsiz, sizeof pltmpsiz)
@@ -292,75 +312,46 @@ and_restore_savefile(char *basename)
         Fprintf(stderr, "Cannot open level of save for %s.\n", basename);
         Close(gfd);
         Close(sfd);
+        (void) unlink(savename);
         return -1;
     }
 
-    if (write(sfd, (genericptr_t) &indicator, sizeof indicator)
-        != sizeof indicator) {
-        Fprintf(stderr, "Error writing %s %s; recovery failed.\n",
-                savename, "indicator");
-        Close(gfd);
-        Close(sfd);
-        Close(lfd);
-        return -1;
-    }
-    if (write(sfd, (genericptr_t) &cscsize, sizeof cscsize) != sizeof cscsize) {
-        Fprintf(stderr, "Error writing %s %s; recovery failed.\n",
-                savename, "cscsize");
-        Close(gfd);
-        Close(sfd);
-        Close(lfd);
-        return -1;
-    }
-    if (write(sfd, (genericptr_t) &cscbuf, cscsize) != cscsize) {
-        Fprintf(stderr, "Error writing %s %s; recovery failed.\n",
-                savename, "critical bytes");
-        Close(gfd);
-        Close(sfd);
-        Close(lfd);
-        return -1;
-    }
-    if (write(sfd, (genericptr_t) &version_data, sizeof version_data)
-        != sizeof version_data) {
-        Fprintf(stderr, "Error writing %s %s; recovery failed.\n",
-                savename, "version_data");
-        Close(gfd);
-        Close(sfd);
-        Close(lfd);
-        return -1;
-    }
+    memset((genericptr_t) &snhfp, 0, sizeof snhfp);
+    init_nhfile(&snhfp);
+    snhfp.ftype = NHF_SAVEFILE;
+    snhfp.mode = WRITING;
+    snhfp.structlevel = TRUE;
+    snhfp.fieldlevel = FALSE;
+    snhfp.addinfo = FALSE;
+    snhfp.style.deflt = FALSE;
+    snhfp.style.binary = TRUE;
+    snhfp.fnidx = historical;
+    snhfp.fd = sfd;
+    store_version(&snhfp);
+    if (snhfp.structlevel)
+        bufoff(snhfp.fd);
 
-    if (write(sfd, (genericptr_t) &pltmpsiz, sizeof pltmpsiz)
-        != sizeof pltmpsiz) {
-        Fprintf(stderr,
-                "Error writing %s; recovery failed (player name size).\n",
-                savename);
-        Close(gfd);
-        Close(sfd);
-        Close(lfd);
-        return -1;
-    }
+    Sfo_int(&snhfp, &pltmpsiz, "plname-size");
 
     assert((size_t) pltmpsiz <= sizeof plbuf);
-    if (write(sfd, (genericptr_t) plbuf, pltmpsiz) != pltmpsiz) {
-        Fprintf(stderr, "Error writing %s; recovery failed (player name).\n",
-                savename);
-        Close(gfd);
-        Close(sfd);
-        Close(lfd);
-        return -1;
-    }
+    Sfo_char(&snhfp, plbuf, "plname", pltmpsiz);
 
     if (!copy_bytes(lfd, sfd)) {
         Fprintf(stderr, "file copy failed!\n");
-        exit(EXIT_FAILURE);
+        Close(gfd);
+        Close(lfd);
+        bclose(sfd);
+        (void) unlink(savename);
+        return -1;
     }
     Close(lfd);
     (void) unlink(lock);
 
     if (!copy_bytes(gfd, sfd)) {
         Fprintf(stderr, "file copy failed!\n");
-        exit(EXIT_FAILURE);
+        bclose(sfd);
+        (void) unlink(savename);
+        return -1;
     }
     Close(gfd);
     and_set_levelfile_name(0);
@@ -381,7 +372,10 @@ and_restore_savefile(char *basename)
                 } else {
                     if (!copy_bytes(lfd, sfd)) {
                         Fprintf(stderr, "file copy failed!\n");
-                        exit(EXIT_FAILURE);
+                        Close(lfd);
+                        bclose(sfd);
+                        (void) unlink(savename);
+                        return -1;
                     }
                 }
                 Close(lfd);
@@ -390,7 +384,9 @@ and_restore_savefile(char *basename)
         }
     }
 
-    Close(sfd);
+    if (snhfp.structlevel)
+        bufon(snhfp.fd);
+    bclose(sfd);
 
 #if 0 /* OBSOLETE, HackWB is no longer in use */
     #ifdef AMIGA
