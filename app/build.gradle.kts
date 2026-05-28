@@ -8,6 +8,8 @@ val updateNetHackResources by tasks.registering(Exec::class) {
     description = "Build and copy NetHack resource files before Android builds."
 
     val nethackDir = layout.projectDirectory.dir("src/main/cpp/NetHack")
+    val luaSourceDir = layout.projectDirectory.dir("src/main/cpp/Lua/lua")
+    val luaSourcePath = luaSourceDir.asFile.absolutePath.replace('\\', '/')
     val cppDir = layout.projectDirectory.dir("src/main/cpp")
     val assetsDir = layout.projectDirectory.dir("src/main/assets")
 
@@ -17,6 +19,21 @@ val updateNetHackResources by tasks.registering(Exec::class) {
         "-c",
         """
         set -eu
+
+        lua_src="$luaSourcePath"
+        lua_compat_dir="lib/lua-5.4.8/src"
+        if [ ! -f "${'$'}lua_src/lua.h" ]; then
+            echo "Lua submodule is missing: ${'$'}lua_src/lua.h" >&2
+            exit 1
+        fi
+        if [ ! -f "${'$'}lua_compat_dir/lua.h" ]; then
+            mkdir -p lib/lua-5.4.8
+            rm -rf "${'$'}lua_compat_dir"
+            if ! ln -s "${'$'}lua_src" "${'$'}lua_compat_dir" 2>/dev/null; then
+                mkdir -p "${'$'}lua_compat_dir"
+                cp -R "${'$'}lua_src"/. "${'$'}lua_compat_dir"/
+            fi
+        fi
 
         if [ ! -f Makefile ] || [ ! -f dat/Makefile ] || [ ! -f util/Makefile ] || [ ! -f src/Makefile ]; then
             (cd sys/unix && ./setup.sh hints/linux-minimal)
