@@ -217,11 +217,11 @@ void and_player_selection()
         {
             if(ok_role(i, flags.initrace, flags.initgend, flags.initalign)) {
                 any.a_int = i + 1; /* must be non-zero */
-                thisch = lowc(roles[i].name.m[0]);
-                if(thisch == lastch)
-                    thisch = highc(thisch);
-                add_menu(win, &nul_glyphinfo, &any, thisch, 0, ATR_NONE, 0, roles[i].name.m, MENU_ITEMFLAGS_NONE);
-                lastch = thisch;
+                // thisch = lowc(roles[i].name.m[0]);
+                // if(thisch == lastch)
+                //     thisch = highc(thisch);
+                add_menu(win, &nul_glyphinfo, &any, role_choices[i], 0, ATR_NONE, 0, roles[i].name.m, MENU_ITEMFLAGS_NONE);
+                // lastch = thisch;
             }
         }
         end_menu(win, "Pick a role or profession");
