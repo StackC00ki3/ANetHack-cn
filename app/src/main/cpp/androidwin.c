@@ -791,7 +791,7 @@ void and_add_menu(winid window, const glyph_info * glyph, const union any * iden
         char groupacc, int attr, int clr, const char *str, unsigned int itemflags)
 {
     boolean preselected = (itemflags & MENU_ITEMFLAGS_SELECTED) != 0;
-    int tile = glyph->gm.tileidx;
+    int tile = glyph->glyph == NO_GLYPH ? -1 : glyph->gm.tileidx;
     int menu_color = clr, menu_attr = attr;
     LOGD("and_add_menu attr=%d, tile=%d, color=%d, groupacc=%d, accelerator:%c address:%ld",menu_attr, tile, menu_color,groupacc, accelerator, (long )identifier->a_lptr);
     if(menu_attr)
