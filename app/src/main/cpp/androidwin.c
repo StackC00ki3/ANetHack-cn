@@ -63,6 +63,7 @@ static void and_start_screen();
 static void and_end_screen();
 win_request_info *and_ctrl_nhwindow(winid, int, win_request_info *);
 color_attr and_menu_promptstyle = { NO_COLOR, ATR_NONE };
+extern const char role_choices[];
 
 static char* and_getmsghistory(boolean);
 static void and_putmsghistory(const char *, boolean);
@@ -187,7 +188,7 @@ void and_init_nhwindows(int* argcp, char** argv)
 void and_player_selection()
 {
     int i, result, picked_state[RS_ALGNMNT+1] = {0};
-    char thisch, lastch = 0;
+    // char thisch, lastch = 0;
     winid win;
     anything any;
     menu_item *selected = 0;
