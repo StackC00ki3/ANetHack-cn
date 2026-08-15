@@ -128,7 +128,7 @@
     <string name="cmd_bar_command_required">Command must not be empty</string>
     <string name="cmd_bar_max_rows">At most %1$d rows</string>
     <string name="cmd_bar_max_buttons">At most %1$d buttons per row</string>
-    <string name="pref_keyboard_command_panel_summary">Adds a Custom category to the action wheel. Separate actions with spaces and pages with line breaks. Use command|label for custom labels.</string>
+    <string name="pref_keyboard_command_panel_summary">Adds a Custom category to the action wheel. Separate actions with spaces and pages with line breaks. Use command|label for custom labels. Keys: ^p = Ctrl-P, M-p = Alt-P (uppercase M only, case matters), esc = Escape; other characters run as a key sequence in order and may mix in ^x/M-x keys, e.g. 10s^p.</string>
     <string name="pref_keyboard_command_panel_default"></string>
     <string name="pref_action_wheel_opacity">Action wheel panel opacity</string>
     <string name="pref_action_wheel_opacity_summary">Lower values make the wheel panels more transparent while keeping icons and text clear.</string>
@@ -197,6 +197,7 @@
     <string name="touch_action_look">Look here</string>
     <string name="touch_action_glance">Glance map</string>
     <string name="touch_action_search">Search</string>
+    <string name="touch_action_search_10">Search ×10</string>
     <string name="touch_action_upstairs">Go upstairs</string>
     <string name="touch_action_downstairs">Go downstairs</string>
     <string name="touch_action_travel">Travel</string>

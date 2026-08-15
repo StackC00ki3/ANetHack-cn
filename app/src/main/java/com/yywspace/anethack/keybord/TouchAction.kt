@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.yywspace.anethack.R
+import com.yywspace.anethack.command.NHCommandParser
+import com.yywspace.anethack.command.NHKeyCommand
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -18,7 +20,10 @@ data class TouchAction(
     val keyHint: String = TouchActionKeyHints.forCommand(command),
 ) {
     fun label(context: Context): String =
-        customLabel ?: if (labelRes != 0) context.getString(labelRes) else command
+        // Fall back to the readable key hint so notation commands show e.g.
+        // Ctrl-P instead of the raw ^P; plain commands pass through unchanged.
+        customLabel ?: if (labelRes != 0) context.getString(labelRes)
+        else TouchActionKeyHints.forCommand(command)
 }
 
 data class TouchActionCategory(
@@ -68,7 +73,9 @@ object TouchActionParser {
             iconRes = iconKey?.let(TouchActionIcons::resForKey)
                 ?: builtIn?.iconRes
                 ?: TouchActionIcons.forCommand(command),
-            keyHint = builtIn?.keyHint ?: TouchActionKeyHints.forCommand(command),
+            // A built-in resolved via key notation keeps this command's own hint
+            keyHint = builtIn?.takeIf { it.command == command }?.keyHint
+                ?: TouchActionKeyHints.forCommand(command),
         )
     }
 }
@@ -76,7 +83,7 @@ object TouchActionParser {
 object TouchActionCatalog {
     private const val LEGACY_DEFAULT_COMMAND_PANEL =
         "Setting SS|Save #quit|Quit S#engrave#-nL\"Elbereth\":|Elber S20s|20s Keyboard|Abc\n" +
-            "#|Extend d|Drop e|Eat :|Look ,|Pick .|Rest"
+                "#|Extend d|Drop e|Eat :|Look ,|Pick .|Rest"
 
     fun build(commandPanel: String?): List<TouchActionCategory> {
         val categories = builtInCategories().toMutableList()
@@ -254,6 +261,13 @@ object TouchActionCatalog {
             iconRes = R.drawable.ic_touch_center,
         ),
         TouchAction(
+            id = "dock_search_10",
+            command = "10s",
+            labelRes = R.string.touch_action_search_10,
+            iconRes = R.drawable.ic_touch_search,
+            keyHint = "10s",
+        ),
+        TouchAction(
             id = "dock_setting",
             command = "Setting",
             labelRes = R.string.touch_action_settings,
@@ -261,9 +275,53 @@ object TouchActionCatalog {
         ),
     )
 
-    fun actionForCommand(command: String): TouchAction? =
-        (builtInCategories().flatMap { it.pages.flatten() } + dockActions())
-            .firstOrNull { it.command == command }
+    fun actionForCommand(command: String): TouchAction? {
+        val actions = builtInCategories().flatMap { it.pages.flatten() } + dockActions()
+        return actions.firstOrNull { it.command == command }
+            ?: metaKeyExtendedCommands[command]?.let { extended ->
+                // NetHack binds M-x to an extended command, e.g. M-p == #pray
+                actions.firstOrNull { it.command == extended }
+            }
+            ?: singleKeyCodeOf(command)?.let { code ->
+                // Key notation naming a built-in char code, e.g. ^P == "16"
+                actions.firstOrNull { it.command == code.toString() }
+            }
+    }
+
+    /** NetHack's default M-x bindings that duplicate extended commands. */
+    private val metaKeyExtendedCommands = mapOf(
+        "M-a" to "#adjust",
+        "M-A" to "#annotate",
+        "M-c" to "#chat",
+        "M-C" to "#conduct",
+        "M-d" to "#dip",
+        "M-e" to "#enhance",
+        "M-f" to "#force",
+        "M-g" to "#genocided",
+        "M-i" to "#invoke",
+        "M-j" to "#jump",
+        "M-l" to "#loot",
+        "M-m" to "#monster",
+        "M-o" to "#offer",
+        "M-p" to "#pray",
+        "M-R" to "#ride",
+        "M-r" to "#rub",
+        "M-s" to "#sit",
+        "M-T" to "#tip",
+        "M-t" to "#turn",
+        "M-u" to "#untrap",
+        "M-V" to "#vanquished",
+        "M-v" to "#version",
+        "M-w" to "#wipe",
+        "M-?" to "#?",
+    )
+
+    /** Resolves key notation to its single char code ("^p" -> 16, "esc" -> 27, "M-p" -> 240). */
+    private fun singleKeyCodeOf(command: String): Int? =
+        NHCommandParser.parseNHCommand(command)
+            .singleOrNull()
+            ?.takeIf { it is NHKeyCommand }
+            ?.key?.code
 
     private fun category(
         id: String,
@@ -307,11 +365,24 @@ object TouchActionKeyHints {
             command.startsWith("S#engrave") -> "#engrave"
             characterCode != null && characterCode in 1..26 ->
                 "Ctrl-${('A'.code + characterCode - 1).toChar()}"
+
             command == "127" -> "Del"
-            command.length <= 8 -> command
-            else -> command.take(7) + "…"
+            else -> forKeyToken(command)
         }
     }
+
+    /** Hint for key notation: ^p -> Ctrl-P, M-p -> Alt-P, esc -> ESC. */
+    private fun forKeyToken(token: String): String = when {
+        token.equals("esc", ignoreCase = true) -> "ESC"
+        token.length == 2 && token[0] == '^' -> "Ctrl-${token[1].uppercaseChar()}"
+        token.length == 3 && token[1] == '-' && token[0] == 'M' ->
+            "Alt-${token[2]}"
+
+        else -> truncate(token)
+    }
+
+    private fun truncate(value: String): String =
+        if (value.length <= 8) value else value.take(7) + "…"
 }
 
 object TouchActionIcons {
@@ -390,6 +461,7 @@ object TouchActionIcons {
         "#wipe" to R.drawable.ic_touch_wipe,
         "." to R.drawable.ic_touch_wait,
         "S20s" to R.drawable.ic_touch_wait,
+        "10s" to R.drawable.ic_touch_search,
         "#herecmdmenu" to R.drawable.ic_touch_here_menu,
         "#therecmdmenu" to R.drawable.ic_touch_there_menu,
         // info
@@ -547,10 +619,20 @@ object TouchActionIcons {
 
     @DrawableRes
     fun forCommand(command: String): Int = commandIcons[command]
+        ?: keyNotationIcon(command)
         ?: when {
             command.startsWith("S#engrave") -> R.drawable.ic_touch_engrave
             else -> R.drawable.ic_touch_fallback
         }
+
+    /** Key notation ("^p", "esc") reuses the icon of its numeric char code. */
+    private fun keyNotationIcon(command: String): Int? = when {
+        command.length == 2 && command[0] == '^' ->
+            NHCommandParser.controlCode(command[1])?.let { commandIcons[it.toString()] }
+
+        command.equals("esc", ignoreCase = true) -> commandIcons["27"]
+        else -> null
+    }
 
     @DrawableRes
     fun resForKey(key: String): Int? = iconsByKey[key]
@@ -581,8 +663,8 @@ object TouchCommandBar {
     const val MAX_BUTTONS_PER_ROW = 16
     const val DEFAULT_VISIBLE_LIMIT = 8
     const val MAX_VISIBLE_LIMIT = 12
-    const val DOCK_CONFIG = "27 i Keyboard Center Setting"
-    const val DEFAULT_CONFIG = "$DOCK_CONFIG\na f t z Z 4"
+    const val DOCK_CONFIG = "27 i Keyboard Center # . , 10s ^P ^X Setting"
+    const val DEFAULT_CONFIG = "$DOCK_CONFIG\nZ Q f t ^a z ^d E-nElbereth x M-m\na q e r p d ; M-l c\nw W T P R E M-o M-p M-e"
 
     fun parseRows(config: String?): List<TouchCommandRow> {
         val rows = mutableListOf<TouchCommandRow>()
@@ -623,7 +705,8 @@ object TouchCommandBar {
             command = command,
             labelRes = builtIn?.labelRes ?: 0,
             iconRes = builtIn?.iconRes ?: TouchActionIcons.forCommand(command),
-            keyHint = builtIn?.keyHint ?: TouchActionKeyHints.forCommand(command),
+            keyHint = builtIn?.takeIf { it.command == command }?.keyHint
+                ?: TouchActionKeyHints.forCommand(command),
         )
     }
 
@@ -721,7 +804,10 @@ object TouchCommandBar {
 
     private fun serializeAction(action: TouchAction): String {
         val label = action.customLabel?.let(::sanitizeToken)?.takeUnless { it.isEmpty() }
-        val defaultKey = TouchActionIcons.keyForRes(TouchActionIcons.forCommand(action.command))
+        // The default icon follows built-in resolution (e.g. M-p -> #pray's icon)
+        val defaultIcon = TouchActionCatalog.actionForCommand(action.command)?.iconRes
+            ?: TouchActionIcons.forCommand(action.command)
+        val defaultKey = TouchActionIcons.keyForRes(defaultIcon)
         val iconKey = TouchActionIcons.keyForRes(action.iconRes)?.takeUnless { it == defaultKey }
         if (label == null && iconKey == null) return action.command
         return buildString {

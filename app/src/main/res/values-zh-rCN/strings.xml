@@ -23,7 +23,7 @@
     <string name="cmd_bar_command_required">命令不能为空</string>
     <string name="cmd_bar_max_rows">最多 %1$d 行</string>
     <string name="cmd_bar_max_buttons">每行最多 %1$d 个按钮</string>
-    <string name="pref_keyboard_command_panel_summary">在操作轮盘中增加“自定义”分类。空格分隔动作，换行分页；使用 command|标签 设置自定义名称。</string>
+    <string name="pref_keyboard_command_panel_summary">在操作轮盘中增加“自定义”分类。空格分隔动作，换行分页；使用 command|标签 设置自定义名称。按键：^p 表示 Ctrl+P，M-p 表示 Alt+P（前缀 M 仅大写，字母区分大小写），esc 表示 Esc；其余字符按顺序依次执行，可混用 ^x、M-x 键位，如 10s^p。</string>
     <string name="pref_action_wheel_opacity">轮盘面板不透明度</string>
     <string name="pref_action_wheel_opacity_summary">数值越低，轮盘面板越透明；图标和文字始终保持清晰。</string>
 
@@ -49,7 +49,7 @@
     <string name="touch_action_quiver">选择弹药</string>
     <string name="touch_action_swap">切换武器</string>
     <string name="touch_action_two_weapon">双持</string>
-    <string name="touch_action_enhance">提升技能</string>
+    <string name="touch_action_enhance">升级技能</string>
     <string name="touch_action_turn_undead">驱赶亡灵</string>
     <string name="touch_action_monster_ability">怪物能力</string>
     <string name="touch_action_ride">骑乘</string>
@@ -90,6 +90,7 @@
     <string name="touch_action_look">查看脚下</string>
     <string name="touch_action_glance">查看地图</string>
     <string name="touch_action_search">搜索</string>
+    <string name="touch_action_search_10">搜索×10</string>
     <string name="touch_action_upstairs">上楼</string>
     <string name="touch_action_downstairs">下楼</string>
     <string name="touch_action_travel">自动旅行</string>

@@ -2,30 +2,84 @@ package com.yywspace.anethack.command
 
 import java.io.PushbackReader
 import java.io.StringReader
-import java.lang.Integer.parseInt
 
 object NHCommandParser {
     /*
-    key command: -
+    key command: a
     extended command: #read
     sequence command: S#engrave#-L"Elbereth"
         key command in sequence: -
         extended command in sequence: #read#
         line command in sequence: L"Elbereth"
+    key notation (case-sensitive, also inside key sequences):
+        ctrl+x: ^x
+        alt+x:  M-x  (uppercase M only; char code 128+x, same as the Meta soft keyboard)
+        escape: esc
+        numeric char code (legacy): 16
+    anything else is a key sequence executed left to right: 10s^p -> '1','0','s',Ctrl-P
     */
     fun parseNHCommand(command:String):List<NHCommand> {
-        val commands = mutableListOf<NHCommand>()
         if(command.startsWith("#")) {
-            commands.add(NHExtendCommand(command))
+            return listOf(NHExtendCommand(command))
         } else if(command.startsWith("S")) {
-            commands.addAll(parseSequenceCommands(command))
-        } else {
-            try {
-                val key = parseInt(command).toChar()
-                commands.add(NHKeyCommand(key))
-            } catch (e: NumberFormatException) {
-                commands.add(NHKeyCommand(command.firstOrNull()?:27.toChar()))
+            return parseSequenceCommands(command)
+        }
+        return parseKeyCommand(command)
+    }
+
+    private val ESC = 27.toChar()
+
+    /** Meta/Alt is delivered to the NetHack core as the char with the 8th bit set. */
+    const val META_BIT = 128
+
+    /** ASCII caret notation: ^A-^Z -> 1-26, ^@..^_ -> 0-31, ^? -> 127 (Del). */
+    fun controlCode(c: Char): Int? = when (c) {
+        in 'a'..'z' -> c.code - 'a'.code + 1
+        in 'A'..'Z' -> c.code - 'A'.code + 1
+        in '@'..'_' -> c.code - '@'.code
+        '?' -> 127
+        else -> null
+    }
+
+    private fun parseKeyCommand(command:String):List<NHCommand> {
+        if (command.isEmpty()) return listOf(NHKeyCommand(ESC))
+        // legacy numeric char code: 16 -> Ctrl-P, 27 -> ESC
+        command.toIntOrNull()?.let { return listOf(NHKeyCommand(it.toChar())) }
+        if (command.equals("esc", ignoreCase = true))
+            return listOf(NHKeyCommand(ESC))
+        return parseKeySequence(command)
+    }
+
+    // key sequence executed left to right, with embedded ^x (ctrl) and M-x (alt)
+    private fun parseKeySequence(command:String):List<NHCommand> {
+        val commands = mutableListOf<NHCommand>()
+        var i = 0
+        while (i < command.length) {
+            if (command[i] == '^' && i + 1 < command.length) {
+                val code = controlCode(command[i + 1])
+                if (code != null) {
+                    commands.add(NHKeyCommand(code.toChar()))
+                    i += 2
+                    continue
+                }
             }
+            if (command[i] == 'M' && command.getOrNull(i + 1) == '-') {
+                val key = command.getOrNull(i + 2)
+                if (key == '^') {
+                    val code = command.getOrNull(i + 3)?.let(::controlCode)
+                    if (code != null) {
+                        commands.add(NHKeyCommand((code + META_BIT).toChar()))
+                        i += 4
+                        continue
+                    }
+                } else if (key != null) {
+                    commands.add(NHKeyCommand((key.code + META_BIT).toChar()))
+                    i += 3
+                    continue
+                }
+            }
+            commands.add(NHKeyCommand(command[i]))
+            i += 1
         }
         return commands
     }

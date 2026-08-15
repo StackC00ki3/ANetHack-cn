@@ -128,14 +128,17 @@ class TouchActionParserTest {
     fun migratesLegacyConfigByPrependingDockRow() {
         assertEquals(TouchCommandBar.DEFAULT_CONFIG, TouchCommandBar.migrateLegacy(null))
         assertEquals(TouchCommandBar.DEFAULT_CONFIG, TouchCommandBar.migrateLegacy("  "))
-        assertEquals(TouchCommandBar.DEFAULT_CONFIG, TouchCommandBar.migrateLegacy("a f t z Z 4"))
         assertEquals(
-            "27 i Keyboard Center Setting\ns #pray",
+            "${TouchCommandBar.DOCK_CONFIG}\na f t z Z 4",
+            TouchCommandBar.migrateLegacy("a f t z Z 4"),
+        )
+        assertEquals(
+            "${TouchCommandBar.DOCK_CONFIG}\ns #pray",
             TouchCommandBar.migrateLegacy("s #pray"),
         )
         val migrated = TouchCommandBar.parseRows(TouchCommandBar.migrateLegacy("a f t z Z 4"))
         assertEquals(
-            listOf("27", "i", "Keyboard", "Center", "Setting"),
+            TouchCommandBar.DOCK_CONFIG.split(" "),
             migrated[0].actions.map { it.command },
         )
     }
@@ -220,19 +223,28 @@ class TouchActionParserTest {
     fun barSanitizesLabelsAndParsesDefaultConfig() {
         assertEquals("ApplyAllx", TouchCommandBar.sanitizeToken("Apply All|x"))
         val rows = TouchCommandBar.parseRows(TouchCommandBar.DEFAULT_CONFIG)
-        assertEquals(2, rows.size)
+        assertEquals(4, rows.size)
         assertEquals(
-            listOf("27", "i", "Keyboard", "Center", "Setting"),
+            TouchCommandBar.DOCK_CONFIG.split(" "),
             rows[0].actions.map { it.command },
         )
-        assertEquals(listOf("a", "f", "t", "z", "Z", "4"), rows[1].actions.map { it.command })
         assertEquals(
-            listOf(
-                R.drawable.ic_touch_apply, R.drawable.ic_touch_fire, R.drawable.ic_touch_throw,
-                R.drawable.ic_touch_zap, R.drawable.ic_touch_cast, R.drawable.ic_touch_kick,
-            ),
-            rows[1].actions.map { it.iconRes },
+            listOf("Z", "Q", "f", "t", "^a", "z", "^d", "x", "M-m"),
+            rows[1].actions.map { it.command },
         )
+        assertEquals(
+            listOf("a", "q", "e", "r", "p", "d", ";", "M-l", "c"),
+            rows[2].actions.map { it.command },
+        )
+        assertEquals(
+            listOf("w", "W", "T", "P", "R", "E", "M-o", "M-p", "M-e"),
+            rows[3].actions.map { it.command },
+        )
+        // Every default button resolves a real icon and a localized label.
+        rows.flatMap { it.actions }.forEach { action ->
+            assertNotEquals(action.command, R.drawable.ic_touch_fallback, action.iconRes)
+            assertNotEquals(action.command, 0, action.labelRes)
+        }
         assertTrue(rows.all { it.visibleLimit == TouchCommandBar.DEFAULT_VISIBLE_LIMIT })
     }
 
@@ -256,6 +268,58 @@ class TouchActionParserTest {
         assertEquals(R.drawable.ic_touch_engrave, TouchActionIcons.forCommand("S#engrave#-nL\"Elbereth\":"))
         assertEquals(R.drawable.ic_touch_apply, TouchActionIcons.forCommand("a"))
         assertEquals(R.drawable.ic_touch_fallback, TouchActionIcons.forCommand("not-a-command"))
+    }
+
+    @Test
+    fun hintsAndIconsFollowKeyNotation() {
+        assertEquals("Ctrl-P", TouchActionKeyHints.forCommand("^p"))
+        assertEquals("Ctrl-P", TouchActionKeyHints.forCommand("^P"))
+        assertEquals("Alt-p", TouchActionKeyHints.forCommand("M-p"))
+        assertEquals("Alt-P", TouchActionKeyHints.forCommand("M-P"))
+        assertEquals("Alt-2", TouchActionKeyHints.forCommand("M-2"))
+        assertEquals("ESC", TouchActionKeyHints.forCommand("esc"))
+
+        assertEquals(R.drawable.ic_touch_prev_message, TouchActionIcons.forCommand("^P"))
+        assertEquals(R.drawable.ic_touch_attributes, TouchActionIcons.forCommand("^X"))
+        assertEquals(R.drawable.ic_touch_cancel, TouchActionIcons.forCommand("esc"))
+        assertEquals(R.drawable.ic_touch_fallback, TouchActionIcons.forCommand("M-p"))
+    }
+
+    @Test
+    fun resolvesKeyNotationToBuiltInActions() {
+        assertEquals(
+            R.string.touch_action_previous_message,
+            TouchActionCatalog.actionForCommand("^P")?.labelRes,
+        )
+        assertEquals(
+            R.string.touch_action_attributes,
+            TouchActionCatalog.actionForCommand("^X")?.labelRes,
+        )
+        assertEquals(
+            R.string.touch_action_cancel,
+            TouchActionCatalog.actionForCommand("esc")?.labelRes,
+        )
+        assertEquals(
+            R.string.touch_action_search_10,
+            TouchActionCatalog.actionForCommand("10s")?.labelRes,
+        )
+        assertEquals(R.drawable.ic_touch_search, TouchActionIcons.forCommand("10s"))
+        // NetHack binds M-x to extended commands: M-p == #pray, M-m == #monster
+        assertEquals(
+            R.string.touch_action_pray,
+            TouchActionCatalog.actionForCommand("M-p")?.labelRes,
+        )
+        assertEquals(
+            R.drawable.ic_touch_monster,
+            TouchActionCatalog.actionForCommand("M-m")?.iconRes,
+        )
+        // a resolved built-in keeps the notation's own hint, not "#pray"
+        assertEquals(
+            "Alt-p",
+            TouchActionParser.parseAction("M-p", 0)?.keyHint,
+        )
+        // meta keys without an extended equivalent stay unresolved
+        assertEquals(null, TouchActionCatalog.actionForCommand("M-h"))
     }
 
     @Test
