@@ -5,7 +5,7 @@ Source repository: https://github.com/game-icons/icons
 Project website: https://game-icons.net/
 License: Creative Commons Attribution 3.0 (CC BY 3.0)
 License URL: https://creativecommons.org/licenses/by/3.0/
-Imported: 2026-08-13
+Imported/updated: 2026-08-16
 
 The upstream license requests the notice "Icons made by {author}" in derivative works.
 All listed icons were converted from SVG to Android VectorDrawable XML. The black
@@ -22,51 +22,328 @@ Icons made by Delapouite (http://delapouite.com):
 - ic_touch_center.xml: Crosshair
   https://game-icons.net/1x1/delapouite/crosshair.html
   Source: https://github.com/game-icons/icons/blob/master/delapouite/crosshair.svg
+- ic_touch_next.xml: Next button
+  https://game-icons.net/1x1/delapouite/next-button.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/next-button.svg
+- ic_touch_apply.xml: Swiss army knife
+  https://game-icons.net/1x1/delapouite/swiss-army-knife.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/swiss-army-knife.svg
+- ic_touch_kick.xml: High kick
+  https://game-icons.net/1x1/delapouite/high-kick.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/high-kick.svg
+- ic_touch_quiver.xml: Quiver
+  https://game-icons.net/1x1/delapouite/quiver.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/quiver.svg
+- ic_touch_swap.xml: Switch weapon
+  https://game-icons.net/1x1/delapouite/switch-weapon.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/switch-weapon.svg
+- ic_touch_inventory_type.xml: Hand bag
+  https://game-icons.net/1x1/delapouite/hand-bag.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/hand-bag.svg
+- ic_touch_drop_type.xml: Bolt drop
+  https://game-icons.net/1x1/delapouite/bolt-drop.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/bolt-drop.svg
+- ic_touch_eat.xml: Eating
+  https://game-icons.net/1x1/delapouite/eating.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/eating.svg
+- ic_touch_takeoff.xml: Armor downgrade
+  https://game-icons.net/1x1/delapouite/armor-downgrade.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/armor-downgrade.svg
+- ic_touch_takeoff_all.xml: Clothes
+  https://game-icons.net/1x1/delapouite/clothes.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/clothes.svg
+- ic_touch_put_on.xml: Polo shirt
+  https://game-icons.net/1x1/delapouite/polo-shirt.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/polo-shirt.svg
+- ic_touch_remove.xml: Gloves
+  https://game-icons.net/1x1/delapouite/gloves.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/gloves.svg
+- ic_touch_loot.xml: Chest
+  https://game-icons.net/1x1/delapouite/chest.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/chest.svg
+- ic_touch_dip.xml: Paint bucket
+  https://game-icons.net/1x1/delapouite/paint-bucket.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/paint-bucket.svg
+- ic_touch_invoke.xml: Glowing artifact
+  https://game-icons.net/1x1/delapouite/glowing-artifact.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/glowing-artifact.svg
+- ic_touch_rub.xml: Bed lamp
+  https://game-icons.net/1x1/delapouite/bed-lamp.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/bed-lamp.svg
+- ic_touch_tip.xml: Pouring pot
+  https://game-icons.net/1x1/delapouite/pouring-pot.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/pouring-pot.svg
+- ic_touch_pay.xml: Pay money
+  https://game-icons.net/1x1/delapouite/pay-money.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/pay-money.svg
+- ic_touch_adjust.xml: Pencil ruler
+  https://game-icons.net/1x1/delapouite/pencil-ruler.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/pencil-ruler.svg
+- ic_touch_call.xml: Price tag
+  https://game-icons.net/1x1/delapouite/price-tag.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/price-tag.svg
+- ic_touch_autopickup.xml: Robot grab
+  https://game-icons.net/1x1/delapouite/robot-grab.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/robot-grab.svg
+- ic_touch_perminv.xml: Bookshelf
+  https://game-icons.net/1x1/delapouite/bookshelf.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/bookshelf.svg
+- ic_touch_see_all.xml: All seeing eye
+  https://game-icons.net/1x1/delapouite/all-seeing-eye.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/all-seeing-eye.svg
+- ic_touch_see_armor.xml: Chest armor
+  https://game-icons.net/1x1/delapouite/chest-armor.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/chest-armor.svg
+- ic_touch_see_rings.xml: Ring
+  https://game-icons.net/1x1/delapouite/ring.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/ring.svg
+- ic_touch_see_amulet.xml: Heart necklace
+  https://game-icons.net/1x1/delapouite/heart-necklace.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/heart-necklace.svg
+- ic_touch_see_tools.xml: 3d hammer
+  https://game-icons.net/1x1/delapouite/3d-hammer.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/3d-hammer.svg
+- ic_touch_gold.xml: Gold stack
+  https://game-icons.net/1x1/delapouite/gold-stack.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/gold-stack.svg
+- ic_touch_open.xml: Entry door
+  https://game-icons.net/1x1/delapouite/entry-door.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/entry-door.svg
+- ic_touch_close.xml: Closed doors
+  https://game-icons.net/1x1/delapouite/closed-doors.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/closed-doors.svg
+- ic_touch_look.xml: Look at
+  https://game-icons.net/1x1/delapouite/look-at.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/look-at.svg
+- ic_touch_glance.xml: Binoculars
+  https://game-icons.net/1x1/delapouite/binoculars.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/binoculars.svg
+- ic_touch_up.xml: Stairs
+  https://game-icons.net/1x1/delapouite/stairs.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/stairs.svg
+- ic_touch_down.xml: 3d stairs
+  https://game-icons.net/1x1/delapouite/3d-stairs.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/3d-stairs.svg
+- ic_touch_retravel.xml: Path distance
+  https://game-icons.net/1x1/delapouite/path-distance.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/path-distance.svg
+- ic_touch_run.xml: Running shoe
+  https://game-icons.net/1x1/delapouite/running-shoe.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/running-shoe.svg
+- ic_touch_no_pickup.xml: Egyptian walk
+  https://game-icons.net/1x1/delapouite/egyptian-walk.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/egyptian-walk.svg
+- ic_touch_no_pickup_far.xml: Crossroad
+  https://game-icons.net/1x1/delapouite/crossroad.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/crossroad.svg
+- ic_touch_chat.xml: Discussion
+  https://game-icons.net/1x1/delapouite/discussion.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/discussion.svg
+- ic_touch_force.xml: Lockpicks
+  https://game-icons.net/1x1/delapouite/lockpicks.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/lockpicks.svg
+- ic_touch_jump.xml: Jump across
+  https://game-icons.net/1x1/delapouite/jump-across.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/jump-across.svg
+- ic_touch_wipe.xml: Towel
+  https://game-icons.net/1x1/delapouite/towel.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/towel.svg
+- ic_touch_here_menu.xml: Position marker
+  https://game-icons.net/1x1/delapouite/position-marker.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/position-marker.svg
+- ic_touch_there_menu.xml: Flag objective
+  https://game-icons.net/1x1/delapouite/flag-objective.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/flag-objective.svg
+- ic_touch_whatis.xml: Eye target
+  https://game-icons.net/1x1/delapouite/eye-target.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/eye-target.svg
+- ic_touch_whatdoes.xml: Info
+  https://game-icons.net/1x1/delapouite/info.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/info.svg
+- ic_touch_overview.xml: Atlas
+  https://game-icons.net/1x1/delapouite/atlas.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/atlas.svg
+- ic_touch_attributes.xml: Person
+  https://game-icons.net/1x1/delapouite/person.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/person.svg
+- ic_touch_known_class.xml: Book pile
+  https://game-icons.net/1x1/delapouite/book-pile.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/book-pile.svg
+- ic_touch_chronicle.xml: Diploma
+  https://game-icons.net/1x1/delapouite/diploma.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/diploma.svg
+- ic_touch_vanquished.xml: Laurels trophy
+  https://game-icons.net/1x1/delapouite/laurels-trophy.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/laurels-trophy.svg
+- ic_touch_history.xml: Backward time
+  https://game-icons.net/1x1/delapouite/backward-time.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/backward-time.svg
+- ic_touch_prev_message.xml: Chat bubble
+  https://game-icons.net/1x1/delapouite/chat-bubble.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/chat-bubble.svg
+- ic_touch_lookaround.xml: Hunter eyes
+  https://game-icons.net/1x1/delapouite/hunter-eyes.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/hunter-eyes.svg
+- ic_touch_terrain.xml: Path tile
+  https://game-icons.net/1x1/delapouite/path-tile.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/path-tile.svg
+- ic_touch_annotate.xml: Pencil
+  https://game-icons.net/1x1/delapouite/pencil.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/pencil.svg
+- ic_touch_version.xml: Notebook
+  https://game-icons.net/1x1/delapouite/notebook.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/notebook.svg
 - ic_touch_save.xml: Save
   https://game-icons.net/1x1/delapouite/save.html
   Source: https://github.com/game-icons/icons/blob/master/delapouite/save.svg
 - ic_touch_quit.xml: Exit door
   https://game-icons.net/1x1/delapouite/exit-door.html
   Source: https://github.com/game-icons/icons/blob/master/delapouite/exit-door.svg
-- ic_touch_eat.xml: Eating
-  https://game-icons.net/1x1/delapouite/eating.html
-  Source: https://github.com/game-icons/icons/blob/master/delapouite/eating.svg
-- ic_touch_look.xml: Look at
-  https://game-icons.net/1x1/delapouite/look-at.html
-  Source: https://github.com/game-icons/icons/blob/master/delapouite/look-at.svg
-- ic_touch_next.xml: Next button
-  https://game-icons.net/1x1/delapouite/next-button.html
-  Source: https://github.com/game-icons/icons/blob/master/delapouite/next-button.svg
+- ic_touch_options_full.xml: Monkey wrench
+  https://game-icons.net/1x1/delapouite/monkey-wrench.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/monkey-wrench.svg
+- ic_touch_extended_list.xml: Checklist
+  https://game-icons.net/1x1/delapouite/checklist.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/checklist.svg
+- ic_touch_repeat.xml: Clockwise rotation
+  https://game-icons.net/1x1/delapouite/clockwise-rotation.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/clockwise-rotation.svg
+- ic_touch_redraw.xml: Pencil brush
+  https://game-icons.net/1x1/delapouite/pencil-brush.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/pencil-brush.svg
+- ic_touch_save_options.xml: Cloud upload
+  https://game-icons.net/1x1/delapouite/cloud-upload.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/cloud-upload.svg
+- ic_touch_toggle.xml: Toggles
+  https://game-icons.net/1x1/delapouite/toggles.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/toggles.svg
 
 Icons made by Lorc (http://lorcblog.blogspot.com):
 - ic_touch_settings.xml: Gears
   https://game-icons.net/1x1/lorc/gears.html
   Source: https://github.com/game-icons/icons/blob/master/lorc/gears.svg
+- ic_touch_fallback.xml: Cycle
+  https://game-icons.net/1x1/lorc/cycle.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/cycle.svg
+- ic_touch_combat.xml: Crossed swords
+  https://game-icons.net/1x1/lorc/crossed-swords.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/crossed-swords.svg
+- ic_touch_fire.xml: Target shot
+  https://game-icons.net/1x1/lorc/target-shot.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/target-shot.svg
+- ic_touch_throw.xml: Thrown daggers
+  https://game-icons.net/1x1/lorc/thrown-daggers.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/thrown-daggers.svg
+- ic_touch_zap.xml: Focused lightning
+  https://game-icons.net/1x1/lorc/focused-lightning.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/focused-lightning.svg
+- ic_touch_cast.xml: Magic swirl
+  https://game-icons.net/1x1/lorc/magic-swirl.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/magic-swirl.svg
+- ic_touch_wield.xml: Broadsword
+  https://game-icons.net/1x1/lorc/broadsword.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/broadsword.svg
+- ic_touch_two_weapon.xml: Dervish swords
+  https://game-icons.net/1x1/lorc/dervish-swords.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/dervish-swords.svg
+- ic_touch_enhance.xml: Muscle up
+  https://game-icons.net/1x1/lorc/muscle-up.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/muscle-up.svg
+- ic_touch_turn.xml: Holy symbol
+  https://game-icons.net/1x1/lorc/holy-symbol.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/holy-symbol.svg
+- ic_touch_monster.xml: Monster grasp
+  https://game-icons.net/1x1/lorc/monster-grasp.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/monster-grasp.svg
+- ic_touch_ride.xml: Horse head
+  https://game-icons.net/1x1/lorc/horse-head.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/horse-head.svg
+- ic_touch_pickup.xml: Grab
+  https://game-icons.net/1x1/lorc/grab.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/grab.svg
+- ic_touch_drop.xml: Drop
+  https://game-icons.net/1x1/lorc/drop.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/drop.svg
+- ic_touch_quaff.xml: Drink me
+  https://game-icons.net/1x1/lorc/drink-me.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/drink-me.svg
+- ic_touch_read.xml: Scroll unfurled
+  https://game-icons.net/1x1/lorc/scroll-unfurled.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/scroll-unfurled.svg
+- ic_touch_wear.xml: Mail shirt
+  https://game-icons.net/1x1/lorc/mail-shirt.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/mail-shirt.svg
+- ic_touch_see_weapon.xml: Shining sword
+  https://game-icons.net/1x1/lorc/shining-sword.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/shining-sword.svg
+- ic_touch_spells.xml: Book aura
+  https://game-icons.net/1x1/lorc/book-aura.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/book-aura.svg
+- ic_touch_search.xml: Magnifying glass
+  https://game-icons.net/1x1/lorc/magnifying-glass.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/magnifying-glass.svg
+- ic_touch_travel.xml: Compass
+  https://game-icons.net/1x1/lorc/compass.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/compass.svg
+- ic_touch_teleport.xml: Portal
+  https://game-icons.net/1x1/lorc/portal.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/portal.svg
+- ic_touch_untrap.xml: Grease trap
+  https://game-icons.net/1x1/lorc/grease-trap.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/grease-trap.svg
+- ic_touch_offer.xml: Holy grail
+  https://game-icons.net/1x1/lorc/holy-grail.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/holy-grail.svg
+- ic_touch_pray.xml: Prayer
+  https://game-icons.net/1x1/lorc/prayer.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/prayer.svg
 - ic_touch_engrave.xml: Quill ink
   https://game-icons.net/1x1/lorc/quill-ink.html
   Source: https://github.com/game-icons/icons/blob/master/lorc/quill-ink.svg
 - ic_touch_wait.xml: Hourglass
   https://game-icons.net/1x1/lorc/hourglass.html
   Source: https://github.com/game-icons/icons/blob/master/lorc/hourglass.svg
-- ic_touch_drop.xml: Drop
-  https://game-icons.net/1x1/lorc/drop.html
-  Source: https://github.com/game-icons/icons/blob/master/lorc/drop.svg
-- ic_touch_pickup.xml: Grab
-  https://game-icons.net/1x1/lorc/grab.html
-  Source: https://github.com/game-icons/icons/blob/master/lorc/grab.svg
-- ic_touch_fallback.xml: Cycle
-  https://game-icons.net/1x1/lorc/cycle.html
-  Source: https://github.com/game-icons/icons/blob/master/lorc/cycle.svg
+- ic_touch_known.xml: Open book
+  https://game-icons.net/1x1/lorc/open-book.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/open-book.svg
+- ic_touch_conduct.xml: Medal
+  https://game-icons.net/1x1/lorc/medal.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/medal.svg
+- ic_touch_genocided.xml: Skull crossed bones
+  https://game-icons.net/1x1/lorc/skull-crossed-bones.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/skull-crossed-bones.svg
+- ic_touch_show_trap.xml: Mantrap
+  https://game-icons.net/1x1/lorc/mantrap.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/mantrap.svg
+- ic_touch_version_short.xml: Bookmark
+  https://game-icons.net/1x1/lorc/bookmark.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/bookmark.svg
 
 Icons made by Sbed (http://opengameart.org/content/95-game-icons):
 - ic_touch_cancel.xml: Cancel
   https://game-icons.net/1x1/sbed/cancel.html
   Source: https://github.com/game-icons/icons/blob/master/sbed/cancel.svg
+- ic_touch_help.xml: Help
+  https://game-icons.net/1x1/sbed/help.html
+  Source: https://github.com/game-icons/icons/blob/master/sbed/help.svg
 
 Icons made by Skoll:
 - ic_touch_extended.xml: Console controller
   https://game-icons.net/1x1/skoll/console-controller.html
   Source: https://github.com/game-icons/icons/blob/master/skoll/console-controller.svg
+
+Icons made by DarkZaitzev:
+- ic_touch_rush.xml: Running ninja
+  https://game-icons.net/1x1/darkzaitzev/running-ninja.html
+  Source: https://github.com/game-icons/icons/blob/master/darkzaitzev/running-ninja.svg
+- ic_touch_options.xml: Big gear
+  https://game-icons.net/1x1/darkzaitzev/big-gear.html
+  Source: https://github.com/game-icons/icons/blob/master/darkzaitzev/big-gear.svg
+
+Icons made by Caro Asercion:
+- ic_touch_sit.xml: Armchair
+  https://game-icons.net/1x1/caro-asercion/armchair.html
+  Source: https://github.com/game-icons/icons/blob/master/caro-asercion/armchair.svg
 
 Upstream license text is available at:
 https://github.com/game-icons/icons/blob/master/license.txt

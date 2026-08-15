@@ -35,6 +35,11 @@
             android:parentActivityName=".setting.SettingsActivity"
             android:label="@string/activity_option_edit_title" />
         <activity
+            android:name=".setting.CommandBarEditActivity"
+            android:exported="false"
+            android:parentActivityName=".setting.SettingsActivity"
+            android:label="@string/activity_command_bar_edit_title" />
+        <activity
             android:name=".NetHackActivity"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:exported="true"

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
+import com.yywspace.anethack.keybord.TouchCommandBar
 import java.time.Instant
 import java.util.stream.Collectors
 import kotlin.properties.ReadWriteProperty
@@ -12,6 +13,19 @@ import kotlin.reflect.KProperty
 class SharedPreferencesUtils(val context: Context) {
 
     private val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+
+    init {
+        // 停靠栏并入自定义底边栏后，为旧配置补上最底部的停靠行（只迁移一次）
+        if (!preferences.getBoolean("commandBarV2", false)) {
+            preferences.edit {
+                putString(
+                    "commandBar",
+                    TouchCommandBar.migrateLegacy(preferences.getString("commandBar", null)),
+                )
+                putBoolean("commandBarV2", true)
+            }
+        }
+    }
 
     private var _saves by SharedPreferenceDelegates.map()
     private var inputPrompts by SharedPreferenceDelegates.stringSet()
@@ -31,6 +45,8 @@ class SharedPreferencesUtils(val context: Context) {
     var userSound by SharedPreferenceDelegates.boolean(false)
     var internalSound by SharedPreferenceDelegates.boolean(true)
     var commandPanel by SharedPreferenceDelegates.string(context.getString(R.string.pref_keyboard_command_panel_default))
+    var commandBar by SharedPreferenceDelegates.string(TouchCommandBar.DEFAULT_CONFIG)
+    var actionWheelOpacity by SharedPreferenceDelegates.int(95)
 
     fun getInputPrompts():List<String> {
         return inputPrompts.map {

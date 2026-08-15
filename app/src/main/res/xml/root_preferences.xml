@@ -88,6 +88,23 @@
             app:iconSpaceReserved="false"/>
 
         <Preference
+            app:key="commandBar"
+            app:title="@string/pref_command_bar"
+            app:summary="@string/pref_command_bar_summary"
+            app:iconSpaceReserved="false"/>
+
+        <SeekBarPreference
+            app:key="actionWheelOpacity"
+            app:title="@string/pref_action_wheel_opacity"
+            app:summary="@string/pref_action_wheel_opacity_summary"
+            app:min="35"
+            android:max="100"
+            app:seekBarIncrement="5"
+            app:showSeekBarValue="true"
+            app:defaultValue="95"
+            app:iconSpaceReserved="false"/>
+
+        <Preference
             app:key="iconLicenses"
             app:title="@string/pref_icon_licenses"
             app:summary="@string/pref_icon_licenses_summary"

@@ -22,7 +22,8 @@ import com.yywspace.anethack.command.NHExtendCommand
 import com.yywspace.anethack.command.NHKeyCommand
 import com.yywspace.anethack.databinding.ActivityNethackBinding
 import com.yywspace.anethack.identify.NHPriceIDialog
-import com.yywspace.anethack.keybord.TouchActionParser
+import com.yywspace.anethack.keybord.TouchActionCatalog
+import com.yywspace.anethack.keybord.TouchCommandBar
 import com.yywspace.anethack.setting.SettingsActivity
 import java.io.File
 import java.io.FileFilter
@@ -69,6 +70,8 @@ class NetHackActivity : AppCompatActivity() {
         else
             binding.floatingButton.visibility = View.GONE
         binding.keyboardView.setKeyboardVibrate(nethack.prefs.keyboardVibrate)
+        binding.actionWheel.setPanelOpacity(nethack.prefs.actionWheelOpacity)
+        refreshCommandBar()
     }
 
     override fun onPause() {
@@ -79,6 +82,8 @@ class NetHackActivity : AppCompatActivity() {
     override fun onConfigurationChanged(newConfig: Configuration) {
         binding.actionWheel.dismiss()
         super.onConfigurationChanged(newConfig)
+        refreshCommandBar()
+        ViewCompat.requestApplyInsets(binding.root)
         if(isKeyboardShow) {
             binding.keyboardView.apply {
                 postDelayed({
@@ -100,7 +105,7 @@ class NetHackActivity : AppCompatActivity() {
     private fun initBackNavigation() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (!binding.actionWheel.dismiss()) {
+                if (!binding.actionWheel.navigateBackOrDismiss()) {
                     isEnabled = false
                     onBackPressedDispatcher.onBackPressed()
                     isEnabled = true
@@ -212,27 +217,26 @@ class NetHackActivity : AppCompatActivity() {
     }
 
     private fun initTouchControls() {
-        binding.bottomActionDock.onCommandPress = ::processKeyPress
+        binding.bottomCommandBar.onCommandPress = ::processKeyPress
+        refreshCommandBar()
         binding.mapView.onPlayerTap = ::showActionWheel
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
             val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            val params = binding.bottomActionDock.layoutParams
-            params.height = resources.getDimensionPixelSize(R.dimen.touch_dock_height) + bars.bottom
-            binding.bottomActionDock.layoutParams = params
-            binding.bottomActionDock.setPadding(0, 0, 0, bars.bottom)
-            binding.actionWheel.setSafeInsets(bars.top, binding.bottomActionDock.height)
+            binding.bottomCommandBar.setPadding(bars.left, 0, bars.right, bars.bottom)
+            binding.root.post { refreshActionWheelSafeInsets(bars.left, bars.top, bars.right) }
             insets
         }
         ViewCompat.requestApplyInsets(binding.root)
     }
 
+    private fun refreshCommandBar() {
+        binding.bottomCommandBar.setActions(TouchCommandBar.parseRows(nethack.prefs.commandBar))
+    }
+
     private fun showActionWheel(mapAnchor: PointF) {
         if (binding.dialogContainer.visibility == View.VISIBLE) return
-        val configured = nethack.prefs.commandPanel.orEmpty().ifEmpty {
-            getString(R.string.pref_keyboard_command_panel_default)
-        }
-        val pages = TouchActionParser.parsePages(configured)
-        if (pages.isEmpty()) return
+        val categories = TouchActionCatalog.build(nethack.prefs.commandPanel)
+        if (categories.isEmpty()) return
         val mapLocation = IntArray(2)
         val wheelLocation = IntArray(2)
         binding.mapView.getLocationInWindow(mapLocation)
@@ -241,11 +245,34 @@ class NetHackActivity : AppCompatActivity() {
             mapLocation[0] + mapAnchor.x - wheelLocation[0],
             mapLocation[1] + mapAnchor.y - wheelLocation[1],
         )
-        binding.actionWheel.setSafeInsets(
-            binding.messageView.bottom,
-            binding.bottomActionDock.height + if (isKeyboardShow) binding.keyboardView.height else 0,
+        val insets = ViewCompat.getRootWindowInsets(binding.root)
+            ?.getInsets(WindowInsetsCompat.Type.systemBars())
+        refreshActionWheelSafeInsets(
+            left = insets?.left ?: 0,
+            top = insets?.top ?: 0,
+            right = insets?.right ?: 0,
         )
-        binding.actionWheel.show(anchor, pages, ::processKeyPress)
+        binding.actionWheel.setPanelOpacity(nethack.prefs.actionWheelOpacity)
+        binding.actionWheel.show(anchor, categories, ::processKeyPress)
+    }
+
+    private fun refreshActionWheelSafeInsets(left: Int, top: Int, right: Int) {
+        val bottomControlsTop = if (isKeyboardShow && binding.keyboardView.visibility == View.VISIBLE) {
+            binding.keyboardView.top
+        } else {
+            binding.bottomCommandBar.top
+        }
+        val safeBottom = if (bottomControlsTop > 0) {
+            binding.root.height - bottomControlsTop
+        } else {
+            binding.bottomCommandBar.height
+        }
+        binding.actionWheel.setSafeInsets(
+            left = left,
+            top = maxOf(top, binding.messageView.bottom),
+            right = right,
+            bottom = safeBottom,
+        )
     }
 
     private fun hideSystemUi() {

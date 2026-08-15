@@ -72,11 +72,10 @@
             android:paddingTop="2dp"
             android:paddingBottom="2dp"/>
 
-        <com.yywspace.anethack.keybord.BottomActionDock
-            android:id="@+id/bottom_action_dock"
+        <com.yywspace.anethack.keybord.BottomCommandBar
+            android:id="@+id/bottom_command_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="@dimen/touch_dock_height" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <com.yywspace.anethack.keybord.RadialActionWheelView

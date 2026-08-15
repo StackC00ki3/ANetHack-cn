@@ -12,7 +12,7 @@
     <color name="gray">#808080</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="touch_surface">#F21E1F24</color>
-    <color name="touch_wheel_item">#F22B2D35</color>
+    <color name="touch_wheel_item">#FF2B2D35</color>
     <color name="touch_wheel_item_border">#806D72E6</color>
     <color name="touch_wheel_scrim">#33000000</color>
     <color name="touch_wheel_connector">#CCBBBEFF</color>
@@ -20,4 +20,7 @@
     <color name="touch_text">#FFFFFFFF</color>
     <color name="touch_secondary_text">#FFB8BAC7</color>
     <color name="touch_ripple">#557C83FF</color>
+    <color name="touch_bar_edit_accent">#FF6D72E6</color>
+    <color name="touch_bar_edit_accent_soft">#336D72E6</color>
+    <color name="touch_bar_edit_chip_border">#FFD8D9E0</color>
 </resources>

@@ -111,6 +111,12 @@ class SettingsActivity : AppCompatActivity() {
                     true
                 }
             }
+            findPreference<Preference>("commandBar")?.apply {
+                setOnPreferenceClickListener { _ ->
+                    startActivity(Intent(context, CommandBarEditActivity::class.java))
+                    true
+                }
+            }
             findPreference<Preference>("iconLicenses")?.setOnPreferenceClickListener {
                 context?.let(::showIconLicenses)
                 true

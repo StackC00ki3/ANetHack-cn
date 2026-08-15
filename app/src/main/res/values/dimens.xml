@@ -4,6 +4,9 @@
     <dimen name="touch_dock_height">56dp</dimen>
     <dimen name="touch_dock_icon_padding">14dp</dimen>
     <dimen name="touch_dock_button_margin">2dp</dimen>
+    <dimen name="touch_combat_row_height">56dp</dimen>
+    <dimen name="touch_combat_icon_size">22dp</dimen>
+    <dimen name="touch_combat_label_text">10sp</dimen>
     <dimen name="touch_wheel_radius">116dp</dimen>
     <dimen name="touch_wheel_item_width">88dp</dimen>
     <dimen name="touch_wheel_item_height">72dp</dimen>
@@ -13,7 +16,8 @@
     <dimen name="touch_wheel_item_text">12sp</dimen>
     <dimen name="touch_wheel_item_key_text">10sp</dimen>
     <dimen name="touch_wheel_page_size">48dp</dimen>
-    <dimen name="touch_wheel_page_padding">12dp</dimen>
+    <dimen name="touch_wheel_page_padding">6dp</dimen>
+    <dimen name="touch_wheel_center_text">10sp</dimen>
     <dimen name="touch_wheel_connector_width">2dp</dimen>
     <dimen name="touch_wheel_anchor_radius">4dp</dimen>
 </resources>
