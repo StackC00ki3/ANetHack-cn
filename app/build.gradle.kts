@@ -65,8 +65,10 @@ android {
     applicationVariants.all {
         outputs.all {
             val ver = defaultConfig.versionName
+            val abi = (this as com.android.build.gradle.internal.api.BaseVariantOutputImpl)
+                .getFilter(com.android.build.OutputFile.ABI)
             (this as com.android.build.gradle.internal.api.BaseVariantOutputImpl).outputFileName =
-                "ANetHack-$ver.apk"
+                "ANetHack-$ver${if (abi != null) "-$abi" else ""}.apk"
         }
     }
 
@@ -83,7 +85,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             if (hasReleaseSigning) {
                 signingConfig = signingConfigs.getByName("release")
             }
@@ -91,6 +94,15 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+    }
+
+    splits {
+        abi {
+            isEnable = true
+            reset()
+            include("arm64-v8a", "armeabi-v7a")
+            isUniversalApk = true
         }
     }
     compileOptions {

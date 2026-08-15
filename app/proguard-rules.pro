@@ -19,3 +19,9 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# NetHack native callbacks: androidentry.c resolves these methods at runtime
+# via JNI GetMethodID, so R8 must not remove or rename them.
+-keep class com.yywspace.anethack.NetHack {
+    *;
+}

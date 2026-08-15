@@ -1,0 +1,2 @@
+# Shell scripts are executed by WSL/dash and must keep LF line endings.
+*.sh text eol=lf
