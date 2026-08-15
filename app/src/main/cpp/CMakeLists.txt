@@ -191,3 +191,23 @@ target_include_directories(
         ${LUA_INCLUDE} Lua)
 
 target_link_libraries(${CMAKE_PROJECT_NAME} ${TOPLUALIB} android log z)
+
+# Size optimizations for shipped builds (AGP builds release as RelWithDebInfo,
+# i.e. -O2 -g; keep Debug builds untouched for fast compile/iterations).
+if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
+    # -Oz: optimize for size; sections: let the linker drop unused code;
+    # thin LTO: cross-module dead-code elimination (also into static liblua).
+    set(NH_SIZE_FLAGS -Oz -ffunction-sections -fdata-sections -flto=thin)
+    target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE
+            ${NH_SIZE_FLAGS} -fvisibility=hidden
+            # Pure C code: no exceptions, no panicking backtraces
+            # (NOCRASHREPORT/NOPANICTRACE are set), drop .eh_frame (~300KB).
+            -fno-unwind-tables -fno-asynchronous-unwind-tables)
+    target_compile_options(lua PRIVATE ${NH_SIZE_FLAGS})
+    target_link_options(${CMAKE_PROJECT_NAME} PRIVATE
+            -flto=thin
+            "LINKER:--gc-sections"
+            "LINKER:--exclude-libs,ALL"
+            # Fold identical functions/readonly data.
+            "LINKER:--icf=all")
+endif()
