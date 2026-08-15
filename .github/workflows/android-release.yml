@@ -79,32 +79,46 @@ jobs:
       - name: Build release APK
         run: ./gradlew --no-daemon :app:assembleRelease
 
-      - name: Rename release APK
+      - name: Rename release APKs
         run: |
           set -euo pipefail
 
           mkdir -p dist
-          mapfile -t apks < <(find app/build/outputs/apk/release -maxdepth 1 -type f -name "*.apk" | sort)
-          if [ "${#apks[@]}" -ne 1 ]; then
-            printf 'Expected exactly one release APK, found %s:\n' "${#apks[@]}"
-            printf '%s\n' "${apks[@]}"
+          ver="5.0.0-a2.0"
+
+          shopt -s nullglob
+          apks=(app/build/outputs/apk/release/*.apk)
+          if [ "${#apks[@]}" -eq 0 ]; then
+            echo "::error::No release APKs found"
             exit 1
           fi
 
-          cp "${apks[0]}" dist/ANetHack-cn-5.0.0-a2.0.apk
-          test -s dist/ANetHack-cn-5.0.0-a2.0.apk
+          for apk in "${apks[@]}"; do
+            base="$(basename "${apk}" .apk)"
+            case "${base}" in
+              *-arm64-v8a)   out="ANetHack-cn-${ver}-arm64-v8a.apk" ;;
+              *-armeabi-v7a) out="ANetHack-cn-${ver}-armeabi-v7a.apk" ;;
+              *)             out="ANetHack-cn-${ver}.apk" ;;
+            esac
+            cp "${apk}" "dist/${out}"
+            test -s "dist/${out}"
+          done
 
-      - name: Verify release APK signature
+          ls -la dist
+
+      - name: Verify release APK signatures
         run: |
           set -euo pipefail
 
-          "${ANDROID_HOME}/build-tools/34.0.0/apksigner" verify --verbose --print-certs dist/ANetHack-cn-5.0.0-a2.0.apk
+          for apk in dist/*.apk; do
+            "${ANDROID_HOME}/build-tools/34.0.0/apksigner" verify --verbose --print-certs "${apk}"
+          done
 
-      - name: Upload APK artifact
+      - name: Upload APK artifacts
         uses: actions/upload-artifact@v4
         with:
           name: ANetHack-release-apk
-          path: dist/ANetHack-cn-5.0.0-a2.0.apk
+          path: dist/*.apk
           if-no-files-found: error
 
       - name: Create GitHub prerelease
@@ -115,7 +129,7 @@ jobs:
 
           tag="prerelease"
           title="Prerelease ${GITHUB_SHA::7}"
-          notes="Automated prerelease APK for ${GITHUB_REF_NAME} at ${GITHUB_SHA}."
+          notes="Automated prerelease APKs for ${GITHUB_REF_NAME} at ${GITHUB_SHA}. Most devices should install the arm64-v8a APK; use the universal APK (no ABI suffix) if unsure."
 
           git tag -f "${tag}" "${GITHUB_SHA}"
           git push -f origin "refs/tags/${tag}"
@@ -125,9 +139,9 @@ jobs:
               --title "${title}" \
               --notes "${notes}" \
               --prerelease
-            gh release upload "${tag}" dist/ANetHack-cn-5.0.0-a2.0.apk --clobber
+            gh release upload "${tag}" dist/*.apk --clobber
           else
-            gh release create "${tag}" dist/ANetHack-cn-5.0.0-a2.0.apk \
+            gh release create "${tag}" dist/*.apk \
               --title "${title}" \
               --notes "${notes}" \
               --prerelease
