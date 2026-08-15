@@ -105,8 +105,20 @@
     <!-- Preference Keyboard -->
     <string name="pref_keyboard_header">Keyboard</string>
     <string name="pref_keyboard_vibrate">Keyboard vibration</string>
-    <string name="pref_keyboard_command_panel">Edit command panel</string>
+    <string name="pref_keyboard_command_panel">Customize action wheel</string>
+    <string name="pref_keyboard_command_panel_summary">Separate actions with spaces and pages with line breaks. Use command|label for custom labels.</string>
     <string name="pref_keyboard_command_panel_default">Setting SS|Save #quit|Quit S#engrave#-nL\"Elbereth\":|Elber S20s|20s Keyboard|Abc\n#|Extend d|Drop e|Eat :|Look ,|Pick .|Rest</string>
+
+    <string name="touch_action_cancel">Cancel or escape</string>
+    <string name="touch_action_inventory">Open inventory</string>
+    <string name="touch_action_keyboard">Show or hide keyboard</string>
+    <string name="touch_action_center">Center player on map</string>
+    <string name="touch_action_settings">Open settings</string>
+    <string name="touch_action_description">%1$s, keyboard action %2$s</string>
+    <string name="touch_action_next_page">Next action page. Page %1$d of %2$d</string>
+    <string name="pref_icon_licenses">Icon licenses</string>
+    <string name="pref_icon_licenses_summary">Attribution for game-icons.net touch control icons</string>
+    <string name="icon_licenses_title">game-icons.net attribution</string>
 
     <!-- Preference Other -->
     <string name="pref_other_header">Other</string>

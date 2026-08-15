@@ -72,14 +72,17 @@
             android:paddingTop="2dp"
             android:paddingBottom="2dp"/>
 
-        <com.yywspace.anethack.keybord.BottomCommandSheet
-            android:id="@+id/base_command_panel"
+        <com.yywspace.anethack.keybord.BottomActionDock
+            android:id="@+id/bottom_action_dock"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="horizontal"
-            android:clickable="true">
-        </com.yywspace.anethack.keybord.BottomCommandSheet>
+            android:minHeight="@dimen/touch_dock_height" />
     </LinearLayout>
+
+    <com.yywspace.anethack.keybord.RadialActionWheelView
+        android:id="@+id/action_wheel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
 </FrameLayout>

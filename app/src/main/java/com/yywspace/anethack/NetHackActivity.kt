@@ -3,6 +3,7 @@ package com.yywspace.anethack
 import android.content.Intent
 import android.content.res.Configuration
 import android.graphics.Color
+import android.graphics.PointF
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,21 +12,22 @@ import android.view.animation.Animation
 import android.view.animation.Animation.AnimationListener
 import android.view.animation.TranslateAnimation
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import com.yywspace.anethack.command.NHCommand
+import androidx.activity.OnBackPressedCallback
 import com.yywspace.anethack.command.NHCommandParser
 import com.yywspace.anethack.command.NHExtendCommand
 import com.yywspace.anethack.command.NHKeyCommand
 import com.yywspace.anethack.databinding.ActivityNethackBinding
 import com.yywspace.anethack.identify.NHPriceIDialog
+import com.yywspace.anethack.keybord.TouchActionParser
 import com.yywspace.anethack.setting.SettingsActivity
 import java.io.File
 import java.io.FileFilter
 import java.io.FileInputStream
 import java.io.FileOutputStream
-import java.lang.Integer.parseInt
 
 
 class NetHackActivity : AppCompatActivity() {
@@ -44,7 +46,8 @@ class NetHackActivity : AppCompatActivity() {
         priceIDialog = NHPriceIDialog(this, nethack)
         initView()
         initKeyboard()
-        initControlPanel()
+        initTouchControls()
+        initBackNavigation()
         AssetsLoader(this).loadAssets(
             listOf("nethackdir", "logs", "conf"), false
         ) { overwrite ->
@@ -56,6 +59,7 @@ class NetHackActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        binding.actionWheel.dismiss()
         if (nethack.prefs.immersiveMode)
             hideSystemUi()
         else
@@ -65,10 +69,15 @@ class NetHackActivity : AppCompatActivity() {
         else
             binding.floatingButton.visibility = View.GONE
         binding.keyboardView.setKeyboardVibrate(nethack.prefs.keyboardVibrate)
-        initControlPanel()
+    }
+
+    override fun onPause() {
+        binding.actionWheel.dismiss()
+        super.onPause()
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
+        binding.actionWheel.dismiss()
         super.onConfigurationChanged(newConfig)
         if(isKeyboardShow) {
             binding.keyboardView.apply {
@@ -88,6 +97,18 @@ class NetHackActivity : AppCompatActivity() {
             priceIDialog.show()
         }
     }
+    private fun initBackNavigation() {
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (!binding.actionWheel.dismiss()) {
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                    isEnabled = true
+                }
+            }
+        })
+    }
+
     private fun initKeyboard() {
         binding.keyboardView.apply {
             onKeyPress = {
@@ -152,6 +173,7 @@ class NetHackActivity : AppCompatActivity() {
         if (cmd.isEmpty()) return
         when (cmd) {
             "Keyboard" -> {
+                binding.actionWheel.dismiss()
                 if (!isKeyboardShow)
                     showKeyboard()
                 else
@@ -174,6 +196,7 @@ class NetHackActivity : AppCompatActivity() {
                 binding.mapView.centerPlayerInScreen()
             }
             "Setting" -> {
+                binding.actionWheel.dismiss()
                 startActivity(Intent(this, SettingsActivity::class.java))
             }
             else -> {
@@ -188,22 +211,41 @@ class NetHackActivity : AppCompatActivity() {
         }
     }
 
-    private fun initControlPanel() {
-        // Ctrl|^C Meta|^M
-        // Setting LS|Save #quit|Quit L20s|20s Keyboard|Abc
-        nethack.prefs.commandPanel?.apply {
-            var panelDefault = ifEmpty {
-                getString(R.string.pref_keyboard_command_panel_default)
-            }
-            if (!panelDefault.contains("Setting"))
-                panelDefault = "${panelDefault}\nSetting"
-            binding.baseCommandPanel.apply {
-                initBottomCommandSheet(panelDefault)
-                onCommandPress = { cmd->
-                    processKeyPress(cmd)
-                }
-            }
+    private fun initTouchControls() {
+        binding.bottomActionDock.onCommandPress = ::processKeyPress
+        binding.mapView.onPlayerTap = ::showActionWheel
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
+            val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val params = binding.bottomActionDock.layoutParams
+            params.height = resources.getDimensionPixelSize(R.dimen.touch_dock_height) + bars.bottom
+            binding.bottomActionDock.layoutParams = params
+            binding.bottomActionDock.setPadding(0, 0, 0, bars.bottom)
+            binding.actionWheel.setSafeInsets(bars.top, binding.bottomActionDock.height)
+            insets
         }
+        ViewCompat.requestApplyInsets(binding.root)
+    }
+
+    private fun showActionWheel(mapAnchor: PointF) {
+        if (binding.dialogContainer.visibility == View.VISIBLE) return
+        val configured = nethack.prefs.commandPanel.orEmpty().ifEmpty {
+            getString(R.string.pref_keyboard_command_panel_default)
+        }
+        val pages = TouchActionParser.parsePages(configured)
+        if (pages.isEmpty()) return
+        val mapLocation = IntArray(2)
+        val wheelLocation = IntArray(2)
+        binding.mapView.getLocationInWindow(mapLocation)
+        binding.actionWheel.getLocationInWindow(wheelLocation)
+        val anchor = PointF(
+            mapLocation[0] + mapAnchor.x - wheelLocation[0],
+            mapLocation[1] + mapAnchor.y - wheelLocation[1],
+        )
+        binding.actionWheel.setSafeInsets(
+            binding.messageView.bottom,
+            binding.bottomActionDock.height + if (isKeyboardShow) binding.keyboardView.height else 0,
+        )
+        binding.actionWheel.show(anchor, pages, ::processKeyPress)
     }
 
     private fun hideSystemUi() {

@@ -798,7 +798,10 @@ void and_add_menu(winid window, const glyph_info * glyph, const union any * iden
     if(menu_attr)
         menu_attr = 1<<menu_attr;
     jstring jstr = char2Jstring(jEnv, str);
-    JNICallV(jAddMenu, window, tile, (long long )identifier->a_lptr, accelerator, groupacc, menu_attr, menu_color, jstr, preselected)
+    JNICallV(jAddMenu, window, tile, (long long )identifier->a_lptr,
+             (jchar) (unsigned char) accelerator, (jchar) (unsigned char) groupacc,
+             menu_attr, menu_color, jstr, preselected)
+    (*jEnv)->DeleteLocalRef(jEnv, jstr);
 }
 
 //____________________________________________________________________________________

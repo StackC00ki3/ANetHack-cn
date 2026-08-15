@@ -82,8 +82,15 @@
         <EditTextPreference
             app:key="commandPanel"
             app:title="@string/pref_keyboard_command_panel"
+            app:dialogMessage="@string/pref_keyboard_command_panel_summary"
             app:useSimpleSummaryProvider="true"
             app:defaultValue="@string/pref_keyboard_command_panel_default"
+            app:iconSpaceReserved="false"/>
+
+        <Preference
+            app:key="iconLicenses"
+            app:title="@string/pref_icon_licenses"
+            app:summary="@string/pref_icon_licenses_summary"
             app:iconSpaceReserved="false"/>
 
         <CheckBoxPreference

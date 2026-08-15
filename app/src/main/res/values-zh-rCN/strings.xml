@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pref_keyboard_command_panel">自定义操作轮盘</string>
+    <string name="pref_keyboard_command_panel_summary">空格分隔动作，换行分页；使用 command|标签 设置自定义名称。</string>
+    <string name="touch_action_cancel">取消或退出</string>
+    <string name="touch_action_inventory">打开物品栏</string>
+    <string name="touch_action_keyboard">显示或隐藏键盘</string>
+    <string name="touch_action_center">将玩家居中</string>
+    <string name="touch_action_settings">打开设置</string>
+    <string name="touch_action_description">%1$s，键盘动作 %2$s</string>
+    <string name="touch_action_next_page">下一页操作。第 %1$d 页，共 %2$d 页</string>
+    <string name="pref_icon_licenses">图标许可</string>
+    <string name="pref_icon_licenses_summary">触控按钮所用 game-icons.net 图标的署名信息</string>
+    <string name="icon_licenses_title">game-icons.net 图标署名</string>
+</resources>

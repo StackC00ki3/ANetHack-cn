@@ -69,6 +69,7 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
     @Volatile private var isDrawing = false
     private var drawThread: Thread? = null
     private lateinit var indicatorController:NHMapIndicatorController
+    var onPlayerTap: ((PointF) -> Unit)? = null
 
     private var mapTouchListener: NHMapTouchListener = NHMapTouchListener().apply {
         onNHMapTouchListener = object : NHMapTouchListener.OnNHMapTouchListener {
@@ -77,11 +78,16 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
             }
 
             override fun onClick(e: PointF) {
+                val point = getTileLocation(e.x, e.y)
+                if (point.x == map.curse.x && point.y == map.curse.y) {
+                    onPlayerTap?.invoke(getPlayerAnchor() ?: e)
+                    return
+                }
                 if(indicatorController.onIndicatorClick(e))
                     return
-                lastTouchTile = getTileLocation(e.x, e.y).also { point ->
+                lastTouchTile = point.also {
                     if (nh.status.runMode == NHStatus.RunMode.RUN) {
-                        nh.command.sendCommand(NHPosCommand(point.x, point.y, PosMod.TRAVEL))
+                        nh.command.sendCommand(NHPosCommand(it.x, it.y, PosMod.TRAVEL))
                         mapTranslated = false
                     }else {
                         val curseBorder = getTileBorder(map.curse.x, map.curse.y)
@@ -205,7 +211,11 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
 
     @SuppressLint("InflateParams")
     fun showPopupWindow(x:Float, y:Float) {
-        val posKeyList = listOf("Look", "Run", "Travel")
+        val posKeyList = listOf(
+            context.getString(R.string.pos_key_look),
+            context.getString(R.string.pos_key_run),
+            context.getString(R.string.pos_key_travel),
+        )
         val popupWindow = PopupWindow(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         val recyclerView = LayoutInflater.from(context).inflate(R.layout.popup_window_pos_key, null).apply {
             setBackgroundColor(Color.WHITE)
@@ -214,12 +224,12 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
                     onItemClickListener = object : NHPosKeyAdapter.OnItemClickListener {
                         override fun onItemClick(view: View, position: Int) {
                             val point = getTileLocation(x, y)
-                            when(posKeyList[position]) {
-                                "Look" -> {
+                            when(position) {
+                                0 -> {
                                     // get tile info
                                     nh.command.sendCommand(NHPosCommand(point.x, point.y, PosMod.LOOK))
                                 }
-                                "Run" -> {
+                                1 -> {
                                     val tileBorder = getTileBorder(map.curse.x, map.curse.y)
                                     val direction = getMoveDirection(
                                         PointF(tileBorder.centerX(), tileBorder.centerY()),
@@ -227,7 +237,7 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
                                     )
                                     playerMove(direction, true)
                                 }
-                                "Travel" -> {
+                                2 -> {
                                     // whether travel to tile
                                     nh.command.sendCommand(
                                         NHPosCommand(point.x, point.y, PosMod.TRAVEL)
@@ -513,6 +523,12 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
             floor(tileWidth * (x + 1)  + mapBorder.left),
             floor(tileHeight * (y +1 )  + mapBorder.top),
         )
+    }
+
+    fun getPlayerAnchor(): PointF? {
+        if (!mapInit || map.curse.x < 0 || map.curse.y < 0) return null
+        val border = getTileBorder(map.curse.x, map.curse.y)
+        return PointF(border.centerX(), border.centerY())
     }
 
     // 获取界面TileLocation

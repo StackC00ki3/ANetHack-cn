@@ -12,61 +12,29 @@ val updateNetHackResources by tasks.registering(Exec::class) {
 
     val nethackDir = layout.projectDirectory.dir("src/main/cpp/NetHack")
     val luaSourceDir = layout.projectDirectory.dir("src/main/cpp/Lua/lua")
-    val luaSourcePath = luaSourceDir.asFile.absolutePath.replace('\\', '/')
     val cppDir = layout.projectDirectory.dir("src/main/cpp")
     val assetsDir = layout.projectDirectory.dir("src/main/assets")
+    val resourceScript = layout.projectDirectory.file("scripts/update-nethack-resources.sh")
+    fun unixPath(path: String) = path.replace('\\', '/')
 
-    workingDir = nethackDir.asFile
-    commandLine(
-        "sh",
-        "-c",
-        """
-        set -eu
-
-        lua_src="$luaSourcePath"
-        lua_compat_dir="lib/lua-5.4.8/src"
-        if [ ! -f "${'$'}lua_src/lua.h" ]; then
-            echo "Lua submodule is missing: ${'$'}lua_src/lua.h" >&2
-            exit 1
-        fi
-        if [ ! -f "${'$'}lua_compat_dir/lua.h" ]; then
-            mkdir -p lib/lua-5.4.8
-            rm -rf "${'$'}lua_compat_dir"
-            if ! ln -s "${'$'}lua_src" "${'$'}lua_compat_dir" 2>/dev/null; then
-                mkdir -p "${'$'}lua_compat_dir"
-                cp -R "${'$'}lua_src"/. "${'$'}lua_compat_dir"/
-            fi
-        fi
-
-        (cd sys/unix && ./setup.sh hints/linux.500)
-
-        rm -f util/makedefs util/makedefs.o util/dlb util/dlb_main.o src/dlb.o dat/options dat/nhdat
-
-        make -C dat all options
-        make dlb
-        if [ ! -s dat/nhdat ]; then
-            echo "NetHack dat/nhdat was not generated." >&2
-            find dat util -maxdepth 1 \( -name nhdat -o -name dlb \) -ls >&2
-            exit 1
-        fi
-        make -C util ../src/tile.c
-        make -C dat nhtiles.bmp
-
-        mkdir -p "${assetsDir.asFile.absolutePath}/nethackdir" "${assetsDir.asFile.absolutePath}/tiles"
-
-        copy_if_changed() {
-            src="${'$'}1"
-            dst="${'$'}2"
-            if [ ! -f "${'$'}dst" ] || ! cmp -s "${'$'}src" "${'$'}dst"; then
-                cp "${'$'}src" "${'$'}dst"
-            fi
-        }
-
-        copy_if_changed dat/nhdat "${assetsDir.asFile.absolutePath}/nethackdir/nhdat"
-        copy_if_changed src/tile.c "${cppDir.asFile.absolutePath}/tile.c"
-        copy_if_changed dat/nhtiles.bmp "${assetsDir.asFile.absolutePath}/tiles/default_tiles_16.bmp"
-        """.trimIndent()
+    workingDir = layout.projectDirectory.asFile
+    val scriptArgs = listOf(
+        unixPath(resourceScript.asFile.absolutePath),
+        unixPath(nethackDir.asFile.absolutePath),
+        unixPath(luaSourceDir.asFile.absolutePath),
+        unixPath(cppDir.asFile.absolutePath),
+        unixPath(assetsDir.asFile.absolutePath)
     )
+    if (System.getProperty("os.name").startsWith("Windows", ignoreCase = true)) {
+        fun wslPath(path: String): String {
+            val match = Regex("^([A-Za-z]):/(.*)$").matchEntire(path)
+            return if (match == null) path else
+                "/mnt/${match.groupValues[1].lowercase()}/${match.groupValues[2]}"
+        }
+        commandLine(listOf("wsl.exe", "--exec", "sh") + scriptArgs.map(::wslPath))
+    } else {
+        commandLine(listOf("sh") + scriptArgs)
+    }
 }
 
 android {

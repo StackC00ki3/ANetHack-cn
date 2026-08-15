@@ -1,0 +1,72 @@
+game-icons.net touch control icons
+==================================
+
+Source repository: https://github.com/game-icons/icons
+Project website: https://game-icons.net/
+License: Creative Commons Attribution 3.0 (CC BY 3.0)
+License URL: https://creativecommons.org/licenses/by/3.0/
+Imported: 2026-08-13
+
+The upstream license requests the notice "Icons made by {author}" in derivative works.
+All listed icons were converted from SVG to Android VectorDrawable XML. The black
+background path was removed, the white foreground path was retained, and Android
+runtime tinting is applied. No other artistic changes were made.
+
+Icons made by Delapouite (http://delapouite.com):
+- ic_touch_inventory.xml: Backpack
+  https://game-icons.net/1x1/delapouite/backpack.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/backpack.svg
+- ic_touch_keyboard.xml: Keyboard
+  https://game-icons.net/1x1/delapouite/keyboard.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/keyboard.svg
+- ic_touch_center.xml: Crosshair
+  https://game-icons.net/1x1/delapouite/crosshair.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/crosshair.svg
+- ic_touch_save.xml: Save
+  https://game-icons.net/1x1/delapouite/save.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/save.svg
+- ic_touch_quit.xml: Exit door
+  https://game-icons.net/1x1/delapouite/exit-door.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/exit-door.svg
+- ic_touch_eat.xml: Eating
+  https://game-icons.net/1x1/delapouite/eating.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/eating.svg
+- ic_touch_look.xml: Look at
+  https://game-icons.net/1x1/delapouite/look-at.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/look-at.svg
+- ic_touch_next.xml: Next button
+  https://game-icons.net/1x1/delapouite/next-button.html
+  Source: https://github.com/game-icons/icons/blob/master/delapouite/next-button.svg
+
+Icons made by Lorc (http://lorcblog.blogspot.com):
+- ic_touch_settings.xml: Gears
+  https://game-icons.net/1x1/lorc/gears.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/gears.svg
+- ic_touch_engrave.xml: Quill ink
+  https://game-icons.net/1x1/lorc/quill-ink.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/quill-ink.svg
+- ic_touch_wait.xml: Hourglass
+  https://game-icons.net/1x1/lorc/hourglass.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/hourglass.svg
+- ic_touch_drop.xml: Drop
+  https://game-icons.net/1x1/lorc/drop.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/drop.svg
+- ic_touch_pickup.xml: Grab
+  https://game-icons.net/1x1/lorc/grab.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/grab.svg
+- ic_touch_fallback.xml: Cycle
+  https://game-icons.net/1x1/lorc/cycle.html
+  Source: https://github.com/game-icons/icons/blob/master/lorc/cycle.svg
+
+Icons made by Sbed (http://opengameart.org/content/95-game-icons):
+- ic_touch_cancel.xml: Cancel
+  https://game-icons.net/1x1/sbed/cancel.html
+  Source: https://github.com/game-icons/icons/blob/master/sbed/cancel.svg
+
+Icons made by Skoll:
+- ic_touch_extended.xml: Console controller
+  https://game-icons.net/1x1/skoll/console-controller.html
+  Source: https://github.com/game-icons/icons/blob/master/skoll/console-controller.svg
+
+Upstream license text is available at:
+https://github.com/game-icons/icons/blob/master/license.txt
