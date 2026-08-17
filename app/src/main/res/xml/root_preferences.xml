@@ -93,6 +93,13 @@
             app:summary="@string/pref_command_bar_summary"
             app:iconSpaceReserved="false"/>
 
+        <CheckBoxPreference
+            app:key="actionWheelEnabled"
+            app:title="@string/pref_action_wheel_enabled"
+            app:summary="@string/pref_action_wheel_enabled_summary"
+            app:iconSpaceReserved="false"
+            app:defaultValue="false"/>
+
         <SeekBarPreference
             app:key="actionWheelOpacity"
             app:title="@string/pref_action_wheel_opacity"

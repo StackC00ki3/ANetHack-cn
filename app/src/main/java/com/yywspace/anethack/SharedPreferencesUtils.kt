@@ -46,6 +46,7 @@ class SharedPreferencesUtils(val context: Context) {
     var internalSound by SharedPreferenceDelegates.boolean(true)
     var commandPanel by SharedPreferenceDelegates.string(context.getString(R.string.pref_keyboard_command_panel_default))
     var commandBar by SharedPreferenceDelegates.string(TouchCommandBar.DEFAULT_CONFIG)
+    var actionWheelEnabled by SharedPreferenceDelegates.boolean(false)
     var actionWheelOpacity by SharedPreferenceDelegates.int(95)
 
     fun getInputPrompts():List<String> {

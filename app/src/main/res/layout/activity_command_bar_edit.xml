@@ -47,6 +47,32 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
+        android:padding="12dp"
+        android:paddingBottom="0dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/command_bar_export"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/cmd_bar_export_code" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/command_bar_import"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:text="@string/cmd_bar_import_code" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
         android:padding="12dp">
 
         <com.google.android.material.button.MaterialButton

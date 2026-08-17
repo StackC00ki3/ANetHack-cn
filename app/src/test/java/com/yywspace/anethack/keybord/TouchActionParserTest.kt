@@ -125,6 +125,40 @@ class TouchActionParserTest {
     }
 
     @Test
+    fun parsesAndSerializesDisabledRows() {
+        val rows = TouchCommandBar.parseRows("! a f\n@6 z\n! @4 w W")
+
+        assertEquals(3, rows.size)
+        assertFalse(rows[0].enabled)
+        assertEquals(TouchCommandBar.DEFAULT_VISIBLE_LIMIT, rows[0].visibleLimit)
+        assertTrue(rows[1].enabled)
+        assertEquals(6, rows[1].visibleLimit)
+        assertFalse(rows[2].enabled)
+        assertEquals(4, rows[2].visibleLimit)
+        assertEquals("! a f\n@6 z\n! @4 w W", TouchCommandBar.serialize(rows))
+        assertEquals(rows, TouchCommandBar.parseRows(TouchCommandBar.serialize(rows)))
+    }
+
+    @Test
+    fun legacyRowsWithoutDisabledMarkerStayEnabled() {
+        val rows = TouchCommandBar.parseRows(TouchCommandBar.DEFAULT_CONFIG)
+
+        assertTrue(rows.all { it.enabled })
+        assertFalse(TouchCommandBar.serialize(rows).contains(TouchCommandBar.DISABLED_TOKEN))
+    }
+
+    @Test
+    fun togglesRowEnabled() {
+        val rows = TouchCommandBar.parseRows("a f\nz")
+
+        val toggled = TouchCommandBar.setRowEnabled(rows, 1, false)
+        assertTrue(toggled[0].enabled)
+        assertFalse(toggled[1].enabled)
+        assertEquals(rows, TouchCommandBar.setRowEnabled(toggled, 1, true))
+        assertEquals(rows, TouchCommandBar.setRowEnabled(rows, 9, false))
+    }
+
+    @Test
     fun migratesLegacyConfigByPrependingDockRow() {
         assertEquals(TouchCommandBar.DEFAULT_CONFIG, TouchCommandBar.migrateLegacy(null))
         assertEquals(TouchCommandBar.DEFAULT_CONFIG, TouchCommandBar.migrateLegacy("  "))

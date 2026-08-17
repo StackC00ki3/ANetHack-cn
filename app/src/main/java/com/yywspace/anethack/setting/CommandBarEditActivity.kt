@@ -1,6 +1,8 @@
 package com.yywspace.anethack.setting
 
 import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.text.TextUtils
@@ -22,11 +24,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import com.yywspace.anethack.R
 import com.yywspace.anethack.SharedPreferencesUtils
 import com.yywspace.anethack.databinding.ActivityCommandBarEditBinding
+import com.yywspace.anethack.keybord.CommandBarCode
 import com.yywspace.anethack.keybord.TouchAction
 import com.yywspace.anethack.keybord.TouchActionCatalog
 import com.yywspace.anethack.keybord.TouchActionIcons
@@ -67,6 +71,8 @@ class CommandBarEditActivity : AppCompatActivity() {
             mutate(TouchCommandBar::addRow)
         }
         binding.commandBarReset.setOnClickListener { confirmReset() }
+        binding.commandBarExport.setOnClickListener { exportCode() }
+        binding.commandBarImport.setOnClickListener { importCode() }
         initDragAndDrop()
         renderRows()
     }
@@ -119,6 +125,13 @@ class CommandBarEditActivity : AppCompatActivity() {
             },
             LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f),
         )
+        header.addView(SwitchCompat(this).apply {
+            contentDescription = getString(R.string.cmd_bar_row_enabled)
+            isChecked = row.enabled
+            setOnCheckedChangeListener { _, isChecked ->
+                mutate { TouchCommandBar.setRowEnabled(it, rowIndex, isChecked) }
+            }
+        })
         header.addView(TextView(this).apply {
             text = getString(R.string.cmd_bar_visible_limit)
             textSize = 12f
@@ -175,6 +188,8 @@ class CommandBarEditActivity : AppCompatActivity() {
             onRowDragEvent(event, rowIndex, chips, chipScroll.scrollX)
         }
         rowView.addView(chipScroll)
+        // Disabled rows stay editable but are dimmed and hidden at runtime.
+        rowView.alpha = if (row.enabled) 1f else 0.45f
         rowView.layoutParams = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -348,6 +363,65 @@ class CommandBarEditActivity : AppCompatActivity() {
             .setMessage(R.string.cmd_bar_reset_confirm)
             .setPositiveButton(R.string.dialog_confirm) { _, _ ->
                 mutate { TouchCommandBar.parseRows(TouchCommandBar.DEFAULT_CONFIG) }
+            }
+            .setNegativeButton(R.string.dialog_cancel, null)
+            .show()
+    }
+
+    private fun exportCode() {
+        val code = CommandBarCode.encode(TouchCommandBar.serialize(rows))
+        val codeView = TextView(this).apply {
+            text = code
+            textSize = 13f
+            setTextIsSelectable(true)
+            setPadding(dp(16), dp(12), dp(16), dp(4))
+        }
+        AlertDialog.Builder(this)
+            .setTitle(R.string.cmd_bar_export_code)
+            .setView(ScrollView(this).apply { addView(codeView) })
+            .setPositiveButton(R.string.cmd_bar_code_copy) { _, _ ->
+                val clipboard =
+                    getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                clipboard.setPrimaryClip(ClipData.newPlainText("nethack_command_bar", code))
+                toast(getString(R.string.cmd_bar_code_copied))
+            }
+            .setNegativeButton(R.string.dialog_cancel, null)
+            .show()
+    }
+
+    private fun importCode() {
+        val input = EditText(this).apply {
+            hint = getString(R.string.cmd_bar_import_hint)
+            setPadding(dp(16), dp(8), dp(16), dp(8))
+        }
+        val dialog = AlertDialog.Builder(this)
+            .setTitle(R.string.cmd_bar_import_code)
+            .setView(input)
+            .setPositiveButton(R.string.dialog_confirm, null)
+            .setNegativeButton(R.string.dialog_cancel, null)
+            .create()
+        dialog.setOnShowListener {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                when (val result = CommandBarCode.decode(input.text.toString())) {
+                    is CommandBarCode.DecodeResult.Ok -> {
+                        dialog.dismiss()
+                        confirmImport(result.config)
+                    }
+                    is CommandBarCode.DecodeResult.TooNew ->
+                        toast(getString(R.string.cmd_bar_code_too_new, result.version))
+                    CommandBarCode.DecodeResult.Invalid ->
+                        toast(getString(R.string.cmd_bar_code_invalid))
+                }
+            }
+        }
+        dialog.show()
+    }
+
+    private fun confirmImport(config: String) {
+        AlertDialog.Builder(this)
+            .setMessage(R.string.cmd_bar_import_confirm)
+            .setPositiveButton(R.string.dialog_confirm) { _, _ ->
+                mutate { TouchCommandBar.parseRows(config) }
             }
             .setNegativeButton(R.string.dialog_cancel, null)
             .show()

@@ -11,11 +11,13 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.Animation.AnimationListener
 import android.view.animation.TranslateAnimation
+import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.updateLayoutParams
 import androidx.activity.OnBackPressedCallback
 import com.yywspace.anethack.command.NHCommandParser
 import com.yywspace.anethack.command.NHExtendCommand
@@ -37,6 +39,7 @@ class NetHackActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNethackBinding
     private lateinit var priceIDialog: NHPriceIDialog
     private var isKeyboardShow = false
+    private var navBarInset = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -179,11 +182,11 @@ class NetHackActivity : AppCompatActivity() {
         when (cmd) {
             "Keyboard" -> {
                 binding.actionWheel.dismiss()
-                if (!isKeyboardShow)
+                isKeyboardShow = !isKeyboardShow
+                if (isKeyboardShow)
                     showKeyboard()
                 else
                     hideKeyboard()
-                isKeyboardShow = !isKeyboardShow
             }
             "Repeat" -> {
                 Thread {
@@ -222,7 +225,9 @@ class NetHackActivity : AppCompatActivity() {
         binding.mapView.onPlayerTap = ::showActionWheel
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
             val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            navBarInset = bars.bottom
             binding.bottomCommandBar.setPadding(bars.left, 0, bars.right, bars.bottom)
+            updateKeyboardMargin()
             binding.root.post { refreshActionWheelSafeInsets(bars.left, bars.top, bars.right) }
             insets
         }
@@ -230,10 +235,26 @@ class NetHackActivity : AppCompatActivity() {
     }
 
     private fun refreshCommandBar() {
-        binding.bottomCommandBar.setActions(TouchCommandBar.parseRows(nethack.prefs.commandBar))
+        val rows = TouchCommandBar.parseRows(nethack.prefs.commandBar).filter { it.enabled }
+        binding.bottomCommandBar.setActions(rows)
+        updateKeyboardMargin()
+    }
+
+    /**
+     * The keyboard is an overlay floating above the bottommost command bar
+     * row: it slides up over the other rows, which stay rendered underneath,
+     * and slides back down to reveal them — the bar itself never changes.
+     */
+    private fun updateKeyboardMargin() {
+        val rowHeight = resources.getDimensionPixelSize(R.dimen.touch_combat_row_height)
+        val hasRows = binding.bottomCommandBar.visibility == View.VISIBLE
+        binding.keyboardView.updateLayoutParams<FrameLayout.LayoutParams> {
+            bottomMargin = navBarInset + if (hasRows) rowHeight else 0
+        }
     }
 
     private fun showActionWheel(mapAnchor: PointF) {
+        if (!nethack.prefs.actionWheelEnabled) return
         if (binding.dialogContainer.visibility == View.VISIBLE) return
         val categories = TouchActionCatalog.build(nethack.prefs.commandPanel)
         if (categories.isEmpty()) return

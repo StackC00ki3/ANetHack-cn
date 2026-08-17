@@ -23,7 +23,18 @@
     <string name="cmd_bar_command_required">命令不能为空</string>
     <string name="cmd_bar_max_rows">最多 %1$d 行</string>
     <string name="cmd_bar_max_buttons">每行最多 %1$d 个按钮</string>
+    <string name="cmd_bar_row_enabled">启用本行</string>
+    <string name="cmd_bar_export_code">生成配置码</string>
+    <string name="cmd_bar_import_code">导入配置码</string>
+    <string name="cmd_bar_import_hint">在此粘贴配置码</string>
+    <string name="cmd_bar_code_copy">复制</string>
+    <string name="cmd_bar_code_copied">配置码已复制到剪贴板</string>
+    <string name="cmd_bar_code_invalid">无效的配置码</string>
+    <string name="cmd_bar_code_too_new">配置码需要更新版本的应用（v%1$d）</string>
+    <string name="cmd_bar_import_confirm">导入并覆盖当前底边栏布局？</string>
     <string name="pref_keyboard_command_panel_summary">在操作轮盘中增加“自定义”分类。空格分隔动作，换行分页；使用 command|标签 设置自定义名称。按键：^p 表示 Ctrl+P，M-p 表示 Alt+P（前缀 M 仅大写，字母区分大小写），esc 表示 Esc；其余字符按顺序依次执行，可混用 ^x、M-x 键位，如 10s^p。</string>
+    <string name="pref_action_wheel_enabled">动作轮盘</string>
+    <string name="pref_action_wheel_enabled_summary">点击地图上角色所在位置弹出径向动作轮盘。</string>
     <string name="pref_action_wheel_opacity">轮盘面板不透明度</string>
     <string name="pref_action_wheel_opacity_summary">数值越低，轮盘面板越透明；图标和文字始终保持清晰。</string>
 

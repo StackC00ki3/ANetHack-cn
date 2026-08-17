@@ -128,8 +128,19 @@
     <string name="cmd_bar_command_required">Command must not be empty</string>
     <string name="cmd_bar_max_rows">At most %1$d rows</string>
     <string name="cmd_bar_max_buttons">At most %1$d buttons per row</string>
+    <string name="cmd_bar_row_enabled">Row enabled</string>
+    <string name="cmd_bar_export_code">Export code</string>
+    <string name="cmd_bar_import_code">Import code</string>
+    <string name="cmd_bar_import_hint">Paste the config code here</string>
+    <string name="cmd_bar_code_copy">Copy</string>
+    <string name="cmd_bar_code_copied">Config code copied to clipboard</string>
+    <string name="cmd_bar_code_invalid">Invalid config code</string>
+    <string name="cmd_bar_code_too_new">Config code requires a newer app version (v%1$d)</string>
+    <string name="cmd_bar_import_confirm">Import and overwrite the current bottom bar layout?</string>
     <string name="pref_keyboard_command_panel_summary">Adds a Custom category to the action wheel. Separate actions with spaces and pages with line breaks. Use command|label for custom labels. Keys: ^p = Ctrl-P, M-p = Alt-P (uppercase M only, case matters), esc = Escape; other characters run as a key sequence in order and may mix in ^x/M-x keys, e.g. 10s^p.</string>
     <string name="pref_keyboard_command_panel_default"></string>
+    <string name="pref_action_wheel_enabled">Action wheel</string>
+    <string name="pref_action_wheel_enabled_summary">Tap your character on the map to open the radial action wheel.</string>
     <string name="pref_action_wheel_opacity">Action wheel panel opacity</string>
     <string name="pref_action_wheel_opacity_summary">Lower values make the wheel panels more transparent while keeping icons and text clear.</string>
 

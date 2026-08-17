@@ -643,10 +643,13 @@ object TouchActionIcons {
 /**
  * One row of the bottom command bar. [visibleLimit] caps how many buttons are
  * visible at once; the rest are revealed by panning the row horizontally.
+ * [enabled] rows are rendered in the game; disabled rows stay in the config
+ * (shown dimmed in the editor) but are hidden at runtime.
  */
 data class TouchCommandRow(
     val visibleLimit: Int = TouchCommandBar.DEFAULT_VISIBLE_LIMIT,
     val actions: List<TouchAction> = emptyList(),
+    val enabled: Boolean = true,
 ) {
     val visibleCount: Int
         get() = minOf(actions.size, visibleLimit)
@@ -655,23 +658,31 @@ data class TouchCommandRow(
 /**
  * Serializable model of the customizable bottom command bar. Rows are ordered
  * bottom-up: the first config line is the bottommost row (by default the
- * former system dock). Each line is `[ @limit ] button button ...` where a
- * button is `command`, `command|label` or `command|label|iconKey`.
+ * former system dock). Each line is `[ ! ] [ @limit ] button button ...` where
+ * a leading `!` marks the row as disabled (kept in config, hidden at runtime)
+ * and a button is `command`, `command|label` or `command|label|iconKey`.
  */
 object TouchCommandBar {
     const val MAX_ROWS = 4
     const val MAX_BUTTONS_PER_ROW = 16
     const val DEFAULT_VISIBLE_LIMIT = 8
     const val MAX_VISIBLE_LIMIT = 12
+    const val DISABLED_TOKEN = "!"
     const val DOCK_CONFIG = "27 i Keyboard Center # . , 10s ^P ^X Setting"
-    const val DEFAULT_CONFIG = "$DOCK_CONFIG\nZ Q f t ^a z ^d E-nElbereth x M-m\na q e r p d ; M-l c\nw W T P R E M-o M-p M-e"
+    const val DEFAULT_CONFIG = "$DOCK_CONFIG\nZ Q f t ^a z ^d S#engrave#-nL\"Elbereth\":|Elber x M-m\na q e r p d ; M-l c\nw W T P R E M-o M-p M-e"
 
     fun parseRows(config: String?): List<TouchCommandRow> {
         val rows = mutableListOf<TouchCommandRow>()
         var customIndex = 0
         config.orEmpty().lineSequence().forEach { line ->
-            val tokens = line.trim().split(Regex("\\s+")).filter { it.isNotEmpty() }
+            var tokens = line.trim().split(Regex("\\s+")).filter { it.isNotEmpty() }
             if (tokens.isEmpty()) return@forEach
+            var enabled = true
+            if (tokens.first() == DISABLED_TOKEN) {
+                enabled = false
+                tokens = tokens.drop(1)
+                if (tokens.isEmpty()) return@forEach
+            }
             var limit = DEFAULT_VISIBLE_LIMIT
             var buttonTokens = tokens
             TouchActionParser.LIMIT_TOKEN.matchEntire(tokens.first())?.let { match ->
@@ -681,7 +692,7 @@ object TouchCommandBar {
             val actions = buttonTokens
                 .mapNotNull { value -> TouchActionParser.parseAction(value, customIndex++) }
                 .take(MAX_BUTTONS_PER_ROW)
-            if (actions.isNotEmpty()) rows.add(TouchCommandRow(limit, actions))
+            if (actions.isNotEmpty()) rows.add(TouchCommandRow(limit, actions, enabled))
         }
         return rows.take(MAX_ROWS)
     }
@@ -689,8 +700,10 @@ object TouchCommandBar {
     fun serialize(rows: List<TouchCommandRow>): String =
         rows.filter { it.actions.isNotEmpty() }
             .joinToString("\n") { row ->
-                val prefix =
-                    if (row.visibleLimit != DEFAULT_VISIBLE_LIMIT) "@${row.visibleLimit} " else ""
+                val prefix = buildString {
+                    if (!row.enabled) append(DISABLED_TOKEN).append(" ")
+                    if (row.visibleLimit != DEFAULT_VISIBLE_LIMIT) append("@${row.visibleLimit} ")
+                }
                 prefix + row.actions.joinToString(" ", transform = ::serializeAction)
             }
 
@@ -800,6 +813,15 @@ object TouchCommandBar {
     ): List<TouchCommandRow> =
         rows.mapIndexed { index, row ->
             if (index == rowIndex) row.copy(visibleLimit = clampVisibleLimit(limit)) else row
+        }
+
+    fun setRowEnabled(
+        rows: List<TouchCommandRow>,
+        rowIndex: Int,
+        enabled: Boolean,
+    ): List<TouchCommandRow> =
+        rows.mapIndexed { index, row ->
+            if (index == rowIndex) row.copy(enabled = enabled) else row
         }
 
     private fun serializeAction(action: TouchAction): String {

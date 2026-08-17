@@ -64,19 +64,23 @@
                 app:fabSize="mini" />
         </FrameLayout>
 
-        <com.yywspace.anethack.keybord.KeyboardView
-            android:id="@+id/keyboard_view"
-            android:background="@color/white"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"/>
-
         <com.yywspace.anethack.keybord.BottomCommandBar
             android:id="@+id/bottom_command_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
+
+    <!-- Overlay keyboard: floats above the dock row, occluding the other
+         command bar rows without relayout; marginBottom is set in code. -->
+    <com.yywspace.anethack.keybord.KeyboardView
+        android:id="@+id/keyboard_view"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:clickable="true"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"/>
 
     <com.yywspace.anethack.keybord.RadialActionWheelView
         android:id="@+id/action_wheel"
