@@ -65,10 +65,11 @@ android {
     applicationVariants.all {
         outputs.all {
             val ver = defaultConfig.versionName
+            // ABI filter name inlined: OutputFile/VariantOutput are deprecated and
+            // the new Variant API offers no APK renaming hook, so keep the impl cast.
             val abi = (this as com.android.build.gradle.internal.api.BaseVariantOutputImpl)
-                .getFilter(com.android.build.OutputFile.ABI)
-            (this as com.android.build.gradle.internal.api.BaseVariantOutputImpl).outputFileName =
-                "ANetHack-$ver${if (abi != null) "-$abi" else ""}.apk"
+                .getFilter("ABI")
+            outputFileName = "ANetHack-$ver${if (abi != null) "-$abi" else ""}.apk"
         }
     }
 
@@ -120,6 +121,11 @@ android {
     }
     buildFeatures {
         viewBinding = true
+    }
+    packaging {
+        jniLibs {
+            useLegacyPackaging = true
+        }
     }
 }
 
