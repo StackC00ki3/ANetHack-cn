@@ -1,0 +1,127 @@
+name: Android Release (Official)
+
+# 正式版本发布：推送 v* 标签（如 v3.7.0.a2.0）时触发，创建正式的 GitHub Release。
+# 也可在 Actions 页面手动运行（此时以当前分支名作为标签）。
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: android-official-release
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build and Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Checkout submodules
+        run: |
+          set -euo pipefail
+
+          git submodule sync --recursive
+          git submodule update --init --recursive
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: platforms;android-34 build-tools;34.0.0 cmake;3.22.1 ndk;25.1.8937393
+
+      - name: Disable local proxy settings on CI
+        run: sed -i '/^systemProp\..*proxy/d' gradle.properties
+
+      - name: Make Gradle wrapper executable
+        run: chmod +x ./gradlew
+
+      - name: Prepare release signing
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+
+          for name in ANDROID_KEYSTORE_BASE64 ANDROID_KEYSTORE_PASSWORD ANDROID_KEY_ALIAS ANDROID_KEY_PASSWORD; do
+            if [ -z "${!name:-}" ]; then
+              echo "::error::Missing required GitHub secret: ${name}"
+              exit 1
+            fi
+          done
+
+          keystore_file="${RUNNER_TEMP}/anethack-release.jks"
+          printf '%s' "${ANDROID_KEYSTORE_BASE64}" | base64 --decode > "${keystore_file}"
+          test -s "${keystore_file}"
+
+          {
+            echo "ANDROID_KEYSTORE_FILE=${keystore_file}"
+            echo "ANDROID_KEYSTORE_PASSWORD=${ANDROID_KEYSTORE_PASSWORD}"
+            echo "ANDROID_KEY_ALIAS=${ANDROID_KEY_ALIAS}"
+            echo "ANDROID_KEY_PASSWORD=${ANDROID_KEY_PASSWORD}"
+          } >> "${GITHUB_ENV}"
+
+      - name: Build release APK
+        run: ./gradlew --no-daemon :app:assembleRelease
+
+      - name: Verify release APK signatures
+        run: |
+          set -euo pipefail
+
+          shopt -s nullglob
+          apks=(app/build/outputs/apk/release/*.apk)
+          if [ "${#apks[@]}" -eq 0 ]; then
+            echo "::error::No release APKs found"
+            exit 1
+          fi
+
+          for apk in "${apks[@]}"; do
+            "${ANDROID_HOME}/build-tools/34.0.0/apksigner" verify --verbose --print-certs "${apk}"
+          done
+
+      - name: Upload APK artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ANetHack-release-apk-official
+          path: app/build/outputs/apk/release/*.apk
+          if-no-files-found: error
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+
+          tag="${GITHUB_REF_NAME}"
+          title="ANetHack-cn ${tag}"
+          notes="正式版本 ${tag}。大多数设备请安装 arm64-v8a 包；不确定时使用无 ABI 后缀的通用包。"
+
+          if gh release view "${tag}" >/dev/null 2>&1; then
+            gh release edit "${tag}" \
+              --title "${title}" \
+              --notes "${notes}" \
+              --prerelease=false --latest
+            gh release upload "${tag}" app/build/outputs/apk/release/*.apk --clobber
+          else
+            gh release create "${tag}" app/build/outputs/apk/release/*.apk \
+              --title "${title}" \
+              --notes "${notes}" \
+              --latest
+          fi
