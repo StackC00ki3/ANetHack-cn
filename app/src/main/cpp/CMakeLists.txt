@@ -122,6 +122,7 @@ set(NETHACK_SRC
         "NetHack/src/rect.c"
         "NetHack/src/region.c"
         "NetHack/src/restore.c"
+        "NetHack/src/revision.c"
         "NetHack/src/rip.c"
         "NetHack/src/rnd.c"
         "NetHack/src/role.c"
