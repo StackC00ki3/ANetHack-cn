@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.22.1)
 
-project(lua VERSION 5.4.8)
+project(lua VERSION 5.5.1)
 
 if(CMAKE_BUILD_TYPE)
   message("Build type: ${CMAKE_BUILD_TYPE}.")
