@@ -9,13 +9,19 @@
 enum special_tiles {
     TILE_CORR = 1294,
     TILE_STONE = 1272,
-    TILE_UNEXPLORED = 1469
+    TILE_UNEXPLORED = 1469,
+    TILE_DELIMITER = 2304,
+    TILE_PETMARK = 2305,
+    TILE_PILEMARK = 2306
 };
 
-int total_tiles_used = 2303,
+int total_tiles_used = 2307,
     Tile_corr = TILE_CORR,
     Tile_stone = TILE_STONE,
     Tile_unexplored = TILE_UNEXPLORED,
+    Tile_delimiter = TILE_DELIMITER,
+    Tile_petmark = TILE_PETMARK,
+    Tile_pilemark = TILE_PILEMARK,
     maxmontile = 788,
     maxobjtile = 1271,
     maxothtile = 1514;
