@@ -1,6 +1,7 @@
 [submodule "app/src/main/cpp/NetHack"]
 	path = app/src/main/cpp/NetHack
 	url = https://github.com/StackC00ki3/Nethack-cn.git
+	ignore = untracked
 [submodule "app/src/main/cpp/Lua/lua"]
 	path = app/src/main/cpp/Lua/lua
 	url = https://github.com/lua/lua.git
