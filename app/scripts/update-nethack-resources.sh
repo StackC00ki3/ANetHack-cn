@@ -27,7 +27,15 @@ if [ ! -f "$lua_compat_dir/lua.h" ]; then
     fi
 fi
 
-(cd sys/unix && ./setup.sh hints/linux.500)
+ver_major=$(sed -n 's/^#define VERSION_MAJOR \([0-9]*\)$/\1/p' include/patchlevel.h)
+ver_minor=$(sed -n 's/^#define VERSION_MINOR \([0-9]*\)$/\1/p' include/patchlevel.h)
+ver_patch=$(sed -n 's/^#define PATCHLEVEL \([0-9]*\)$/\1/p' include/patchlevel.h)
+hints_file="hints/linux.$ver_major$ver_minor$ver_patch"
+if [ ! -f "sys/unix/$hints_file" ]; then
+    echo "Cannot find hints file sys/unix/$hints_file" >&2
+    exit 1
+fi
+(cd sys/unix && ./setup.sh "$hints_file")
 
 rm -f util/makedefs util/makedefs.o util/dlb util/dlb_main.o src/dlb.o dat/options dat/nhdat
 
