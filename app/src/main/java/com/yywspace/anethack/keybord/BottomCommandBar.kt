@@ -12,6 +12,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.TooltipCompat
 import androidx.core.content.ContextCompat
+import androidx.core.widget.TextViewCompat
 import com.yywspace.anethack.R
 
 
@@ -112,9 +113,14 @@ class BottomCommandBar @JvmOverloads constructor(
                 gravity = Gravity.CENTER
                 maxLines = 1
                 setTextColor(ContextCompat.getColor(context, R.color.touch_text))
-                setTextSize(
+                // Shrink the label to fit the equal-width cell instead of
+                // truncating it on narrow screens or crowded rows.
+                TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(
+                    this,
+                    resources.getDimensionPixelSize(R.dimen.touch_combat_label_text_min),
+                    resources.getDimensionPixelSize(R.dimen.touch_combat_label_text),
+                    1,
                     TypedValue.COMPLEX_UNIT_PX,
-                    resources.getDimension(R.dimen.touch_combat_label_text),
                 )
                 importantForAccessibility = IMPORTANT_FOR_ACCESSIBILITY_NO
             },

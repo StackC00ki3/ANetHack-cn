@@ -7,6 +7,7 @@
     <dimen name="touch_combat_row_height">56dp</dimen>
     <dimen name="touch_combat_icon_size">22dp</dimen>
     <dimen name="touch_combat_label_text">10sp</dimen>
+    <dimen name="touch_combat_label_text_min">7sp</dimen>
     <dimen name="touch_wheel_radius">116dp</dimen>
     <dimen name="touch_wheel_item_width">88dp</dimen>
     <dimen name="touch_wheel_item_height">72dp</dimen>
