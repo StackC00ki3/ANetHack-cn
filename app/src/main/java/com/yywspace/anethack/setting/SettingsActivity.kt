@@ -26,6 +26,7 @@ import com.hjq.permissions.OnPermissionCallback
 import com.hjq.permissions.Permission
 import com.hjq.permissions.XXPermissions
 import com.yywspace.anethack.CrashReporter
+import com.yywspace.anethack.LanguageManager
 import com.yywspace.anethack.R
 import com.yywspace.anethack.ThemeManager
 import java.io.File
@@ -61,12 +62,18 @@ class SettingsActivity : AppCompatActivity() {
         // 是否手动申请权限
         private var requestSoundPerm = false
         private val mainHandler = Handler(Looper.getMainLooper())
-        private val themeChangeListener =
+        private val settingsChangeListener =
             SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
-                if (key == ThemeManager.PREF_KEY) {
-                    val mode = prefs.getString(ThemeManager.PREF_KEY, ThemeManager.DEFAULT_MODE)
-                    // 值已写入后再切换，避免在列表弹窗关闭过程中重建界面
-                    mainHandler.post { ThemeManager.apply(mode) }
+                when (key) {
+                    ThemeManager.PREF_KEY -> {
+                        val mode = prefs.getString(ThemeManager.PREF_KEY, ThemeManager.DEFAULT_MODE)
+                        // 值已写入后再切换，避免在列表弹窗关闭过程中重建界面
+                        mainHandler.post { ThemeManager.apply(mode) }
+                    }
+                    LanguageManager.PREF_KEY -> {
+                        val mode = prefs.getString(LanguageManager.PREF_KEY, LanguageManager.DEFAULT_MODE)
+                        mainHandler.post { LanguageManager.apply(mode) }
+                    }
                 }
             }
         private val exportCrashLog = registerForActivityResult(
@@ -75,7 +82,7 @@ class SettingsActivity : AppCompatActivity() {
 
         override fun onDestroy() {
             preferenceManager.sharedPreferences
-                ?.unregisterOnSharedPreferenceChangeListener(themeChangeListener)
+                ?.unregisterOnSharedPreferenceChangeListener(settingsChangeListener)
             super.onDestroy()
         }
 
@@ -94,7 +101,7 @@ class SettingsActivity : AppCompatActivity() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
             preferenceManager.sharedPreferences
-                ?.registerOnSharedPreferenceChangeListener(themeChangeListener)
+                ?.registerOnSharedPreferenceChangeListener(settingsChangeListener)
             findPreference<Preference>("dumpLog")?.setOnPreferenceClickListener {
                 context?.apply {
                     val fileNames = mutableListOf<String>()

@@ -10,6 +10,17 @@
         <item>dark</item>
     </string-array>
 
+    <string-array name="language_array">
+        <item>@string/pref_language_system</item>
+        <item>@string/pref_language_zh</item>
+        <item>@string/pref_language_en</item>
+    </string-array>
+    <string-array name="language_value">
+        <item>system</item>
+        <item>zh-CN</item>
+        <item>en</item>
+    </string-array>
+
     <string-array name="menu_type_array">
         <item>@string/pref_menu_type_dialog</item>
         <item>@string/pref_menu_type_operate</item>

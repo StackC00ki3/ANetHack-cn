@@ -5,6 +5,15 @@
         app:iconSpaceReserved="false">
 
         <ListPreference
+            app:key="language"
+            app:title="@string/pref_language"
+            app:iconSpaceReserved="false"
+            app:useSimpleSummaryProvider="true"
+            app:defaultValue="system"
+            app:entries="@array/language_array"
+            app:entryValues="@array/language_value"/>
+
+        <ListPreference
             app:key="theme"
             app:title="@string/pref_theme"
             app:iconSpaceReserved="false"

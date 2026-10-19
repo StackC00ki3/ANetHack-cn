@@ -42,7 +42,7 @@
             android:label="@string/activity_command_bar_edit_title" />
         <activity
             android:name=".NetHackActivity"
-            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode"
+            android:configChanges="orientation|screenSize|screenLayout|keyboardHidden|uiMode|locale|layoutDirection"
             android:exported="true"
             android:hardwareAccelerated="true"
             android:launchMode="singleTop"

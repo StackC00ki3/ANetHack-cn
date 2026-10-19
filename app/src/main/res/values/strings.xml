@@ -27,6 +27,10 @@
 
     <string name="settings_title">Settings</string>
     <string name="pref_appearance_header">Appearance</string>
+    <string name="pref_language">Language</string>
+    <string name="pref_language_system">Follow system</string>
+    <string name="pref_language_zh">Chinese (Simplified)</string>
+    <string name="pref_language_en">English</string>
     <string name="pref_theme">Theme</string>
     <string name="pref_theme_system">Follow system</string>
     <string name="pref_theme_light">Light</string>
