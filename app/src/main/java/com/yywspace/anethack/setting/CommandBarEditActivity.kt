@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.DragEvent
 import android.view.Gravity
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -78,12 +79,40 @@ class CommandBarEditActivity : AppCompatActivity() {
         renderRows()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.command_bar_edit_menu, menu)
+        return true
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            finish()
-            return true
+        when (item.itemId) {
+            android.R.id.home -> {
+                finish()
+                return true
+            }
+            R.id.command_bar_icon_licenses -> {
+                showIconLicenses()
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun showIconLicenses() {
+        val attribution = assets.open("licenses/game-icons-net.txt")
+            .bufferedReader()
+            .use { it.readText() }
+        val padding = dp(16)
+        val textView = TextView(this).apply {
+            text = attribution
+            setTextIsSelectable(true)
+            setPadding(padding, padding, padding, padding)
+        }
+        AlertDialog.Builder(this)
+            .setTitle(R.string.icon_licenses_title)
+            .setView(ScrollView(this).apply { addView(textView) })
+            .setPositiveButton(R.string.dialog_confirm, null)
+            .show()
     }
 
     private fun initStatusBar() {

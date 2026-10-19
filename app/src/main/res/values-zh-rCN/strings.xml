@@ -51,15 +51,15 @@
 
     <!-- Preference Map -->
     <string name="pref_map_header">地图</string>
-    <string name="pref_map_tileset">图块集</string>
+    <string name="pref_map_tileset">贴图</string>
     <string name="pref_map_tile_default">默认</string>
     <string name="pref_map_tile_nevanda">Nevanda</string>
     <string name="pref_map_tile_pixelhack">PixelHack</string>
     <string name="pref_map_tile_ascii">ASCII</string>
-    <string name="pref_map_indicator">显示指示器</string>
-    <string name="pref_map_last_travel_indicator">显示上次旅行位置</string>
-    <string name="pref_map_indicator_desc">在地图上显示符号指示器。</string>
-    <string name="pref_map_indicator_symbols">指示器符号</string>
+    <string name="pref_map_indicator">显示标记</string>
+    <string name="pref_map_last_travel_indicator">显示上次旅行位置标记</string>
+    <string name="pref_map_indicator_desc">在地图边缘显示屏幕外目标的标记。</string>
+    <string name="pref_map_indicator_symbols">标记符号</string>
     <string name="pref_map_walk_range">移动范围</string>
     <string name="pref_map_walk_range_desc">当角色移动超出该范围（%）时，画面会随之滚动。</string>
     <string name="pref_map_travel_after_panned">平移地图后旅行</string>

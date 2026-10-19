@@ -8,8 +8,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.InputType
-import android.widget.ScrollView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -162,10 +160,6 @@ class SettingsActivity : AppCompatActivity() {
                     true
                 }
             }
-            findPreference<Preference>("iconLicenses")?.setOnPreferenceClickListener {
-                context?.let(::showIconLicenses)
-                true
-            }
             userSoundPerm = findPreference<CheckBoxPreference>("userSound")?.apply {
                 setOnPreferenceClickListener {
                     if (!XXPermissions.isGranted(context, Permission.READ_MEDIA_AUDIO)) {
@@ -202,23 +196,6 @@ class SettingsActivity : AppCompatActivity() {
                     true
                 }
             }
-        }
-
-        private fun showIconLicenses(context: Context) {
-            val attribution = context.assets.open("licenses/game-icons-net.txt")
-                .bufferedReader()
-                .use { it.readText() }
-            val padding = (16 * context.resources.displayMetrics.density).toInt()
-            val textView = TextView(context).apply {
-                text = attribution
-                setTextIsSelectable(true)
-                setPadding(padding, padding, padding, padding)
-            }
-            AlertDialog.Builder(context)
-                .setTitle(R.string.icon_licenses_title)
-                .setView(ScrollView(context).apply { addView(textView) })
-                .setPositiveButton(R.string.dialog_confirm, null)
-                .show()
         }
 
         private fun openInternalFile(context: Context?, relativePath:String) {

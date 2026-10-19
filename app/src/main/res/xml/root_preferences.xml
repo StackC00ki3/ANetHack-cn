@@ -134,12 +134,6 @@
             app:defaultValue="95"
             app:iconSpaceReserved="false"/>
 
-        <Preference
-            app:key="iconLicenses"
-            app:title="@string/pref_icon_licenses"
-            app:summary="@string/pref_icon_licenses_summary"
-            app:iconSpaceReserved="false"/>
-
         <CheckBoxPreference
             app:key="keyboardVibrate"
             app:title="@string/pref_keyboard_vibrate"
