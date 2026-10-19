@@ -2,7 +2,6 @@ package com.yywspace.anethack
 
 import android.content.Intent
 import android.content.res.Configuration
-import android.graphics.Color
 import android.graphics.PointF
 import android.os.Bundle
 import android.os.Handler
@@ -82,6 +81,7 @@ class NetHackActivity : AppCompatActivity() {
             binding.floatingButton.visibility = View.GONE
         binding.keyboardView.setKeyboardVibrate(nethack.prefs.keyboardVibrate)
         binding.keyboardView.refreshTheme()
+        binding.actionWheel.refreshTheme()
         binding.actionWheel.setPanelOpacity(nethack.prefs.actionWheelOpacity)
         refreshCommandBar()
     }
@@ -96,6 +96,7 @@ class NetHackActivity : AppCompatActivity() {
         super.onConfigurationChanged(newConfig)
         refreshCommandBar()
         binding.keyboardView.refreshTheme()
+        binding.actionWheel.refreshTheme()
         ViewCompat.requestApplyInsets(binding.root)
         if(isKeyboardShow) {
             binding.keyboardView.apply {
@@ -329,8 +330,8 @@ class NetHackActivity : AppCompatActivity() {
     private fun showSystemUi() {
         val windowInsetsController =
             WindowCompat.getInsetsController(window, window.decorView)
-        window.statusBarColor = Color.BLACK
-        windowInsetsController.isAppearanceLightStatusBars = false
+        window.statusBarColor = getColor(R.color.ui_background)
+        windowInsetsController.isAppearanceLightStatusBars = !ThemeManager.isNightMode(this)
         windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
     }
 

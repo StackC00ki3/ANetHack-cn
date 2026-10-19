@@ -13,6 +13,7 @@ import android.view.SurfaceHolder
 import android.view.SurfaceView
 import android.widget.LinearLayout
 import com.yywspace.anethack.NetHack
+import com.yywspace.anethack.ThemeManager
 import com.yywspace.anethack.window.NHWMessage
 import java.util.stream.Collectors
 import kotlin.math.ceil
@@ -74,6 +75,7 @@ class NHMessageSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
     private fun drawMessageList(canvas: Canvas?) {
         canvas?.apply {
             if (messageInit) {
+                val lightBackground = !ThemeManager.isNightMode(context)
                 var messageListHeight = 0f
                 nhMessage.getRecentMessageList(messageSize)
                     .stream()
@@ -81,7 +83,7 @@ class NHMessageSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
                     .collect(Collectors.toList())
                     .reversed().forEach{
                     val dynamicLayout = DynamicLayout.Builder.obtain(
-                        it.toSpannableString(), textPaint,
+                        it.toSpannableString(lightBackground = lightBackground), textPaint,
                         width
                     ).build()
                     canvas.withTranslation(0f, messageListHeight) {

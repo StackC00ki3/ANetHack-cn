@@ -18,6 +18,7 @@ import android.view.SurfaceHolder
 import android.view.SurfaceView
 import android.widget.LinearLayout
 import com.yywspace.anethack.NetHack
+import com.yywspace.anethack.ThemeManager
 import com.yywspace.anethack.entity.NHStatus
 import com.yywspace.anethack.entity.NHStatus.StatusField
 import kotlin.math.ceil
@@ -75,52 +76,52 @@ class NHStatusSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
         drawThread?.interrupt()
     }
     
-    private fun getStatus(field: StatusField):Pair<StatusField, Spannable> {
+    private fun getStatus(field: StatusField, lightBackground: Boolean):Pair<StatusField, Spannable> {
         return when (field) {
             StatusField.BL_HP -> {
-                val hp = status.hitPoints.toSpannableString()
-                val hpMax = status.maxHitPoints.toSpannableString()
+                val hp = status.hitPoints.toSpannableString(lightBackground)
+                val hpMax = status.maxHitPoints.toSpannableString(lightBackground)
                 Pair(field, SpannableStringBuilder(hp).append(hpMax))
             }
             StatusField.BL_ENE -> {
-                val pw = status.power.toSpannableString()
-                val pwMax = status.maxPower.toSpannableString()
+                val pw = status.power.toSpannableString(lightBackground)
+                val pwMax = status.maxPower.toSpannableString(lightBackground)
                 Pair(field, SpannableStringBuilder(pw).append(pwMax))
             }
             StatusField.BL_XP -> {
-                val xp = status.expLevel.toSpannableString()
-                val exp = status.expPoints.toSpannableString()
-                val hd = status.hitDice.toSpannableString()
+                val xp = status.expLevel.toSpannableString(lightBackground)
+                val exp = status.expPoints.toSpannableString(lightBackground)
+                val hd = status.hitDice.toSpannableString(lightBackground)
                 if (xp.isEmpty())
                     Pair(field, hd)
                 else
                     Pair(field, SpannableStringBuilder(xp).append(exp))
             }
             StatusField.BL_CONDITION -> {
-                Pair(field, status.getConditionSpannable())
+                Pair(field, status.getConditionSpannable(lightBackground))
             }
-            else -> Pair(field, status.getField(field).toSpannableString())
+            else -> Pair(field, status.getField(field).toSpannableString(lightBackground))
         }
     }
-    private fun buildStatusBar():List<List<Pair<StatusField, Spannable>>> {
-        val align = getStatus(StatusField.BL_ALIGN)
-        val title = getStatus(StatusField.BL_TITLE)
-        val st = getStatus(StatusField.BL_STR)
-        val dx = getStatus(StatusField.BL_DX)
-        val co = getStatus(StatusField.BL_CO)
-        val intel = getStatus(StatusField.BL_IN)
-        val wi = getStatus(StatusField.BL_WI)
-        val ch = getStatus(StatusField.BL_CH)
-        val hp = getStatus(StatusField.BL_HP)
-        val pw = getStatus(StatusField.BL_ENE)
-        val gold = getStatus(StatusField.BL_GOLD)
-        val ac = getStatus(StatusField.BL_AC)
-        val xp = getStatus(StatusField.BL_XP)
-        val time = getStatus(StatusField.BL_TIME)
-        val levelDesc = getStatus(StatusField.BL_LEVELDESC)
-        val hunger = getStatus(StatusField.BL_HUNGER)
-        val cap = getStatus(StatusField.BL_CAP)
-        val condition = getStatus(StatusField.BL_CONDITION)
+    private fun buildStatusBar(lightBackground: Boolean):List<List<Pair<StatusField, Spannable>>> {
+        val align = getStatus(StatusField.BL_ALIGN, lightBackground)
+        val title = getStatus(StatusField.BL_TITLE, lightBackground)
+        val st = getStatus(StatusField.BL_STR, lightBackground)
+        val dx = getStatus(StatusField.BL_DX, lightBackground)
+        val co = getStatus(StatusField.BL_CO, lightBackground)
+        val intel = getStatus(StatusField.BL_IN, lightBackground)
+        val wi = getStatus(StatusField.BL_WI, lightBackground)
+        val ch = getStatus(StatusField.BL_CH, lightBackground)
+        val hp = getStatus(StatusField.BL_HP, lightBackground)
+        val pw = getStatus(StatusField.BL_ENE, lightBackground)
+        val gold = getStatus(StatusField.BL_GOLD, lightBackground)
+        val ac = getStatus(StatusField.BL_AC, lightBackground)
+        val xp = getStatus(StatusField.BL_XP, lightBackground)
+        val time = getStatus(StatusField.BL_TIME, lightBackground)
+        val levelDesc = getStatus(StatusField.BL_LEVELDESC, lightBackground)
+        val hunger = getStatus(StatusField.BL_HUNGER, lightBackground)
+        val cap = getStatus(StatusField.BL_CAP, lightBackground)
+        val condition = getStatus(StatusField.BL_CONDITION, lightBackground)
         val statusBarList = mutableListOf<List<Pair<StatusField, Spannable>>>().apply {
             add(listOf(title, align))
             add(listOf(hp, st, dx, co, intel, wi, ch))
@@ -149,7 +150,7 @@ class NHStatusSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
     private fun drawStatusBar(canvas: Canvas?) {
         canvas?.apply {
             if (statusInit) {
-                val statusBarList = buildStatusBar()
+                val statusBarList = buildStatusBar(!ThemeManager.isNightMode(context))
                 var statusBarHeight = 0f
                 statusBarList.forEach{
                     var statusBarWidth = 0f

@@ -82,6 +82,17 @@ class RadialActionWheelView @JvmOverloads constructor(
         if (isShowing) rebuild()
     }
 
+    /**
+     * Re-resolves colors that were captured when the view was created. Item
+     * views are rebuilt every time the wheel is shown, but the scrim and the
+     * connector paint would otherwise keep the old theme's colors.
+     */
+    fun refreshTheme() {
+        setBackgroundColor(ContextCompat.getColor(context, R.color.touch_wheel_scrim))
+        connectorPaint.color = ContextCompat.getColor(context, R.color.touch_wheel_connector)
+        if (isShowing) rebuild()
+    }
+
     fun show(
         anchorInView: PointF,
         actionCategories: List<TouchActionCategory>,

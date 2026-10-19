@@ -60,10 +60,10 @@ class NHStatus(val context: Context) {
     val dungeonLevel:NHAttr
         get() = getField(StatusField.BL_LEVELDESC)
 
-    fun getConditionSpannable(): Spannable {
+    fun getConditionSpannable(lightBackground: Boolean = false): Spannable {
         val conditions = SpannableStringBuilder("")
         conditionField.forEach {
-            conditions.append(it.toSpannableString())
+            conditions.append(it.toSpannableString(lightBackground))
             conditions.append(" ")
         }
         if (!title.isEmpty()) {
@@ -71,7 +71,7 @@ class NHStatus(val context: Context) {
                 RunMode.RUN -> NHString(context.getString(R.string.run_mode_run), colorIdx = NHColor.CLR_GREEN.ordinal)
                 RunMode.WALK -> NHString(context.getString(R.string.run_mode_walk), colorIdx = NHColor.CLR_WHITE.ordinal)
             }
-            conditions.append(runModeStr.toSpannableString())
+            conditions.append(runModeStr.toSpannableString(lightBackground = lightBackground))
         }
         return conditions.toSpannable()
     }

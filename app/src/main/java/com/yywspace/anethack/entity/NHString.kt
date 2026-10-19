@@ -32,7 +32,8 @@ data class NHString(var value:String = "", var attr:Int = 0, val colorIdx:Int = 
         return value
     }
 
-    fun toSpannableString(defaultForeground: Int? = null): SpannableString{
+    fun toSpannableString(defaultForeground: Int? = null,
+                          lightBackground: Boolean = false): SpannableString{
         val span = SpannableString(value)
         val foreground = if (defaultForeground != null &&
             (nhColor == NHColor.CLR_BLACK ||
@@ -40,12 +41,12 @@ data class NHString(var value:String = "", var attr:Int = 0, val colorIdx:Int = 
                     nhColor == NHColor.CLR_WHITE))
             defaultForeground
         else
-            nhColor.toColor()
+            nhColor.toColor(lightBackground)
         if(!attrs.contains(TextAttr.ATR_INVERSE))
             span.setSpan(ForegroundColorSpan(foreground), 0, value.length, SPAN_INCLUSIVE_EXCLUSIVE)
         else {
-            span.setSpan(BackgroundColorSpan(nhColor.toColor()), 0, value.length, SPAN_INCLUSIVE_EXCLUSIVE)
-            span.setSpan(ForegroundColorSpan(Color.BLACK), 0, value.length, SPAN_INCLUSIVE_EXCLUSIVE)
+            span.setSpan(BackgroundColorSpan(nhColor.toColor(lightBackground)), 0, value.length, SPAN_INCLUSIVE_EXCLUSIVE)
+            span.setSpan(ForegroundColorSpan(if (lightBackground) Color.WHITE else Color.BLACK), 0, value.length, SPAN_INCLUSIVE_EXCLUSIVE)
         }
         attrs.forEach {
             if(it == TextAttr.ATR_BOLD)

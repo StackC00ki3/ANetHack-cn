@@ -36,6 +36,9 @@ class BottomCommandBar @JvmOverloads constructor(
     }
 
     fun setActions(rows: List<TouchCommandRow>) {
+        // Re-resolve the surface color on every rebuild so a live theme change
+        // is picked up without recreating the game Activity.
+        setBackgroundColor(ContextCompat.getColor(context, R.color.touch_surface))
         removeAllViews()
         rows.asReversed()
             .filter { it.actions.isNotEmpty() }

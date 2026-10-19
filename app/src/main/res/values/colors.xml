@@ -18,22 +18,26 @@
     <color name="ui_on_surface_secondary">#FF6B6B70</color>
     <color name="keyboard_background">#FFFFFFFF</color>
     <color name="key_background">#FFFFFFFF</color>
-    <color name="key_background_pressed">#00FFFFFF</color>
-    <color name="key_stroke">#FF808080</color>
+    <color name="key_background_pressed">#FFE9E9F0</color>
+    <color name="key_stroke">#FFB8B8C0</color>
     <color name="key_text">#FF000000</color>
     <color name="key_sub_text">#FF808080</color>
     <color name="dialog_background">#FFFFFFFF</color>
     <color name="dialog_text">#FF1B1B1F</color>
     <color name="popup_background">#FFFFFFFF</color>
     <color name="search_background">#FFF5F5F5</color>
-    <color name="touch_surface">#F21E1F24</color>
-    <color name="touch_wheel_item">#FF2B2D35</color>
+    <color name="map_background">#FFF7F7FA</color>
+    <color name="map_indicator_text">#FF1B1B1F</color>
+    <!-- Day variants of the in-game command bar and radial action wheel.
+         Night variants live in values-night/colors.xml. -->
+    <color name="touch_surface">#F2F7F7FA</color>
+    <color name="touch_wheel_item">#FFFFFFFF</color>
     <color name="touch_wheel_item_border">#806D72E6</color>
     <color name="touch_wheel_scrim">#33000000</color>
-    <color name="touch_wheel_connector">#CCBBBEFF</color>
-    <color name="touch_icon">#FFFFFFFF</color>
-    <color name="touch_text">#FFFFFFFF</color>
-    <color name="touch_secondary_text">#FFB8BAC7</color>
+    <color name="touch_wheel_connector">#CC6D72E6</color>
+    <color name="touch_icon">#FF2A2B31</color>
+    <color name="touch_text">#FF24252B</color>
+    <color name="touch_secondary_text">#FF6B6B70</color>
     <color name="touch_ripple">#557C83FF</color>
     <color name="touch_bar_edit_accent">#FF6D72E6</color>
     <color name="touch_bar_edit_accent_soft">#336D72E6</color>

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.core.content.ContextCompat
 import com.yywspace.anethack.NetHack
 import com.yywspace.anethack.R
+import com.yywspace.anethack.ThemeManager
 import com.yywspace.anethack.command.NHKeyCommand
 import com.yywspace.anethack.entity.NHColor
 import com.yywspace.anethack.entity.NHMessage
@@ -115,8 +116,9 @@ class NHWMessage(wid: Int, type:NHWindowType, private val nh: NetHack) : NHWindo
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            val defaultTextColor =
-                ContextCompat.getColor(holder.itemView.context, R.color.dialog_text)
+            val context = holder.itemView.context
+            val defaultTextColor = ContextCompat.getColor(context, R.color.dialog_text)
+            val lightBackground = !ThemeManager.isNightMode(context)
             val start = position * itemSize
             val end = min(start + itemSize, messageList.size)
             val subList = messageList.subList(start, end)
@@ -124,7 +126,7 @@ class NHWMessage(wid: Int, type:NHWindowType, private val nh: NetHack) : NHWindo
             for ((idx, message) in subList.withIndex()) {
                 messageText.append(
                     message.attach(lastCmdMsg.time, NHColor.CLR_BLACK)
-                        .toSpannableString(defaultTextColor)
+                        .toSpannableString(defaultTextColor, lightBackground)
                 )
                 if (idx != subList.size -1)
                     messageText.append("\n")

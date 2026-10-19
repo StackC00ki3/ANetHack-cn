@@ -15,5 +15,19 @@
     <color name="dialog_text">#FFECEDF2</color>
     <color name="popup_background">#FF2B2D35</color>
     <color name="search_background">#FF2B2D35</color>
+    <color name="map_background">#FF000000</color>
+    <color name="map_indicator_text">#FFFFFFFF</color>
+    <!-- Night variants of the in-game command bar and radial action wheel. -->
+    <color name="touch_surface">#F21E1F24</color>
+    <color name="touch_wheel_item">#FF2B2D35</color>
+    <color name="touch_wheel_item_border">#806D72E6</color>
+    <color name="touch_wheel_scrim">#33000000</color>
+    <color name="touch_wheel_connector">#CCBBBEFF</color>
+    <color name="touch_icon">#FFFFFFFF</color>
+    <color name="touch_text">#FFFFFFFF</color>
+    <color name="touch_secondary_text">#FFB8BAC7</color>
+    <color name="touch_ripple">#557C83FF</color>
+    <color name="touch_bar_edit_accent">#FF6D72E6</color>
+    <color name="touch_bar_edit_accent_soft">#336D72E6</color>
     <color name="touch_bar_edit_chip_border">#FF4A4D58</color>
 </resources>

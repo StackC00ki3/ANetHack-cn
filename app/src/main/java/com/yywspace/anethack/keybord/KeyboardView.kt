@@ -68,12 +68,16 @@ class KeyboardView : GridLayout {
     /**
      * Re-applies colors that are resolved at inflation time, so the keyboard
      * follows a theme change without recreating the game Activity.
+     *
+     * The background must be assigned as a freshly loaded drawable: calling
+     * [setBackgroundResource] with the same id is a no-op in [View], which
+     * would leave the keys painted with the previous configuration's colors.
      */
     fun refreshTheme() {
-        setBackgroundResource(R.color.keyboard_background)
+        setBackgroundColor(ContextCompat.getColor(context, R.color.keyboard_background))
         keyboardView.forEach { row ->
             row.forEach { key ->
-                key.setBackgroundResource(R.drawable.btn_bg_selector)
+                key.background = ContextCompat.getDrawable(context, R.drawable.btn_bg_selector)
                 key.findViewById<TextView>(R.id.key_main)
                     ?.setTextColor(ContextCompat.getColor(context, R.color.key_text))
                 key.findViewById<TextView>(R.id.key_sub)

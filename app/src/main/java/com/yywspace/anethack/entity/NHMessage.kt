@@ -23,8 +23,9 @@ data class NHMessage(private val value:NHString, val time: LocalDateTime) :Clone
         return message
     }
 
-    fun toSpannableString(defaultForeground: Int? = null): SpannableString {
-        return value.toSpannableString(defaultForeground)
+    fun toSpannableString(defaultForeground: Int? = null,
+                          lightBackground: Boolean = false): SpannableString {
+        return value.toSpannableString(defaultForeground, lightBackground)
     }
 
     public override fun clone(): NHMessage {

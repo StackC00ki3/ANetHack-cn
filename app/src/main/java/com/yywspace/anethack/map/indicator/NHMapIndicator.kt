@@ -1,12 +1,12 @@
 package com.yywspace.anethack.map.indicator
 
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.PointF
 import android.graphics.Rect
 import android.graphics.RectF
 import com.yywspace.anethack.NetHack
+import com.yywspace.anethack.R
 import com.yywspace.anethack.map.NHMapSurfaceView
 import com.yywspace.anethack.window.NHWMap
 import kotlin.math.abs
@@ -59,7 +59,7 @@ class NHMapIndicator(private val mapView: NHMapSurfaceView,
         canvas?.drawCircle(cx, cy, radius, paint)
         val textWidth = paint.measureText(tile.ch.toString())
         val baseLineY = abs(paint.ascent() + paint.descent()) / 2
-        paint.color = Color.WHITE
+        paint.color = mapView.context.getColor(R.color.map_indicator_text)
         canvas?.drawText(tile.ch.toString(), cx - textWidth / 2, cy + baseLineY, paint)
     }
     private fun drawTileIndicator(canvas: Canvas?, cx:Float,cy:Float) {

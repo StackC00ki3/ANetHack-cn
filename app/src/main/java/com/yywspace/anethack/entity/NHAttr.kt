@@ -9,8 +9,8 @@ data class NHAttr(
     val color
         get() = nhAttrValue.nhColor.toColor()
 
-    fun toSpannableString(): SpannableString {
-        return nhAttrValue.toSpannableString()
+    fun toSpannableString(lightBackground: Boolean = false): SpannableString {
+        return nhAttrValue.toSpannableString(lightBackground = lightBackground)
     }
     fun isEmpty():Boolean {
         return fmtVal.isEmpty() && realVal.isEmpty()

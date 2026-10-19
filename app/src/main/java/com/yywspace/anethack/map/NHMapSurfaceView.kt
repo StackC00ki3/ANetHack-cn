@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yywspace.anethack.NetHack
 import com.yywspace.anethack.R
+import com.yywspace.anethack.ThemeManager
 import com.yywspace.anethack.command.NHCommand
 import com.yywspace.anethack.command.NHKeyCommand
 import com.yywspace.anethack.command.NHPosCommand
@@ -374,19 +375,19 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
 
     }
 
-    private fun drawAscii(canvas: Canvas?) {
+    private fun drawAscii(canvas: Canvas?, lightBackground: Boolean, backgroundColor: Int) {
         map.apply {
             for (x in 0 until width) {
                 for (y in 0 until height) {
                     val tile = getTile(x, y)
                     val tb = getTileBorder(x,y)
                     paint.style = Paint.Style.FILL
-                    var bgColor = Color.BLACK
-                    var fgColor = tile.color.toColor()
+                    var bgColor = backgroundColor
+                    var fgColor = tile.color.toColor(lightBackground)
                     // reverse special objet color
                     if(tile.overlay != 0 && tile.glyph >= 0) {
-                        fgColor = Color.BLACK
-                        bgColor = tile.color.toColor()
+                        fgColor = backgroundColor
+                        bgColor = tile.color.toColor(lightBackground)
                     }
                     paint.color = bgColor
                     canvas?.drawRect(tb, paint)
@@ -430,7 +431,7 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
         transformMap(dx, dy)
     }
 
-    private fun drawAsciiCurse(canvas: Canvas?) {
+    private fun drawAsciiCurse(canvas: Canvas?, lightBackground: Boolean) {
         map.apply {
             if(curse.x < 0 || curse.y < 0)
                 return
@@ -440,7 +441,7 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
             paint.style = Paint.Style.FILL
             canvas?.drawRect(tb, paint)
             if(tile.glyph >= 0) {
-                asciiPaint.color = tile.color.toColor()
+                asciiPaint.color = tile.color.toColor(lightBackground)
                 canvas?.drawText(tile.ch.toString(),0, 1,
                     tb.left, tb.bottom - asciiPaint.descent() , asciiPaint)
             }
@@ -616,10 +617,12 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
             else
                 nh.status.runMode = NHStatus.RunMode.WALK
             // 绘制
-            canvas?.drawColor(Color.BLACK)
+            val lightBackground = !ThemeManager.isNightMode(context)
+            val mapBackground = context.getColor(R.color.map_background)
+            canvas?.drawColor(mapBackground)
             if (nh.tileSet.isTTY()) {
-                drawAscii(canvas)
-                drawAsciiCurse(canvas)
+                drawAscii(canvas, lightBackground, mapBackground)
+                drawAsciiCurse(canvas, lightBackground)
             } else {
                 drawTile(canvas)
                 drawTileCurse(canvas)
