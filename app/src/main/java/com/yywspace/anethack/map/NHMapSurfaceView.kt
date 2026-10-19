@@ -89,6 +89,8 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
                 lastTouchTile = point.also {
                     if (nh.status.runMode == NHStatus.RunMode.RUN) {
                         nh.command.sendCommand(NHPosCommand(it.x, it.y, PosMod.TRAVEL))
+                        if (!(point.x >= map.width || point.y >= map.height || point.x <= 0 || point.y <= 0))
+                            lastTravelTile = Pair(nh.status.dungeonLevel.realVal, point)
                         mapTranslated = false
                     }else {
                         val curseBorder = getTileBorder(map.curse.x, map.curse.y)

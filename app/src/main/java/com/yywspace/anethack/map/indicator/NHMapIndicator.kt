@@ -14,8 +14,11 @@ import kotlin.math.abs
 
 class NHMapIndicator(private val mapView: NHMapSurfaceView,
                      private val nh:NetHack,
-                     private val tile:NHWMap.Tile){
+                     private val tile:NHWMap.Tile,
+                     private val isTravelPoint: Boolean = false){
     private var canIndicatorDraw = false
+    // 旅行目标在屏幕内时直接标在目标格上，而不是只画在屏幕边缘
+    private var drawOnTile = false
     private val paint = Paint()
     private val textSize = 50f
     val location = PointF()
@@ -28,11 +31,21 @@ class NHMapIndicator(private val mapView: NHMapSurfaceView,
     }
 
     fun updateLocation() {
+        canIndicatorDraw = false
+        drawOnTile = false
         // 屏幕中心到人物与左右屏幕的交点
         val width = mapView.measuredWidth.toFloat()
         val height = mapView.measuredHeight.toFloat()
         val border = mapView.getTileBorder(tile.x, tile.y)
         val target = PointF(border.centerX(), border.centerY())
+        if (isTravelPoint
+            && target.x >= 0f && target.y >= 0f
+            && target.x <= width && target.y <= height) {
+            canIndicatorDraw = true
+            drawOnTile = true
+            location.set(target.x, target.y)
+            return
+        }
         val cross = IndicatorUtils.getBorderCrossPoint(width, height, target)
         val cx = cross.x + radius * if (cross.x > width / 2) -1 else 1
         val cy = cross.y
@@ -47,14 +60,33 @@ class NHMapIndicator(private val mapView: NHMapSurfaceView,
         val cx = location.x + offsetX
         val cy = location.y + offsetY
         if (canIndicatorDraw) {
-            if (nh.tileSet.isTTY())
+            if (drawOnTile)
+                drawTravelMarker(canvas, cx, cy)
+            else if (nh.tileSet.isTTY())
                 drawAsciiIndicator(canvas, cx, cy)
             else
                 drawTileIndicator(canvas, cx, cy)
         }
     }
+
+    private fun indicatorColor(): Int =
+        if (isTravelPoint) mapView.context.getColor(R.color.map_travel_marker)
+        else nh.status.hitPoints.color
+
+    // 屏幕内的旅行位置标记：目标格上画一圈醒目的标记
+    private fun drawTravelMarker(canvas: Canvas?, cx: Float, cy: Float) {
+        val border = mapView.getTileBorder(tile.x, tile.y)
+        val markerRadius = minOf(border.width(), border.height()) * 0.45f
+        paint.color = indicatorColor()
+        paint.style = Paint.Style.STROKE
+        paint.strokeWidth = 3f
+        canvas?.drawCircle(cx, cy, markerRadius, paint)
+        paint.style = Paint.Style.FILL
+        canvas?.drawCircle(cx, cy, 3f, paint)
+    }
+
     private fun drawAsciiIndicator(canvas:Canvas?, cx:Float, cy:Float) {
-        paint.color = nh.status.hitPoints.color
+        paint.color = indicatorColor()
         paint.style = Paint.Style.FILL
         canvas?.drawCircle(cx, cy, radius, paint)
         val textWidth = paint.measureText(tile.ch.toString())
@@ -71,7 +103,7 @@ class NHMapIndicator(private val mapView: NHMapSurfaceView,
                 RectF(cx-radius,cy-radius, cx+radius,cy+radius),
                 paint
             )
-            paint.color =  nh.status.hitPoints.color
+            paint.color =  indicatorColor()
             paint.style = Paint.Style.STROKE
             paint.strokeWidth = 3f
             canvas?.drawCircle(cx, cy, radius, paint)
@@ -79,6 +111,9 @@ class NHMapIndicator(private val mapView: NHMapSurfaceView,
     }
 
     fun isClicked(x:Float, y:Float):Boolean {
+        // 屏幕内的旅行标记只是视觉提示，不拦截地图点击
+        if (drawOnTile)
+            return false
         val cx = location.x
         val cy = location.y
         return x > cx-radius && x < cx+radius && y > cy-radius && y < cy+radius
