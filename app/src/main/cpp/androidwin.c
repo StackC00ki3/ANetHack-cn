@@ -7,6 +7,7 @@
 #include "func_tab.h"   /* for extended commands */
 #include "dlb.h"
 #include "androidentry.h"
+#include "androidcrash.h"
 
 #include <android/log.h>
 #define TAG "NativeNetHackWin"
@@ -481,6 +482,8 @@ void and_putstr(winid wid, int attr, const char *str)
 
     if(!str || !*str) return;
     if(attr) attr = 1<<attr;
+    if (wid == WIN_MESSAGE)
+        crash_breadcrumb("message: %s", str);
     jstring jstr = char2Jstring(jEnv, str);
     JNICallV(jPutString, wid, attr, jstr, NO_COLOR)
     (*jEnv)->DeleteLocalRef(jEnv, jstr);
@@ -854,6 +857,7 @@ int and_select_menu(winid wid, int how, MENU_ITEM_P **selected)
     *selected = 0;
     int itemCnt = (*jEnv)->GetArrayLength(jEnv, selectedItems);
     LOGD("and_select_menu itemCnt:%d", itemCnt);
+    crash_breadcrumb("select_menu(%d, how %d): %d", wid, how, itemCnt);
     if(itemCnt > 1)  { // n should always be 2k (id, count) pairs
         itemCnt >>= 1;
         q = p = (*jEnv)->GetLongArrayElements(jEnv, selectedItems, NULL);
@@ -983,6 +987,7 @@ void and_print_glyph(winid wid, coordxy x, coordxy y, const glyph_info * glyphin
 void and_raw_print(const char* str)
 {
     LOGD("and_raw_print %s", str);
+    crash_breadcrumb("raw_print: %s", str);
     jstring jstr = char2Jstring(jEnv,str);
     JNICallV(jRawPrint, 1<<ATR_BOLD, jstr)
     (*jEnv)->DeleteLocalRef(jEnv, jstr);
@@ -994,6 +999,7 @@ void and_raw_print(const char* str)
 void and_raw_print_bold(const char* str)
 {
     LOGD("and_raw_print_bold %s", str);
+    crash_breadcrumb("raw_print: %s", str);
     jstring jstr = char2Jstring(jEnv,str);
     JNICallV(jRawPrint, 1<<ATR_BOLD, jstr)
     (*jEnv)->DeleteLocalRef(jEnv, jstr);
@@ -1009,6 +1015,7 @@ int and_nhgetch()
 {
     int c = JNICallI(jRequireKeyCommand)
     LOGD("and_nhgetch: %c", c);
+    crash_breadcrumb("nhgetch: %d", c);
     return c;
 }
 
@@ -1036,6 +1043,9 @@ int and_nh_poskey(coordxy *x, coordxy *y, int *mod)
         *y = (coordxy)event[1];
         *mod = event[2];
         (*jEnv)->ReleaseIntArrayElements(jEnv, jEvent, event, 0);
+        crash_breadcrumb("nh_poskey: click x %d y %d mod %d", *x, *y, *mod);
+    } else {
+        crash_breadcrumb("nh_poskey: %d", ch);
     }
     (*jEnv)->DeleteLocalRef(jEnv, jEvent);
     LOGD("and_nh_poskey x:%d y:%d mod:%d", *x, *y, *mod);
@@ -1124,6 +1134,7 @@ char and_yn_function(const char *question, const char *choices, char def)
         putstr(WIN_MESSAGE, 1<<ATR_BOLD, question);
         ch = nhgetch();
     }
+    crash_breadcrumb("yn_function: %s [%s] -> %d", question, choices ? choices : "", ch);
     return ch;
 }
 
@@ -1160,6 +1171,7 @@ void and_getlin(const char *question, char *input)
     (*jEnv)->DeleteLocalRef(jEnv, jinput);
     (*jEnv)->DeleteLocalRef(jEnv, result);
     LOGD("and_getlin %s", input);
+    crash_breadcrumb("getlin: %s -> %s", question, input);
 }
 
 
@@ -1234,6 +1246,7 @@ int and_get_ext_cmd()
 
     (*jEnv)->DeleteLocalRef(jEnv, stringClass);
     (*jEnv)->DeleteLocalRef(jEnv, jExtCmdList);
+    crash_breadcrumb("get_ext_cmd: %d", idx);
     return idx;
 }
 

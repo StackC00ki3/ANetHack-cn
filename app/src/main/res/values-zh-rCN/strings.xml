@@ -173,4 +173,14 @@
     <string name="pref_icon_licenses">图标许可</string>
     <string name="pref_icon_licenses_summary">触控按钮所用 game-icons.net 图标的署名信息</string>
     <string name="icon_licenses_title">game-icons.net 图标署名</string>
+    <string name="pref_log_crash">导出崩溃日志</string>
+    <string name="pref_log_crash_summary">将原生/Java 崩溃报告、logcat 和系统退出记录打包为 zip 文件</string>
+    <string name="pref_log_crash_test">触发原生测试崩溃</string>
+    <string name="pref_log_crash_test_summary">仅调试版可见：在原生代码中故意崩溃，用于验证能否生成崩溃日志</string>
+    <string name="crash_report_title">检测到上次运行崩溃</string>
+    <string name="crash_report_message">游戏上次运行时崩溃了，已保存崩溃日志。是否导出为 zip 文件以便反馈问题？</string>
+    <string name="crash_report_export">导出</string>
+    <string name="crash_report_ignore">忽略</string>
+    <string name="crash_export_done">崩溃日志已导出</string>
+    <string name="crash_export_failed">崩溃日志导出失败</string>
 </resources>

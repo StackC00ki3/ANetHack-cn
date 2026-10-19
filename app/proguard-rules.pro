@@ -12,9 +12,9 @@
 #   public *;
 #}
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# Preserve line numbers so exported crash logs can be retraced with
+# build/outputs/mapping/release/mapping.txt.
+-keepattributes SourceFile,LineNumberTable
 
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
@@ -23,5 +23,11 @@
 # NetHack native callbacks: androidentry.c resolves these methods at runtime
 # via JNI GetMethodID, so R8 must not remove or rename them.
 -keep class com.yywspace.anethack.NetHack {
+    *;
+}
+
+# androidentry.c looks up CrashReporter.recordCallbackException via JNI
+# FindClass/GetStaticMethodID when a NetHack callback throws.
+-keep class com.yywspace.anethack.CrashReporter {
     *;
 }

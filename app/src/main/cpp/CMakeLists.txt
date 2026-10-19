@@ -184,6 +184,7 @@ set(NETHACK_SRC
         "androidwin.c"
         "androidsound.c"
         "androidentry.c"
+        "androidcrash.c"
 )
 
 add_library(${CMAKE_PROJECT_NAME} SHARED ${NETHACK_SRC})
@@ -191,7 +192,7 @@ target_include_directories(
         ${CMAKE_PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/NetHack/include
         ${LUA_INCLUDE} Lua)
 
-target_link_libraries(${CMAKE_PROJECT_NAME} ${TOPLUALIB} android log z)
+target_link_libraries(${CMAKE_PROJECT_NAME} ${TOPLUALIB} android log z dl)
 
 target_link_options(${CMAKE_PROJECT_NAME} PRIVATE
         "-Wl,-z,max-page-size=16384"

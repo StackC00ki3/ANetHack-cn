@@ -19,6 +19,8 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.updateLayoutParams
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import com.yywspace.anethack.command.NHCommandParser
 import com.yywspace.anethack.command.NHExtendCommand
 import com.yywspace.anethack.command.NHKeyCommand
@@ -40,9 +42,13 @@ class NetHackActivity : AppCompatActivity() {
     private lateinit var priceIDialog: NHPriceIDialog
     private var isKeyboardShow = false
     private var navBarInset = 0
+    private val exportCrashLog = registerForActivityResult(
+        ActivityResultContracts.CreateDocument("application/zip")
+    ) { uri -> uri?.let { CrashReporter.export(this, it) } }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        CrashReporter.init(this)
         binding = ActivityNethackBinding.inflate(layoutInflater)
         setContentView(binding.root)
         handler = Handler(Looper.getMainLooper())
@@ -52,6 +58,8 @@ class NetHackActivity : AppCompatActivity() {
         initKeyboard()
         initTouchControls()
         initBackNavigation()
+        if (CrashReporter.hasUnseenCrash())
+            showCrashReportDialog()
         AssetsLoader(this).loadAssets(
             listOf("nethackdir", "logs", "conf"), false
         ) { overwrite ->
@@ -105,6 +113,18 @@ class NetHackActivity : AppCompatActivity() {
             priceIDialog.show()
         }
     }
+    private fun showCrashReportDialog() {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.crash_report_title)
+            .setMessage(R.string.crash_report_message)
+            .setPositiveButton(R.string.crash_report_export) { _, _ ->
+                exportCrashLog.launch(CrashReporter.exportFileName())
+            }
+            .setNegativeButton(R.string.crash_report_ignore, null)
+            .setOnDismissListener { CrashReporter.markSeen() }
+            .show()
+    }
+
     private fun initBackNavigation() {
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {

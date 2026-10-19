@@ -60,6 +60,16 @@
     <string name="pref_log_dump_max_size">Dump log size</string>
     <string name="pref_log_error">Error log</string>
     <string name="pref_log_error_summery">Android crash log.</string>
+    <string name="pref_log_crash">Export crash log</string>
+    <string name="pref_log_crash_summary">Pack native/Java crash reports, logcat and system exit records into a zip file.</string>
+    <string name="pref_log_crash_test">Trigger native test crash</string>
+    <string name="pref_log_crash_test_summary">Debug builds only. Crashes in native code to check that a crash report gets written.</string>
+    <string name="crash_report_title">Crash detected</string>
+    <string name="crash_report_message">ANetHack crashed last time and a crash log was saved. Export it as a zip file to report the problem?</string>
+    <string name="crash_report_export">Export</string>
+    <string name="crash_report_ignore">Ignore</string>
+    <string name="crash_export_done">Crash log exported</string>
+    <string name="crash_export_failed">Crash log export failed</string>
 
     <!-- Preference Sound -->
     <string name="pref_sound_header">Sound</string>

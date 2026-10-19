@@ -8,6 +8,7 @@ import android.text.InputType
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -21,6 +22,7 @@ import androidx.preference.PreferenceFragmentCompat
 import com.hjq.permissions.OnPermissionCallback
 import com.hjq.permissions.Permission
 import com.hjq.permissions.XXPermissions
+import com.yywspace.anethack.CrashReporter
 import com.yywspace.anethack.R
 import java.io.File
 
@@ -54,6 +56,9 @@ class SettingsActivity : AppCompatActivity() {
         private var userSoundPerm:CheckBoxPreference? = null
         // 是否手动申请权限
         private var requestSoundPerm = false
+        private val exportCrashLog = registerForActivityResult(
+            ActivityResultContracts.CreateDocument("application/zip")
+        ) { uri -> uri?.let { CrashReporter.export(requireContext(), it) } }
 
         override fun onResume() {
             super.onResume()
@@ -94,6 +99,18 @@ class SettingsActivity : AppCompatActivity() {
             findPreference<Preference>("errorLog")?.setOnPreferenceClickListener {
                 openInternalFile(context, "logs/error/nethack.log")
                 true
+            }
+            CrashReporter.init(requireContext())
+            findPreference<Preference>("crashLog")?.setOnPreferenceClickListener {
+                exportCrashLog.launch(CrashReporter.exportFileName())
+                true
+            }
+            findPreference<Preference>("crashTest")?.apply {
+                isVisible = CrashReporter.isDebuggable(requireContext())
+                setOnPreferenceClickListener {
+                    CrashReporter.triggerNativeTestCrash()
+                    true
+                }
             }
             findPreference<EditTextPreference>("dumpLogMaxSize")?.apply {
                 setOnBindEditTextListener {

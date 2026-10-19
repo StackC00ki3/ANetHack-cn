@@ -8,6 +8,7 @@
 #include "dlb.h"
 
 #include "androidentry.h"
+#include "androidcrash.h"
 
 JNIEnv* jEnv;
 jclass jApp;
@@ -167,4 +168,40 @@ char* jstring2Char(JNIEnv *env, jstring jstr)
         }
     }
     return rtn ? rtn : strdup("");
+}
+
+static jclass jCrashReporter;
+static jmethodID jRecordCallbackException;
+
+// A Java exception left pending makes every later JNI call undefined, so
+// record it (Java stack trace + native breadcrumbs) and abort right here
+// instead of failing somewhere unrelated later.
+void and_check_jni_exception(const char *method)
+{
+    char msg[160];
+
+    if (!(*jEnv)->ExceptionCheck(jEnv))
+        return;
+    jthrowable exc = (*jEnv)->ExceptionOccurred(jEnv);
+    (*jEnv)->ExceptionClear(jEnv);
+    crash_breadcrumb("java exception thrown from %s", method);
+    if (!jCrashReporter) {
+        jclass cls = (*jEnv)->FindClass(jEnv, "com/yywspace/anethack/CrashReporter");
+        if (cls) {
+            jRecordCallbackException = (*jEnv)->GetStaticMethodID(jEnv, cls, "recordCallbackException",
+                                                                  "(Ljava/lang/String;Ljava/lang/Throwable;)V");
+            jCrashReporter = (*jEnv)->NewGlobalRef(jEnv, cls);
+            (*jEnv)->DeleteLocalRef(jEnv, cls);
+        }
+        (*jEnv)->ExceptionClear(jEnv);
+    }
+    if (jCrashReporter && jRecordCallbackException) {
+        jstring jmethod = (*jEnv)->NewStringUTF(jEnv, method);
+        (*jEnv)->CallStaticVoidMethod(jEnv, jCrashReporter, jRecordCallbackException, jmethod, exc);
+        (*jEnv)->ExceptionClear(jEnv);
+        (*jEnv)->DeleteLocalRef(jEnv, jmethod);
+    }
+    (*jEnv)->DeleteLocalRef(jEnv, exc);
+    snprintf(msg, sizeof msg, "Java exception thrown from NetHack callback %s", method);
+    (*jEnv)->FatalError(jEnv, msg);
 }

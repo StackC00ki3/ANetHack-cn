@@ -46,10 +46,16 @@ extern jmethodID jSoundVerbal;
 // string
 char * jstring2Char(JNIEnv *env, jstring jstr);
 jstring char2Jstring(JNIEnv *env, const char *c_str);
+// aborts with a crash report if the last callback threw a Java exception
+void and_check_jni_exception(const char *method);
 
-#define JNICallV(func, ...) (*jEnv)->CallVoidMethod(jEnv, jAppInstance, func, ## __VA_ARGS__);
-#define JNICallI(func, ...) (*jEnv)->CallIntMethod(jEnv, jAppInstance, func, ## __VA_ARGS__);
-#define JNICallO(func, ...) (*jEnv)->CallObjectMethod(jEnv, jAppInstance, func, ## __VA_ARGS__);
-#define JNICallC(func, ...) (*jEnv)->CallCharMethod(jEnv, jAppInstance, func, ## __VA_ARGS__);
+#define JNICallV(func, ...) ({ (*jEnv)->CallVoidMethod(jEnv, jAppInstance, func, ## __VA_ARGS__); \
+        and_check_jni_exception(#func); });
+#define JNICallI(func, ...) ({ jint jni_ret_ = (*jEnv)->CallIntMethod(jEnv, jAppInstance, func, ## __VA_ARGS__); \
+        and_check_jni_exception(#func); jni_ret_; });
+#define JNICallO(func, ...) ({ jobject jni_ret_ = (*jEnv)->CallObjectMethod(jEnv, jAppInstance, func, ## __VA_ARGS__); \
+        and_check_jni_exception(#func); jni_ret_; });
+#define JNICallC(func, ...) ({ jchar jni_ret_ = (*jEnv)->CallCharMethod(jEnv, jAppInstance, func, ## __VA_ARGS__); \
+        and_check_jni_exception(#func); jni_ret_; });
 
 #endif //ANETHACK_ANDROIDENTRY_H
