@@ -255,6 +255,14 @@ class NetHack(
             e.printStackTrace()
         }
     }
+
+    var numberPadOption = 0
+        private set
+
+    private fun setNumPadOption(state: Int) {
+        numberPadOption = state
+        Log.d(TAG, "setNumPadOption(state:$state)")
+    }
     fun initNHSound(){
         sound.initNHSound()
     }

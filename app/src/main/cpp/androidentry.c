@@ -89,6 +89,7 @@ void initNetHackWin() {
                                          "(ILjava/lang/String;Ljava/lang/String;Ljava/lang/String;III)V");
     jDelayOutput = (*jEnv)->GetMethodID(jEnv, jApp, "delayOutput", "()V");
     jClipAround = (*jEnv)->GetMethodID(jEnv, jApp, "clipAround", "(IIII)V");
+    jSetNumPadOption = (*jEnv)->GetMethodID(jEnv, jApp, "setNumPadOption", "(I)V");
     jYNFunction = (*jEnv)->GetMethodID(jEnv, jApp, "ynFunction",
                                        "(Ljava/lang/String;Ljava/lang/String;[JC)C");
     jGetLine = (*jEnv)->GetMethodID(jEnv, jApp, "getLine", "(Ljava/lang/String;Ljava/lang/String;I)Ljava/lang/String;");
