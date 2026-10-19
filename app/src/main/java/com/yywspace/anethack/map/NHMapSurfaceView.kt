@@ -349,14 +349,16 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
         }
     }
 
-    private fun drawTile(canvas: Canvas?, tileBackgroundColor: Int?) {
+    private fun drawTile(canvas: Canvas?, skipUnexplored: Boolean) {
         map.apply {
             for (x in 0 until width) {
                 for (y in 0 until height) {
                     val tile = getTile(x, y)
                     val tb = getTileBorder(x,y)
-                    if(tile.glyph >= 0) {
-                        nh.tileSet.getTile(tile.glyph, tileBackgroundColor)?.apply {
+                    // 浅色模式下未探索区域的石头瓦片是整块纯黑（S_stone 字符为空格），
+                    // 跳过绘制直接露出柔和的地图底色；其他瓦片保持原样。
+                    if(tile.glyph >= 0 && !(skipUnexplored && tile.ch == ' ')) {
+                        nh.tileSet.getTile(tile.glyph)?.apply {
                             canvas?.drawBitmap(this, Rect(0,0, this.width, this.height), tb, paint)
                         }
                     }
@@ -628,7 +630,7 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
                 drawAscii(canvas, lightBackground, mapBackground)
                 drawAsciiCurse(canvas, lightBackground)
             } else {
-                drawTile(canvas, if (lightBackground) mapBackground else null)
+                drawTile(canvas, lightBackground)
                 drawTileCurse(canvas)
             }
             drawLastTouchTile(canvas)
