@@ -26,7 +26,8 @@
     <color name="dialog_text">#FF1B1B1F</color>
     <color name="popup_background">#FFFFFFFF</color>
     <color name="search_background">#FFF5F5F5</color>
-    <color name="map_background">#FFF7F7FA</color>
+    <!-- Soft parchment tone instead of stark white so the light map is easy on the eyes. -->
+    <color name="map_background">#FFF0ECE3</color>
     <color name="map_indicator_text">#FF1B1B1F</color>
     <!-- Day variants of the in-game command bar and radial action wheel.
          Night variants live in values-night/colors.xml. -->

@@ -13,6 +13,10 @@ class NHTileSet(val nh: NetHack) {
     private var tileSetName:String? = null
     var tileWidth = 0
     var tileHeight = 0
+    // 图集统一的背景色，浅色主题下用它把瓦片底色并入地图背景
+    private var tileBackgroundColor: Int? = null
+    private val recoloredTileCache = mutableMapOf<Int, Bitmap>()
+    private var recoloredBackground = 0
 
     fun getTile(tile:Int):Bitmap? {
         tileBitmap?.apply {
@@ -28,6 +32,39 @@ class NHTileSet(val nh: NetHack) {
             return bitmap
         }
         return null
+    }
+
+    /**
+     * 返回把图集统一背景色替换为 [backgroundColor] 后的瓦片。
+     * 浅色主题下瓦片自带的深色底会盖住地图背景，替换后才能得到柔和的地图底色。
+     */
+    fun getTile(tile:Int, backgroundColor:Int?):Bitmap? {
+        val bitmap = getTile(tile) ?: return null
+        val sourceBackground = tileBackgroundColor ?: return bitmap
+        if (backgroundColor == null) return bitmap
+        if (recoloredBackground != backgroundColor) {
+            recoloredTileCache.clear()
+            recoloredBackground = backgroundColor
+        }
+        return recoloredTileCache.getOrPut(tile) {
+            val copy = bitmap.copy(Bitmap.Config.ARGB_8888, true) ?: return bitmap
+            val pixels = IntArray(copy.width * copy.height)
+            copy.getPixels(pixels, 0, copy.width, 0, 0, copy.width, copy.height)
+            var changed = false
+            for (i in pixels.indices) {
+                if (pixels[i] == sourceBackground) {
+                    pixels[i] = backgroundColor
+                    changed = true
+                }
+            }
+            if (changed) {
+                copy.setPixels(pixels, 0, copy.width, 0, 0, copy.width, copy.height)
+                copy
+            } else {
+                copy.recycle()
+                bitmap
+            }
+        }
     }
 
     fun updateTileSet() {
@@ -61,6 +98,10 @@ class NHTileSet(val nh: NetHack) {
                 tileCache.clear()
             }
         }
+        // 图集所有瓦片共用同一个底色（如 PixelHack 的灰绿色），记录它用于浅色主题替换
+        tileBackgroundColor = tileBitmap?.getPixel(0, 0)
+        recoloredTileCache.clear()
+        recoloredBackground = 0
     }
 
     fun isTileSetChange():Boolean {

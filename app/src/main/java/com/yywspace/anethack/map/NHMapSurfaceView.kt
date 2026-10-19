@@ -349,14 +349,14 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
         }
     }
 
-    private fun drawTile(canvas: Canvas?) {
+    private fun drawTile(canvas: Canvas?, tileBackgroundColor: Int?) {
         map.apply {
             for (x in 0 until width) {
                 for (y in 0 until height) {
                     val tile = getTile(x, y)
                     val tb = getTileBorder(x,y)
                     if(tile.glyph >= 0) {
-                        nh.tileSet.getTile(tile.glyph)?.apply {
+                        nh.tileSet.getTile(tile.glyph, tileBackgroundColor)?.apply {
                             canvas?.drawBitmap(this, Rect(0,0, this.width, this.height), tb, paint)
                         }
                     }
@@ -462,6 +462,10 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
     }
     private fun drawLastTouchTile(canvas: Canvas?) {
         lastTouchTile?.apply {
+            // 旅行到触摸点时玩家正站在该格上，不能再用灰色框盖住 HP 颜色框，
+            // 否则到站后会一直显示灰/棕色，直到移动一步。
+            if (x == map.curse.x && y == map.curse.y)
+                return
             val tb = getTileBorder(x, y)
             paint.color = Color.GRAY
             paint.style = Paint.Style.STROKE
@@ -624,7 +628,7 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
                 drawAscii(canvas, lightBackground, mapBackground)
                 drawAsciiCurse(canvas, lightBackground)
             } else {
-                drawTile(canvas)
+                drawTile(canvas, if (lightBackground) mapBackground else null)
                 drawTileCurse(canvas)
             }
             drawLastTouchTile(canvas)

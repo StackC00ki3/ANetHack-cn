@@ -7,6 +7,7 @@ import android.graphics.Rect
 import android.graphics.RectF
 import com.yywspace.anethack.NetHack
 import com.yywspace.anethack.R
+import com.yywspace.anethack.ThemeManager
 import com.yywspace.anethack.map.NHMapSurfaceView
 import com.yywspace.anethack.window.NHWMap
 import kotlin.math.abs
@@ -63,7 +64,9 @@ class NHMapIndicator(private val mapView: NHMapSurfaceView,
         canvas?.drawText(tile.ch.toString(), cx - textWidth / 2, cy + baseLineY, paint)
     }
     private fun drawTileIndicator(canvas: Canvas?, cx:Float,cy:Float) {
-        val tileBitmap = nh.tileSet.getTile(tile.glyph) ?: return
+        val tileBackground = if (!ThemeManager.isNightMode(mapView.context))
+            mapView.context.getColor(R.color.map_background) else null
+        val tileBitmap = nh.tileSet.getTile(tile.glyph, tileBackground) ?: return
         IndicatorUtils.circleBitmap(tileBitmap).apply {
             canvas?.drawBitmap(
                 this,
