@@ -17,8 +17,6 @@
     <color name="search_background">#FF2B2D35</color>
     <color name="map_background">#FF000000</color>
     <color name="map_indicator_text">#FFFFFFFF</color>
-    <!-- Ring drawn on the map at the last travel destination. -->
-    <color name="map_travel_marker">#FFFFD54F</color>
     <!-- Night variants of the in-game command bar and radial action wheel. -->
     <color name="touch_surface">#F21E1F24</color>
     <color name="touch_wheel_item">#FF2B2D35</color>

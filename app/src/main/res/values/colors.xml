@@ -29,8 +29,6 @@
     <!-- Soft parchment tone instead of stark white so the light map is easy on the eyes. -->
     <color name="map_background">#FFF0ECE3</color>
     <color name="map_indicator_text">#FF1B1B1F</color>
-    <!-- Ring drawn on the map at the last travel destination. -->
-    <color name="map_travel_marker">#FFB300</color>
     <!-- Day variants of the in-game command bar and radial action wheel.
          Night variants live in values-night/colors.xml. -->
     <color name="touch_surface">#F2F7F7FA</color>
