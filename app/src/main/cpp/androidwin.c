@@ -483,6 +483,7 @@ void and_putstr(winid wid, int attr, const char *str)
     if(attr) attr = 1<<attr;
     jstring jstr = char2Jstring(jEnv, str);
     JNICallV(jPutString, wid, attr, jstr, NO_COLOR)
+    (*jEnv)->DeleteLocalRef(jEnv, jstr);
 }
 
 void and_status_field_render(int idx, const char *filed_name, const char *fmt_val, const char *real_val, int attr, int color, int percent) {
@@ -490,6 +491,9 @@ void and_status_field_render(int idx, const char *filed_name, const char *fmt_va
     jstring fmtVal = char2Jstring(jEnv, fmt_val);
     jstring realVal = char2Jstring(jEnv, real_val);
     JNICallV(jRenderStatus, idx, jFiledName, fmtVal, realVal, attr, color, percent)
+    (*jEnv)->DeleteLocalRef(jEnv, jFiledName);
+    (*jEnv)->DeleteLocalRef(jEnv, fmtVal);
+    (*jEnv)->DeleteLocalRef(jEnv, realVal);
 }
 
 
@@ -816,6 +820,7 @@ void and_end_menu(winid wid, const char *prompt)
 {
     jstring jstr = char2Jstring(jEnv, prompt);
     JNICallV(jEndMenu, wid, jstr)
+    (*jEnv)->DeleteLocalRef(jEnv, jstr);
 }
 
 //____________________________________________________________________________________
@@ -863,8 +868,9 @@ int and_select_menu(winid wid, int how, MENU_ITEM_P **selected)
         (*jEnv)->ReleaseLongArrayElements(jEnv, selectedItems, q, 0);
     } else if(itemCnt == 1) {
         //  0 if none were chosen, -1 when explicitly cancelled
-        jlong *result =  (*jEnv)->GetLongArrayElements(jEnv, selectedItems, NULL);
-        return (int)*result;
+        jlong result;
+        (*jEnv)->GetLongArrayRegion(jEnv, selectedItems, 0, 1, &result);
+        itemCnt = (int)result;
     }
     (*jEnv)->DeleteLocalRef(jEnv, selectedItems);
     return itemCnt;
@@ -979,6 +985,7 @@ void and_raw_print(const char* str)
     LOGD("and_raw_print %s", str);
     jstring jstr = char2Jstring(jEnv,str);
     JNICallV(jRawPrint, 1<<ATR_BOLD, jstr)
+    (*jEnv)->DeleteLocalRef(jEnv, jstr);
 }
 
 //____________________________________________________________________________________
@@ -989,6 +996,7 @@ void and_raw_print_bold(const char* str)
     LOGD("and_raw_print_bold %s", str);
     jstring jstr = char2Jstring(jEnv,str);
     JNICallV(jRawPrint, 1<<ATR_BOLD, jstr)
+    (*jEnv)->DeleteLocalRef(jEnv, jstr);
 }
 
 //____________________________________________________________________________________
@@ -1029,6 +1037,7 @@ int and_nh_poskey(coordxy *x, coordxy *y, int *mod)
         *mod = event[2];
         (*jEnv)->ReleaseIntArrayElements(jEnv, jEvent, event, 0);
     }
+    (*jEnv)->DeleteLocalRef(jEnv, jEvent);
     LOGD("and_nh_poskey x:%d y:%d mod:%d", *x, *y, *mod);
     return ch;
 }
@@ -1092,15 +1101,23 @@ char and_yn_function(const char *question, const char *choices, char def)
             yn_number = (long)ynNumbers[0];
             (*jEnv)->ReleaseLongArrayElements(jEnv, jYnNumber, ynNumbers, 0);
         } else if(has_esc) {
-            char *rb;
-            if ((rb = strchr(choices, '\033')) != 0)
-                *rb = '\0';
-            jChoices = char2Jstring(jEnv, choices);
+            // only the choices before ESC are offered; copy them rather than
+            // truncating the caller's string, which may be read-only
+            char visible[BUFSZ];
+            size_t n = strcspn(choices, "\033");
+            if (n >= sizeof visible)
+                n = sizeof visible - 1;
+            memcpy(visible, choices, n);
+            visible[n] = '\0';
+            (*jEnv)->DeleteLocalRef(jEnv, jChoices);
+            jChoices = char2Jstring(jEnv, visible);
             ch = JNICallC(jYNFunction, jQuestion, jChoices, jYnNumber, def)
         } else {
             putstr(WIN_MESSAGE, 1<<ATR_BOLD, question);
             ch = JNICallC(jYNFunction, jQuestion, jChoices, jYnNumber, def)
         }
+        (*jEnv)->DeleteLocalRef(jEnv, jQuestion);
+        (*jEnv)->DeleteLocalRef(jEnv, jChoices);
         (*jEnv)->DeleteLocalRef(jEnv, jYnNumber);
     } else {
         // otherwise treat it as message
@@ -1128,8 +1145,20 @@ void and_getlin(const char *question, char *input)
     jstring jquestion = char2Jstring(jEnv, question);
     jstring jinput = char2Jstring(jEnv, input);
     jstring result = (jstring)JNICallO(jGetLine, jquestion, jinput, BUFSZ)
-    const char* chars = jstring2Char(jEnv, result);
-    strcpy(input,chars);
+    char* chars = jstring2Char(jEnv, result);
+    // the Java side limits UTF-16 chars, not bytes; never cut a UTF-8 sequence
+    size_t len = strlen(chars);
+    if (len >= BUFSZ) {
+        len = BUFSZ - 1;
+        while (len > 0 && ((unsigned char) chars[len] & 0xC0) == 0x80)
+            len--;
+    }
+    memcpy(input, chars, len);
+    input[len] = '\0';
+    free(chars);
+    (*jEnv)->DeleteLocalRef(jEnv, jquestion);
+    (*jEnv)->DeleteLocalRef(jEnv, jinput);
+    (*jEnv)->DeleteLocalRef(jEnv, result);
     LOGD("and_getlin %s", input);
 }
 
@@ -1146,21 +1175,29 @@ void and_askname()
     jclass stringClass = (*jEnv)->FindClass(jEnv, "java/lang/String");
     jobjectArray jSavedList = (*jEnv)->NewObjectArray(jEnv, saved_size + aborted_size, stringClass, 0);
     if (saved != NULL)
-        for(i = 0; i < saved_size; i++)
-            (*jEnv)->SetObjectArrayElement(jEnv, jSavedList, i, char2Jstring(jEnv, saved[i]));
+        for(i = 0; i < saved_size; i++) {
+            jstring jSaved = char2Jstring(jEnv, saved[i]);
+            (*jEnv)->SetObjectArrayElement(jEnv, jSavedList, i, jSaved);
+            (*jEnv)->DeleteLocalRef(jEnv, jSaved);
+        }
     jobjectArray jPlayerInfo = (jobjectArray)JNICallO(jAskName, PL_NSIZ, jSavedList)
     // int itemCnt = (*jEnv)->GetArrayLength(jEnv, jPlayerInfo);
     jstring jPlayer = (*jEnv)->GetObjectArrayElement(jEnv, jPlayerInfo, 0);
     jstring jPlaymode = (*jEnv)->GetObjectArrayElement(jEnv, jPlayerInfo, 1);
-    const char *player = jstring2Char(jEnv, jPlayer);
-    const char *playmode = jstring2Char(jEnv, jPlaymode);
-    if(strncmp(playmode, "wizard", strlen(playmode)) == 0)
+    char *player = jstring2Char(jEnv, jPlayer);
+    char *playmode = jstring2Char(jEnv, jPlaymode);
+    // exact match: jstring2Char now yields "" rather than NULL, and an empty
+    // prefix compare would turn on wizard mode
+    if(strcmp(playmode, "wizard") == 0)
         wizard = TRUE;
-    else if(strncmp(playmode, "discover", strlen(playmode)) == 0)
+    else if(strcmp(playmode, "discover") == 0)
         discover = TRUE;
     gp.plnamelen = (int) strlen(strncpy(svp.plname, player, sizeof svp.plname - 1));
-    (*jEnv)->ReleaseStringUTFChars(jEnv, jPlayer, player);
-    (*jEnv)->ReleaseStringUTFChars(jEnv, jPlaymode, playmode);
+    free(player);
+    free(playmode);
+    (*jEnv)->DeleteLocalRef(jEnv, jPlayer);
+    (*jEnv)->DeleteLocalRef(jEnv, jPlaymode);
+    (*jEnv)->DeleteLocalRef(jEnv, stringClass);
     (*jEnv)->DeleteLocalRef(jEnv, jSavedList);
     (*jEnv)->DeleteLocalRef(jEnv, jPlayerInfo);
     LOGD("and_askname");
@@ -1181,15 +1218,12 @@ int and_get_ext_cmd()
     for(int i = 0; i < size; i++) {
         flgs = extcmdlist[i].flags;
         jstring jCmdName, jCmdDesc;
-        jCmdName = char2Jstring(jEnv, extcmdlist[i].ef_txt);
-        if(extcmdlist[i].ef_desc)
-            jCmdDesc = char2Jstring(jEnv, extcmdlist[i].ef_desc);
-        else
-            jCmdDesc = char2Jstring(jEnv, "");
-
         if((flgs & WIZMODECMD) && !wizard) {
             jCmdName = char2Jstring(jEnv, "");
             jCmdDesc = char2Jstring(jEnv, "");
+        } else {
+            jCmdName = char2Jstring(jEnv, extcmdlist[i].ef_txt);
+            jCmdDesc = char2Jstring(jEnv, extcmdlist[i].ef_desc ? extcmdlist[i].ef_desc : "");
         }
         (*jEnv)->SetObjectArrayElement(jEnv, jExtCmdList, idx++, jCmdName);
         (*jEnv)->SetObjectArrayElement(jEnv, jExtCmdList, idx++, jCmdDesc);
@@ -1198,6 +1232,7 @@ int and_get_ext_cmd()
     }
     idx = JNICallI(jShowExtCmdMenu, jExtCmdList)
 
+    (*jEnv)->DeleteLocalRef(jEnv, stringClass);
     (*jEnv)->DeleteLocalRef(jEnv, jExtCmdList);
     return idx;
 }
@@ -1242,13 +1277,16 @@ char* and_get_color_string()
 char* and_getmsghistory(boolean init)
 {
     static int nxtidx;
+    static char *msg;
     if (init) {
         nxtidx = 0;
     }
     LOGD("and_getmsghistory(nxtidx:%d)", nxtidx);
     jstring result = (jstring)JNICallO(jGetMessageHistory, nxtidx++)
-    char *msg = jstring2Char(jEnv, result);
-    if(strncmp(msg, "message_end", strlen(msg)) == 0)
+    free(msg);
+    msg = jstring2Char(jEnv, result);
+    (*jEnv)->DeleteLocalRef(jEnv, result);
+    if(strcmp(msg, "message_end") == 0)
         return NULL;
     return msg;
 }
@@ -1271,6 +1309,7 @@ void and_putmsghistory(const char *msg, boolean restoring)
     if(restoring) {
         jstring jmsg = char2Jstring(jEnv, msg);
         JNICallV(jPutMessageHistory, jmsg, restoring)
+        (*jEnv)->DeleteLocalRef(jEnv, jmsg);
     }
     // LOGD("and_putmsghistory(msg: %s, restoring:%d)", msg, restoring);
 }

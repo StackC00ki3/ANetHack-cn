@@ -54,9 +54,8 @@ void initNetHackWin();
 JNIEXPORT void JNICALL
 Java_com_yywspace_anethack_NetHack_runNetHack(JNIEnv *env, jobject thiz, jstring path) {
     char* params[10];
-    const char *path_c = jstring2Char(env, path);
     params[0] = "NetHack";
-    params[1] = strdup(path_c);
+    params[1] = jstring2Char(env, path);
     jEnv = env;
     jAppInstance = thiz;
     jApp = (*jEnv)->GetObjectClass(jEnv, jAppInstance);
@@ -110,33 +109,62 @@ void initNetHackSound() {
     jSoundVerbal = (*jEnv)->GetMethodID(jEnv, jApp, "soundVerbal", "(Ljava/lang/String;IIII)V");
 }
 
-jstring char2Jstring(JNIEnv *env, const char *c_str) {
-    if (c_str == NULL)
-        return NULL;
+// The NetHack thread never returns to Java while a game is running, so every
+// local reference created here stays alive until the game ends unless it is
+// deleted explicitly. String class, methods and charset are cached as global
+// references so the conversions below only create the references they return.
+static jclass jStringClass;
+static jmethodID jStringInit;
+static jmethodID jStringGetBytes;
+static jstring jUtf8Charset;
+
+static int initStringJni(JNIEnv *env) {
+    if (jStringClass)
+        return 1;
     jclass str_cls = (*env)->FindClass(env, "java/lang/String");
-    jmethodID constructor_mid = (*env)->GetMethodID(env, str_cls, "<init>", "([BLjava/lang/String;)V");
-    int len = (int)strlen(c_str);
-    jbyteArray bytes = (*env)->NewByteArray(env, len);
-    (*env)->SetByteArrayRegion(env, bytes, 0, len, (signed char *)c_str);
-    jstring charsetName = (*env)->NewStringUTF(env, "utf-8");
-    return (*env)->NewObject(env,str_cls,constructor_mid,bytes,charsetName);
+    jstring charset = (*env)->NewStringUTF(env, "utf-8");
+    if (!str_cls || !charset) {
+        (*env)->ExceptionClear(env);
+        return 0;
+    }
+    jStringInit = (*env)->GetMethodID(env, str_cls, "<init>", "([BLjava/lang/String;)V");
+    jStringGetBytes = (*env)->GetMethodID(env, str_cls, "getBytes", "(Ljava/lang/String;)[B");
+    jUtf8Charset = (*env)->NewGlobalRef(env, charset);
+    jStringClass = (*env)->NewGlobalRef(env, str_cls);
+    (*env)->DeleteLocalRef(env, charset);
+    (*env)->DeleteLocalRef(env, str_cls);
+    return 1;
 }
 
+// Returns a new local reference (NULL for a NULL c_str); the caller must
+// DeleteLocalRef it.
+jstring char2Jstring(JNIEnv *env, const char *c_str) {
+    if (c_str == NULL || !initStringJni(env))
+        return NULL;
+    int len = (int)strlen(c_str);
+    jbyteArray bytes = (*env)->NewByteArray(env, len);
+    if (!bytes)
+        return NULL;
+    (*env)->SetByteArrayRegion(env, bytes, 0, len, (signed char *)c_str);
+    jstring result = (*env)->NewObject(env, jStringClass, jStringInit, bytes, jUtf8Charset);
+    (*env)->DeleteLocalRef(env, bytes);
+    return result;
+}
+
+// Returns a malloc'd UTF-8 copy of jstr ("" for NULL or empty strings, never
+// NULL); the caller must free() it.
 char* jstring2Char(JNIEnv *env, jstring jstr)
 {
     char* rtn = NULL;
-    jclass jclass = (*env)->FindClass(env, "java/lang/String");
-    jmethodID mid = (*env)->GetMethodID(env, jclass, "getBytes", "(Ljava/lang/String;)[B");
-    jstring jencode = (*env)->NewStringUTF(env, "utf-8");
-    jbyteArray barr= (jbyteArray)(*env)->CallObjectMethod(env, jstr, mid, jencode);
-    jsize alen = (*env)->GetArrayLength(env, barr);
-    jbyte* ba = (*env)->GetByteArrayElements(env, barr, JNI_FALSE);
-    if (alen > 0)
-    {
-        rtn = (char*)malloc(alen + 1);
-        memcpy(rtn, ba, alen);
-        rtn[alen] = 0;
+    if (jstr && initStringJni(env)) {
+        jbyteArray barr = (jbyteArray)(*env)->CallObjectMethod(env, jstr, jStringGetBytes, jUtf8Charset);
+        if (barr) {
+            jsize alen = (*env)->GetArrayLength(env, barr);
+            rtn = (char*)malloc(alen + 1);
+            (*env)->GetByteArrayRegion(env, barr, 0, alen, (jbyte *)rtn);
+            rtn[alen] = 0;
+            (*env)->DeleteLocalRef(env, barr);
+        }
     }
-    (*env)->ReleaseByteArrayElements(env, barr, ba, 0);
-    return rtn;
+    return rtn ? rtn : strdup("");
 }
