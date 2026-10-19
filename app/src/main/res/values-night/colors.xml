@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Night theme UI chrome. Day variants live in values/colors.xml. -->
+    <color name="ui_surface">#FF1E1F24</color>
+    <color name="ui_background">#FF121317</color>
+    <color name="ui_on_surface">#FFECEDF2</color>
+    <color name="ui_on_surface_secondary">#FFB8BAC7</color>
+    <color name="keyboard_background">#FF1E1F24</color>
+    <color name="key_background">#FF2B2D35</color>
+    <color name="key_background_pressed">#FF353842</color>
+    <color name="key_stroke">#FF4A4D58</color>
+    <color name="key_text">#FFFFFFFF</color>
+    <color name="key_sub_text">#FFB8BAC7</color>
+    <color name="dialog_background">#FF1E1F24</color>
+    <color name="dialog_text">#FFECEDF2</color>
+    <color name="popup_background">#FF2B2D35</color>
+    <color name="search_background">#FF2B2D35</color>
+    <color name="touch_bar_edit_chip_border">#FF4A4D58</color>
+</resources>

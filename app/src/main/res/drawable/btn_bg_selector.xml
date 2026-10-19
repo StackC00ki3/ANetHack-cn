@@ -4,7 +4,7 @@
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
             <!-- 填充颜色 -->
-            <solid android:color="@android:color/transparent"/>
+            <solid android:color="@color/key_background_pressed"/>
             <!-- 线的宽度，颜色 -->
             <stroke android:width="0.5dp" android:color="#00bbff"/>
             <!-- 矩形的圆角半径 -->
@@ -15,10 +15,9 @@
     <item android:state_pressed="false">
         <shape android:shape="rectangle">
             <!-- 填充颜色 -->
-            <!-- <solid android:color="@android:color/transparent"/>-->
-            <solid android:color="@android:color/white"/>
+            <solid android:color="@color/key_background"/>
             <!-- 线的宽度，颜色 -->
-            <stroke android:width="0.5dp" android:color="@color/gray"/>
+            <stroke android:width="0.5dp" android:color="@color/key_stroke"/>
             <!-- 矩形的圆角半径 -->
             <corners android:radius="5dp" />
         </shape>

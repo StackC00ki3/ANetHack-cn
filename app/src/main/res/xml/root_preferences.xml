@@ -1,6 +1,20 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
+        app:title="@string/pref_appearance_header"
+        app:iconSpaceReserved="false">
+
+        <ListPreference
+            app:key="theme"
+            app:title="@string/pref_theme"
+            app:iconSpaceReserved="false"
+            app:useSimpleSummaryProvider="true"
+            app:defaultValue="dark"
+            app:entries="@array/theme_mode_array"
+            app:entryValues="@array/theme_mode_value"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
         app:title="@string/pref_map_header"
         app:iconSpaceReserved="false">
 

@@ -1,4 +1,15 @@
 <resources>
+    <string-array name="theme_mode_array">
+        <item>@string/pref_theme_system</item>
+        <item>@string/pref_theme_light</item>
+        <item>@string/pref_theme_dark</item>
+    </string-array>
+    <string-array name="theme_mode_value">
+        <item>system</item>
+        <item>light</item>
+        <item>dark</item>
+    </string-array>
+
     <string-array name="menu_type_array">
         <item>@string/pref_menu_type_dialog</item>
         <item>@string/pref_menu_type_operate</item>

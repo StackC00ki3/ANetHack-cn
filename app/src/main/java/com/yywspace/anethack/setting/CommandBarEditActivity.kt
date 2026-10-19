@@ -29,6 +29,7 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import com.yywspace.anethack.R
 import com.yywspace.anethack.SharedPreferencesUtils
+import com.yywspace.anethack.ThemeManager
 import com.yywspace.anethack.databinding.ActivityCommandBarEditBinding
 import com.yywspace.anethack.keybord.CommandBarCode
 import com.yywspace.anethack.keybord.TouchAction
@@ -89,7 +90,7 @@ class CommandBarEditActivity : AppCompatActivity() {
         window.statusBarColor = Color.TRANSPARENT
         val windowInsetsController =
             WindowCompat.getInsetsController(window, window.decorView)
-        windowInsetsController.isAppearanceLightStatusBars = true
+        windowInsetsController.isAppearanceLightStatusBars = !ThemeManager.isNightMode(this)
         windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
     }
 
@@ -135,7 +136,7 @@ class CommandBarEditActivity : AppCompatActivity() {
         header.addView(TextView(this).apply {
             text = getString(R.string.cmd_bar_visible_limit)
             textSize = 12f
-            setTextColor(Color.GRAY)
+            setTextColor(getColor(R.color.ui_on_surface_secondary))
         })
         header.addView(buildLimitStepper(rowIndex, row, -1))
         header.addView(TextView(this).apply {
@@ -152,7 +153,7 @@ class CommandBarEditActivity : AppCompatActivity() {
                 TouchCommandBar.MAX_BUTTONS_PER_ROW,
             )
             textSize = 12f
-            setTextColor(Color.GRAY)
+            setTextColor(getColor(R.color.ui_on_surface_secondary))
             marginEnd(dp(8))
         })
         header.addView(TextView(this).apply {
@@ -226,7 +227,7 @@ class CommandBarEditActivity : AppCompatActivity() {
             ).apply { marginEnd = dp(8) }
             addView(ImageView(context).apply {
                 setImageResource(action.iconRes)
-                setColorFilter(Color.BLACK)
+                setColorFilter(getColor(R.color.ui_on_surface))
                 layoutParams = LinearLayout.LayoutParams(dp(24), dp(24))
             })
             addView(TextView(context).apply {
@@ -235,7 +236,7 @@ class CommandBarEditActivity : AppCompatActivity() {
                 maxLines = 1
                 ellipsize = TextUtils.TruncateAt.END
                 gravity = Gravity.CENTER
-                setTextColor(Color.BLACK)
+                setTextColor(getColor(R.color.ui_on_surface))
                 maxWidth = dp(72)
             })
         }
@@ -544,7 +545,7 @@ class CommandBarEditActivity : AppCompatActivity() {
     private fun fieldLabel(text: String): TextView = TextView(this).apply {
         this.text = text
         textSize = 13f
-        setTextColor(Color.GRAY)
+        setTextColor(getColor(R.color.ui_on_surface_secondary))
         setPadding(0, dp(8), 0, 0)
     }
 
@@ -581,7 +582,7 @@ class CommandBarEditActivity : AppCompatActivity() {
                 setBackgroundResource(R.drawable.touch_bar_edit_icon_background)
             }
             imageView.setImageResource(resId)
-            imageView.setColorFilter(Color.BLACK)
+            imageView.setColorFilter(getColor(R.color.ui_on_surface))
             imageView.isSelected = key == selectedKey()
             return imageView
         }

@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.setMargins
 import com.yywspace.anethack.R
 import com.yywspace.anethack.Utils
@@ -58,9 +59,27 @@ class KeyboardView : GridLayout {
         initNumPanel()
         initKeyboardData()
         refreshNHKeyboard()
+        refreshTheme()
     }
     fun refreshNHKeyboard() {
         switchNHKeyboard(keyboardType)
+    }
+
+    /**
+     * Re-applies colors that are resolved at inflation time, so the keyboard
+     * follows a theme change without recreating the game Activity.
+     */
+    fun refreshTheme() {
+        setBackgroundResource(R.color.keyboard_background)
+        keyboardView.forEach { row ->
+            row.forEach { key ->
+                key.setBackgroundResource(R.drawable.btn_bg_selector)
+                key.findViewById<TextView>(R.id.key_main)
+                    ?.setTextColor(ContextCompat.getColor(context, R.color.key_text))
+                key.findViewById<TextView>(R.id.key_sub)
+                    ?.setTextColor(ContextCompat.getColor(context, R.color.key_sub_text))
+            }
+        }
     }
     private fun initKeyboardData() {
         val keyboardLetterJson = Utils.readAssetsFile(

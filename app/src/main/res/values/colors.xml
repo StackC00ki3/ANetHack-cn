@@ -11,6 +11,21 @@
     <color name="green">#86cd3e</color>
     <color name="gray">#808080</color>
     <color name="transparent">#00FFFFFF</color>
+    <!-- Day theme UI chrome. Night variants live in values-night/colors.xml. -->
+    <color name="ui_surface">#FFFFFFFF</color>
+    <color name="ui_background">#FFFFFFFF</color>
+    <color name="ui_on_surface">#FF1B1B1F</color>
+    <color name="ui_on_surface_secondary">#FF6B6B70</color>
+    <color name="keyboard_background">#FFFFFFFF</color>
+    <color name="key_background">#FFFFFFFF</color>
+    <color name="key_background_pressed">#00FFFFFF</color>
+    <color name="key_stroke">#FF808080</color>
+    <color name="key_text">#FF000000</color>
+    <color name="key_sub_text">#FF808080</color>
+    <color name="dialog_background">#FFFFFFFF</color>
+    <color name="dialog_text">#FF1B1B1F</color>
+    <color name="popup_background">#FFFFFFFF</color>
+    <color name="search_background">#FFF5F5F5</color>
     <color name="touch_surface">#F21E1F24</color>
     <color name="touch_wheel_item">#FF2B2D35</color>
     <color name="touch_wheel_item_border">#806D72E6</color>

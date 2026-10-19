@@ -13,7 +13,7 @@
             android:id="@+id/command_bar_edit_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
+            android:background="@color/ui_surface"
             app:title="@string/activity_command_bar_edit_title" />
     </com.google.android.material.appbar.AppBarLayout>
 

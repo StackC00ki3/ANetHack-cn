@@ -8,6 +8,7 @@ import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import androidx.core.content.ContextCompat
 import com.yywspace.anethack.NHTileSet
 import com.yywspace.anethack.R
 import com.yywspace.anethack.entity.NHMenuItem
@@ -69,7 +70,9 @@ class NHWMenuAdapter(private val nhwMenu: NHWMenu, private val tileSet:NHTileSet
             } else
                 itemSelectAmount.visibility = View.GONE
             itemAcc.text = menuItem.accelerator.toString()
-            itemTitle.text = menuItem.title.toSpannableString()
+            itemTitle.text = menuItem.title.toSpannableString(
+                ContextCompat.getColor(itemTitle.context, R.color.dialog_text)
+            )
             itemCheckBox.isChecked = menuItem.isSelected
         }
     }

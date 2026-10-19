@@ -81,6 +81,7 @@ class NetHackActivity : AppCompatActivity() {
         else
             binding.floatingButton.visibility = View.GONE
         binding.keyboardView.setKeyboardVibrate(nethack.prefs.keyboardVibrate)
+        binding.keyboardView.refreshTheme()
         binding.actionWheel.setPanelOpacity(nethack.prefs.actionWheelOpacity)
         refreshCommandBar()
     }
@@ -94,6 +95,7 @@ class NetHackActivity : AppCompatActivity() {
         binding.actionWheel.dismiss()
         super.onConfigurationChanged(newConfig)
         refreshCommandBar()
+        binding.keyboardView.refreshTheme()
         ViewCompat.requestApplyInsets(binding.root)
         if(isKeyboardShow) {
             binding.keyboardView.apply {

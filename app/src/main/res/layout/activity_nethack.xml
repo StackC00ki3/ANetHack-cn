@@ -74,7 +74,7 @@
          command bar rows without relayout; marginBottom is set in code. -->
     <com.yywspace.anethack.keybord.KeyboardView
         android:id="@+id/keyboard_view"
-        android:background="@color/white"
+        android:background="@color/keyboard_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

@@ -1,6 +1,5 @@
 package com.yywspace.anethack.setting
 
-import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
@@ -9,11 +8,13 @@ import android.text.TextWatcher
 import android.text.style.ForegroundColorSpan
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import com.yywspace.anethack.R
+import com.yywspace.anethack.ThemeManager
 import com.yywspace.anethack.databinding.ActivityOptionEditBinding
 import java.io.File
 import androidx.core.graphics.toColorInt
@@ -64,7 +65,7 @@ class OptionEditActivity: AppCompatActivity() {
         window.statusBarColor = Color.TRANSPARENT
         val windowInsetsController =
             WindowCompat.getInsetsController(window, window.decorView)
-        windowInsetsController.isAppearanceLightStatusBars = true
+        windowInsetsController.isAppearanceLightStatusBars = !ThemeManager.isNightMode(this)
         windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
     }
 
@@ -76,6 +77,7 @@ class OptionEditActivity: AppCompatActivity() {
         binding.optionEditText.apply {
             setText(readOptionText())
             processText(editableText)
+            val normalTextColor = getColor(R.color.ui_on_surface)
             addTextChangedListener(object : TextWatcher {
                 override fun beforeTextChanged(
                     s: CharSequence?, start: Int,count: Int, after: Int
@@ -93,7 +95,7 @@ class OptionEditActivity: AppCompatActivity() {
                             ForegroundColorSpan("#77B767".toColorInt()),
                             startIdx + 1, endIdx + 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE )
                     } else {
-                        editableText.setSpan(ForegroundColorSpan(Color.BLACK),
+                        editableText.setSpan(ForegroundColorSpan(normalTextColor),
                             startIdx + 1, endIdx + 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE )
                     }
                 }

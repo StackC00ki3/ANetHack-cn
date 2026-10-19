@@ -2,8 +2,11 @@ package com.yywspace.anethack.setting
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.InputType
 import android.widget.ScrollView
 import android.widget.TextView
@@ -24,6 +27,7 @@ import com.hjq.permissions.Permission
 import com.hjq.permissions.XXPermissions
 import com.yywspace.anethack.CrashReporter
 import com.yywspace.anethack.R
+import com.yywspace.anethack.ThemeManager
 import java.io.File
 
 
@@ -48,7 +52,7 @@ class SettingsActivity : AppCompatActivity() {
         window.statusBarColor = Color.TRANSPARENT
         val windowInsetsController =
             WindowCompat.getInsetsController(window, window.decorView)
-        windowInsetsController.isAppearanceLightStatusBars = true
+        windowInsetsController.isAppearanceLightStatusBars = !ThemeManager.isNightMode(this)
         windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
     }
 
@@ -56,9 +60,24 @@ class SettingsActivity : AppCompatActivity() {
         private var userSoundPerm:CheckBoxPreference? = null
         // 是否手动申请权限
         private var requestSoundPerm = false
+        private val mainHandler = Handler(Looper.getMainLooper())
+        private val themeChangeListener =
+            SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
+                if (key == ThemeManager.PREF_KEY) {
+                    val mode = prefs.getString(ThemeManager.PREF_KEY, ThemeManager.DEFAULT_MODE)
+                    // 值已写入后再切换，避免在列表弹窗关闭过程中重建界面
+                    mainHandler.post { ThemeManager.apply(mode) }
+                }
+            }
         private val exportCrashLog = registerForActivityResult(
             ActivityResultContracts.CreateDocument("application/zip")
         ) { uri -> uri?.let { CrashReporter.export(requireContext(), it) } }
+
+        override fun onDestroy() {
+            preferenceManager.sharedPreferences
+                ?.unregisterOnSharedPreferenceChangeListener(themeChangeListener)
+            super.onDestroy()
+        }
 
         override fun onResume() {
             super.onResume()
@@ -74,6 +93,8 @@ class SettingsActivity : AppCompatActivity() {
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
+            preferenceManager.sharedPreferences
+                ?.registerOnSharedPreferenceChangeListener(themeChangeListener)
             findPreference<Preference>("dumpLog")?.setOnPreferenceClickListener {
                 context?.apply {
                     val fileNames = mutableListOf<String>()

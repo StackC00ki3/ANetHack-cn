@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="pref_appearance_header">外观</string>
+    <string name="pref_theme">主题</string>
+    <string name="pref_theme_system">跟随系统</string>
+    <string name="pref_theme_light">浅色</string>
+    <string name="pref_theme_dark">深色</string>
+
     <string name="pref_keyboard_command_panel">自定义轮盘动作</string>
     <string name="pref_command_bar">自定义底边栏</string>
     <string name="pref_command_bar_summary">可视化调整底边栏行数、每行显示上限、增删按钮与图标；第 1 行为最底部一行。</string>

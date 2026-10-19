@@ -218,7 +218,7 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
         )
         val popupWindow = PopupWindow(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
         val recyclerView = LayoutInflater.from(context).inflate(R.layout.popup_window_pos_key, null).apply {
-            setBackgroundColor(Color.WHITE)
+            setBackgroundColor(context.getColor(R.color.popup_background))
             findViewById<RecyclerView>(R.id.pos_key_list).apply {
                 adapter = NHPosKeyAdapter(posKeyList).apply {
                     onItemClickListener = object : NHPosKeyAdapter.OnItemClickListener {

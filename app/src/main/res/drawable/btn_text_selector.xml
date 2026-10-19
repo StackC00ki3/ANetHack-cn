@@ -7,6 +7,6 @@
         android:state_pressed="true" android:color="#00bbff">
     </item>
     <item
-        android:color="#ffffff">
+        android:color="@color/key_text">
     </item>
 </selector>
