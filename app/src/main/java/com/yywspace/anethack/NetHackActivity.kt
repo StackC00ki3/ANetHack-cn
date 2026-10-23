@@ -339,8 +339,10 @@ class NetHackActivity : AppCompatActivity() {
         val dumpLogMaxSize = nethack.prefs.dumpLogMaxSize
         object : Thread() {
             override fun run() {
-                // save error log
-                val logcatProcess = Runtime.getRuntime().exec("logcat -d *:W")
+                // save error log: only this process, otherwise vendor spam
+                // (VSPA etc.) from other processes fills the file first
+                val logcatProcess = Runtime.getRuntime()
+                    .exec("logcat -d *:W --pid=${android.os.Process.myPid()}")
                 val errorLog = File(filesDir,"logs/error/nethack.log")
                 FileOutputStream(errorLog).use { fileOut ->
                     logcatProcess.inputStream.copyTo(fileOut)

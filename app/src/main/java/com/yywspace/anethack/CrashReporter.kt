@@ -16,6 +16,7 @@ import androidx.core.content.edit
 import java.io.File
 import java.io.IOException
 import java.io.OutputStream
+import java.io.Writer
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -30,7 +31,8 @@ import kotlin.system.exitProcess
  * - native_*.log: fatal signals in native code, written by androidcrash.c
  * - jni_*.log: Java exceptions thrown from NetHack JNI callbacks
  * - java_*.log: uncaught Java exceptions on any thread
- * - logcat_*.txt: logcat taken on the first launch after a crash
+ * - logcat_*.txt: logcat of the crashed process, taken on the first launch
+ *   after the crash
  * The export additionally contains the system's exit records and, on
  * Android 12+, the tombstone of the last native crashes.
  */
@@ -39,6 +41,8 @@ object CrashReporter {
     private const val MAX_FILES = 20
     private const val KEY_LAST_SEEN = "lastSeen"
     private const val KEY_LAST_SNAPSHOT = "lastLogcatSnapshot"
+    private const val KEY_SESSION_PID = "sessionPid"
+    private const val KEY_LAST_SESSION_PID = "lastSessionPid"
     private val REPORT_PREFIXES = listOf("native_", "jni_", "java_")
 
     private lateinit var appContext: Context
@@ -64,7 +68,12 @@ object CrashReporter {
         if (latestCrashTime() > prefs.getLong(KEY_LAST_SNAPSHOT, 0)) {
             val now = System.currentTimeMillis()
             try {
-                File(crashDir, "logcat_$now.txt").outputStream().use { runLogcat(it) }
+                // the crashed process is gone, but its pid is still in the
+                // previous session's record; filtering on it drops the vendor
+                // spam (VSPA and friends) that otherwise fills the buffer
+                File(crashDir, "logcat_$now.txt").outputStream().use { out ->
+                    runLogcat(out, previousSessionPid())
+                }
             } catch (e: Exception) {
                 Log.e(TAG, "logcat snapshot failed", e)
             }
@@ -80,6 +89,22 @@ object CrashReporter {
 
     fun exportFileName(): String =
         "anethack-crash-${SimpleDateFormat("yyyyMMdd-HHmmss", Locale.US).format(Date())}.zip"
+
+    /**
+     * Records this process's pid as the current session and remembers the one
+     * before it, so the next launch knows which pid to filter logcat on once
+     * that process has died. Call as early as possible (Application.onCreate)
+     * to also cover crashes that happen before the game activity exists.
+     */
+    fun recordSessionStart(context: Context) {
+        val p = context.getSharedPreferences("crash_reporter", Context.MODE_PRIVATE)
+        val current = Process.myPid().toLong()
+        val previous = p.getLong(KEY_SESSION_PID, 0L)
+        p.edit {
+            if (previous > 0 && previous != current) putLong(KEY_LAST_SESSION_PID, previous)
+            putLong(KEY_SESSION_PID, current)
+        }
+    }
 
     /** Writes everything collected as a zip to [uri] on a background thread. */
     fun export(context: Context, uri: Uri) {
@@ -159,6 +184,37 @@ object CrashReporter {
         return maxOf(reported, exited)
     }
 
+    /**
+     * Pid of the process that crashed, or null if unknown. The exit record is
+     * authoritative when Android keeps it; otherwise fall back to the pid the
+     * previous launch recorded, which Application.onCreate writes.
+     */
+    private fun previousSessionPid(): Long? {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val record = exitInfos().filter(::isCrash).maxByOrNull { it.timestamp }
+            // only trust the record when it describes the crash the report
+            // files come from, not some older exit still kept by the system
+            val reported = reportFiles().maxOfOrNull { it.lastModified() } ?: 0L
+            if (record != null && record.timestamp >= reported - 5000)
+                return record.pid.toLong()
+        }
+        return prefs.getLong(KEY_LAST_SESSION_PID, 0L).takeIf { it > 0 }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.R)
+    private fun latestCrashExitTime(): Long = exitInfos()
+        .filter(::isCrash)
+        .maxOfOrNull { it.timestamp } ?: 0L
+
+    @RequiresApi(Build.VERSION_CODES.R)
+    private fun isCrash(info: ApplicationExitInfo): Boolean = when (info.reason) {
+        ApplicationExitInfo.REASON_CRASH,
+        ApplicationExitInfo.REASON_CRASH_NATIVE,
+        ApplicationExitInfo.REASON_ANR,
+        -> true
+        else -> false
+    }
+
     private fun trimFiles() {
         crashDir.listFiles()
             ?.sortedByDescending { it.lastModified() }
@@ -166,10 +222,52 @@ object CrashReporter {
             ?.forEach { it.delete() }
     }
 
-    private fun runLogcat(out: OutputStream) {
-        val process = Runtime.getRuntime().exec(arrayOf("logcat", "-d", "-v", "threadtime"))
-        process.inputStream.use { it.copyTo(out) }
+    /**
+     * Dumps the logcat ring buffer into [out], keeping only the lines of [pid]
+     * (the whole buffer if null). threadtime lines start with
+     * "MM-DD HH:MM:SS.mmm <pid> <tid> L <tag>: msg", so the pid is column two.
+     * The filter also drops the "--------- beginning of ..." separators.
+     */
+    private fun runLogcat(out: OutputStream, pid: Long?) {
+        // writer stays open: closing it would close the zip entry / file
+        val writer = out.writer()
+        val matched = captureLogcat(writer, pid)
+        if (pid != null && matched == 0) {
+            // the pid is stale, its lines already rolled out of the ring
+            // buffer; a full dump beats a silently empty file
+            writer.appendLine("# no lines for pid $pid in the ring buffer, full dump below")
+            captureLogcat(writer, null)
+        }
+        writer.flush()
+    }
+
+    /** Copies logcat to [writer]; returns the number of lines kept (-1 if unfiltered). */
+    private fun captureLogcat(writer: Writer, pid: Long?): Int {
+        val process = try {
+            Runtime.getRuntime().exec(arrayOf("logcat", "-d", "-v", "threadtime"))
+        } catch (e: IOException) {
+            Log.e(TAG, "cannot run logcat", e)
+            return 0
+        }
+        val matched = process.inputStream.bufferedReader().use { reader ->
+            if (pid == null) {
+                reader.copyTo(writer)
+                -1
+            } else {
+                val pidColumn = Regex("""^\d\d-\d\d \d\d:\d\d:\d\d\.\d+\s+(\d+)\s""")
+                val wanted = pid.toString()
+                var count = 0
+                reader.lineSequence()
+                    .filter { line -> pidColumn.find(line)?.groupValues?.get(1) == wanted }
+                    .forEach { line ->
+                        writer.appendLine(line)
+                        count++
+                    }
+                count
+            }
+        }
         process.waitFor()
+        return matched
     }
 
     private fun writeZip(out: OutputStream) {
@@ -181,7 +279,7 @@ object CrashReporter {
             File(appContext.filesDir, "logs/error/nethack.log").takeIf { it.exists() }?.let { file ->
                 zip.entry("error/nethack.log") { os -> file.inputStream().use { it.copyTo(os) } }
             }
-            zip.entry("logcat_now.txt") { runLogcat(it) }
+            zip.entry("logcat_now.txt") { runLogcat(it, Process.myPid().toLong()) }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
                 writeExitInfo(zip)
         }
@@ -200,16 +298,6 @@ object CrashReporter {
     } catch (e: Exception) {
         Log.e(TAG, "cannot read exit reasons", e)
         emptyList()
-    }
-
-    @RequiresApi(Build.VERSION_CODES.R)
-    private fun latestCrashExitTime(): Long {
-        val crashReasons = setOf(
-            ApplicationExitInfo.REASON_CRASH,
-            ApplicationExitInfo.REASON_CRASH_NATIVE,
-            ApplicationExitInfo.REASON_ANR,
-        )
-        return exitInfos().filter { it.reason in crashReasons }.maxOfOrNull { it.timestamp } ?: 0L
     }
 
     @RequiresApi(Build.VERSION_CODES.R)
