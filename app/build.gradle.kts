@@ -6,6 +6,35 @@ plugins {
 fun secret(name: String): String? =
     providers.gradleProperty(name).orElse(providers.environmentVariable(name)).orNull
 
+/**
+ * Packs versionName into the integer versionCode so the two cannot drift apart.
+ *
+ * Each segment takes two decimal digits: "5.0.1.a2.2" -> 500010202, i.e.
+ * major * 10^8 + minor * 10^6 + patch * 10^4 + alpha * 10^2 + alphaRevision.
+ * A final version without the ".aN.M" suffix maps to 99.99 so that it sorts
+ * above every prerelease of the same major.minor.patch.
+ */
+fun deriveVersionCode(versionName: String): Int {
+    val parts = versionName.split(".")
+    require(parts.size == 3 || parts.size == 5) {
+        "versionName '$versionName' must look like 5.0.1 or 5.0.1.a2.2"
+    }
+    val numbers = parts.map { segment ->
+        val value = segment.removePrefix("a").toIntOrNull()
+            ?: error("versionName '$versionName' has a non-numeric segment '$segment'")
+        require(value in 0..99) { "versionName segment '$segment' must be 0..99" }
+        value
+    }
+    val code = if (numbers.size == 3) {
+        numbers[0] * 100_000_000L + numbers[1] * 1_000_000L + numbers[2] * 10_000L + 9_999L
+    } else {
+        numbers[0] * 100_000_000L + numbers[1] * 1_000_000L + numbers[2] * 10_000L +
+            numbers[3] * 100L + numbers[4]
+    }
+    require(code in 1..Int.MAX_VALUE.toLong()) { "versionName '$versionName' overflows versionCode" }
+    return code.toInt()
+}
+
 val updateNetHackResources by tasks.registering(Exec::class) {
     group = "nethack"
     description = "Build and copy NetHack resource files before Android builds."
@@ -52,12 +81,14 @@ android {
         releaseKeyPassword
     ).all { !it.isNullOrBlank() }
 
+    val versionNameValue = "5.0.1.a2.2"
+
     defaultConfig {
         applicationId = "com.yywspace.anethack.cn"
         minSdk = 29
         targetSdk = 34
-        versionCode = 4
-        versionName = "5.0.1.a2.1"
+        versionName = versionNameValue
+        versionCode = deriveVersionCode(versionNameValue)
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
