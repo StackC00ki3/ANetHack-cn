@@ -482,9 +482,15 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
 
     private fun drawBorder(canvas: Canvas?) {
         map.apply {
-            paint.color = Color.GRAY
+            paint.color = MapBorderStyle.paintColor(
+                context, nh.prefs.mapBorderColor, nh.prefs.mapBorderOpacity
+            )
             paint.style = Paint.Style.STROKE
-            paint.strokeWidth = borderWidth
+            // 框线是视口边框，不随地图缩放变化，保持用户设定的屏幕粗细。
+            paint.strokeWidth = maxOf(
+                1f,
+                MapBorderStyle.widthDp(nh.prefs.mapBorderWidth) * resources.displayMetrics.density
+            )
             val border = RectF(mapBorder).apply { left+=tileWidth }
             canvas?.drawRect(border, paint)
         }

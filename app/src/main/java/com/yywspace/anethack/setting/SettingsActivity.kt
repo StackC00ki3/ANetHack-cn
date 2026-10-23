@@ -20,6 +20,7 @@ import androidx.preference.CheckBoxPreference
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceGroupAdapter
 import com.hjq.permissions.OnPermissionCallback
 import com.hjq.permissions.Permission
 import com.hjq.permissions.XXPermissions
@@ -153,6 +154,16 @@ class SettingsActivity : AppCompatActivity() {
                     startActivity(Intent(context, OptionEditActivity::class.java))
                     true
                 }
+            }
+            findPreference<Preference>("mapBorder")?.setOnPreferenceClickListener { preference ->
+                // 面板贴着设置项弹出；行视图尚未布局时退回 Activity 根视图。
+                val adapter = listView.adapter as? PreferenceGroupAdapter
+                val row = adapter
+                    ?.getPreferenceAdapterPosition(preference)
+                    ?.takeIf { it >= 0 }
+                    ?.let { listView.findViewHolderForAdapterPosition(it)?.itemView }
+                MapBorderPanel(requireContext(), row, view).show()
+                true
             }
             findPreference<Preference>("commandBar")?.apply {
                 setOnPreferenceClickListener { _ ->

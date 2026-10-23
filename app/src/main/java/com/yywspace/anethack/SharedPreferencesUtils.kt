@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import com.yywspace.anethack.keybord.TouchCommandBar
+import com.yywspace.anethack.map.MapBorderStyle
 import java.time.Instant
 import java.util.stream.Collectors
 import kotlin.properties.ReadWriteProperty
@@ -41,6 +42,9 @@ class SharedPreferencesUtils(val context: Context) {
     var indicatorSymbols by SharedPreferenceDelegates.string("<>")
     var travelAfterPanned by SharedPreferenceDelegates.boolean(true)
     var walkRange by SharedPreferenceDelegates.int(70)
+    var mapBorderColor by SharedPreferenceDelegates.int(MapBorderStyle.DEFAULT_COLOR)
+    var mapBorderWidth by SharedPreferenceDelegates.int(MapBorderStyle.DEFAULT_WIDTH_TENTHS)
+    var mapBorderOpacity by SharedPreferenceDelegates.int(MapBorderStyle.DEFAULT_OPACITY)
     var priceId by SharedPreferenceDelegates.boolean(true)
     var userSound by SharedPreferenceDelegates.boolean(false)
     var internalSound by SharedPreferenceDelegates.boolean(true)

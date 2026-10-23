@@ -64,6 +64,20 @@
     <string name="pref_map_walk_range_desc">当角色移动超出该范围（%）时，画面会随之滚动。</string>
     <string name="pref_map_travel_after_panned">平移地图后旅行</string>
     <string name="pref_map_travel_after_panned_desc">当地图已平移且角色不在移动范围内时，触摸地图即向该处旅行。</string>
+    <string name="pref_map_border">地图边框</string>
+    <string name="pref_map_border_summary">调整地图外框的粗细、颜色与不透明度。</string>
+    <string name="map_border_title">地图边框</string>
+    <string name="map_border_width">粗细</string>
+    <string name="map_border_opacity">不透明度</string>
+    <string name="map_border_color">颜色</string>
+    <string name="map_border_color_theme">跟随主题</string>
+    <string name="map_border_color_white">白色</string>
+    <string name="map_border_color_black">黑色</string>
+    <string name="map_border_color_gold">金色</string>
+    <string name="map_border_color_green">绿色</string>
+    <string name="map_border_color_blue">蓝色</string>
+    <string name="map_border_color_red">红色</string>
+    <string name="map_border_reset">恢复默认</string>
 
     <!-- Preference Sound -->
     <string name="pref_sound_header">声音</string>

@@ -58,6 +58,12 @@
             app:defaultValue="&#060;&#062;"
             app:iconSpaceReserved="false"/>
 
+        <Preference
+            app:key="mapBorder"
+            app:title="@string/pref_map_border"
+            app:summary="@string/pref_map_border_summary"
+            app:iconSpaceReserved="false"/>
+
         <SeekBarPreference
             app:key="walkRange"
             app:title="@string/pref_map_walk_range"
