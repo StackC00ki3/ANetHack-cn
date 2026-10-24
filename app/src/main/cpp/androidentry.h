@@ -9,6 +9,11 @@ extern JNIEnv* jEnv;
 extern jclass jApp;
 extern jobject jAppInstance;
 
+// NHPosCommand.PosMod ordinal carried through requirePosKeyCommand()
+#define AND_POS_NONE   0
+#define AND_POS_TRAVEL 1
+#define AND_POS_LOOK   2
+#define AND_POS_SELF   3
 // window
 extern jmethodID jRequireKeyCommand;
 extern jmethodID jRequirePosKeyCommand;

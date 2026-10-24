@@ -64,6 +64,8 @@
     <string name="pref_map_walk_range_desc">当角色移动超出该范围（%）时，画面会随之滚动。</string>
     <string name="pref_map_travel_after_panned">平移地图后旅行</string>
     <string name="pref_map_travel_after_panned_desc">当地图已平移且角色不在移动范围内时，触摸地图即向该处旅行。</string>
+    <string name="pref_map_smart_self_tap">点自己时拾取或上下楼</string>
+    <string name="pref_map_smart_self_tap_desc">点角色所在的格子会拾取脚下的物品；站在楼梯上会上下楼（喷泉旁喝水、宝座上坐下）；什么都没有则原地休息。关闭后改为弹出动作轮盘。</string>
     <string name="pref_map_border">地图边框</string>
     <string name="pref_map_border_summary">调整地图外框的粗细、颜色与不透明度。</string>
     <string name="map_border_title">地图边框</string>

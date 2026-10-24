@@ -1033,6 +1033,47 @@ int and_nhgetch()
 //		   The different click types can map to whatever the
 //		   hardware supports.  If no mouse is supported, this
 //		   routine always returns a non-zero character.
+//
+//   AND_POS_SELF 是安卓端自定义的点击类型：点在自己的格子上。NetHack 3.6.6 的
+//   鼠标点击会直接执行 domouseaction()，而 5.0 把点击改成了可绑定的鼠标键（默认
+//   弹出 therecmdmenu 菜单）。这里按 3.6.6 的顺序还原"点自己"的默认行为：
+//   喝水/坐下 → 上楼梯 → 下楼梯 → 拾取（容器则搜刮）→ 什么都没得做就休息。
+//   返回的是该指令当前绑定的按键，让正常按键路径去执行；不用 mod 当鼠标键序号，
+//   因为 3 会越过 mousebtn[] 的边界。
+static uchar and_bound_key(int (*fn)(void), uchar fallback)
+{
+    struct Cmd_bind *bind = gc.Cmd.cmdbinds;
+
+    while (bind) {
+        if (bind->cmd && bind->cmd->ef_funct == fn)
+            return bind->key;
+        bind = bind->next;
+    }
+    return fallback;
+}
+
+static uchar and_self_click_key(void)
+{
+    struct obj *otmp;
+
+    if (!program_state.in_moveloop)
+        return '\0';
+
+    if ((IS_FOUNTAIN(levl[u.ux][u.uy].typ) || IS_SINK(levl[u.ux][u.uy].typ))
+        && can_reach_floor(FALSE))
+        return and_bound_key(dodrink, 'q');
+    if (IS_THRONE(levl[u.ux][u.uy].typ))
+        return and_bound_key(dosit, M('s'));
+    if (On_stairs_up(u.ux, u.uy))
+        return and_bound_key(doup, '<');
+    if (On_stairs_dn(u.ux, u.uy))
+        return and_bound_key(dodown, '>');
+    if ((otmp = vobj_at(u.ux, u.uy)) != 0)
+        return Is_container(otmp) ? and_bound_key(doloot, M('l'))
+                                  : and_bound_key(dopickup, ',');
+    return and_bound_key(donull, '.');
+}
+
 int and_nh_poskey(coordxy *x, coordxy *y, int *mod)
 {
     jintArray jEvent = (*jEnv)->NewIntArray(jEnv, 3);
@@ -1044,6 +1085,16 @@ int and_nh_poskey(coordxy *x, coordxy *y, int *mod)
         *mod = event[2];
         (*jEnv)->ReleaseIntArrayElements(jEnv, jEvent, event, 0);
         crash_breadcrumb("nh_poskey: click x %d y %d mod %d", *x, *y, *mod);
+        if (*mod == AND_POS_SELF && isok(*x, *y) && u_at(*x, *y)
+            // 只在正常读取指令时替换成按键；getpos/getdir 等提示期间仍按点击处理，
+            // 否则返回的方向键会被当成选择键。
+            && program_state.input_state == commandInp) {
+            uchar key = and_self_click_key();
+            if (key) {
+                (*jEnv)->DeleteLocalRef(jEnv, jEvent);
+                return (char) key;
+            }
+        }
     } else {
         crash_breadcrumb("nh_poskey: %d", ch);
     }

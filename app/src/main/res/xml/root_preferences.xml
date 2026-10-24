@@ -58,6 +58,13 @@
             app:defaultValue="&#060;&#062;"
             app:iconSpaceReserved="false"/>
 
+        <CheckBoxPreference
+            app:key="smartSelfTap"
+            app:title="@string/pref_map_smart_self_tap"
+            app:iconSpaceReserved="false"
+            app:defaultValue="true"
+            app:summary="@string/pref_map_smart_self_tap_desc"/>
+
         <Preference
             app:key="mapBorder"
             app:title="@string/pref_map_border"

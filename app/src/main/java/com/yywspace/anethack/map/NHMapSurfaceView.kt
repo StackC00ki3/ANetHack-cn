@@ -81,7 +81,13 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
             override fun onClick(e: PointF) {
                 val point = getTileLocation(e.x, e.y)
                 if (point.x == map.curse.x && point.y == map.curse.y) {
-                    onPlayerTap?.invoke(getPlayerAnchor() ?: e)
+                    // 点自己：按 3.6.6 的鼠标语义，脚下有物品就拾取、在楼梯上就上下楼、
+                    // 什么都不做就原地休息。关掉该设置后仍回到动作轮盘。
+                    if (nh.prefs.smartSelfTap) {
+                        nh.command.sendCommand(NHPosCommand(point.x, point.y, PosMod.SELF))
+                    } else {
+                        onPlayerTap?.invoke(getPlayerAnchor() ?: e)
+                    }
                     return
                 }
                 if(indicatorController.onIndicatorClick(e))

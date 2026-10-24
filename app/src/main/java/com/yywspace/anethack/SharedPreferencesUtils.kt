@@ -42,6 +42,7 @@ class SharedPreferencesUtils(val context: Context) {
     var indicatorSymbols by SharedPreferenceDelegates.string("<>")
     var travelAfterPanned by SharedPreferenceDelegates.boolean(true)
     var walkRange by SharedPreferenceDelegates.int(70)
+    var smartSelfTap by SharedPreferenceDelegates.boolean(true)
     var mapBorderColor by SharedPreferenceDelegates.int(MapBorderStyle.DEFAULT_COLOR)
     var mapBorderWidth by SharedPreferenceDelegates.int(MapBorderStyle.DEFAULT_WIDTH_TENTHS)
     var mapBorderOpacity by SharedPreferenceDelegates.int(MapBorderStyle.DEFAULT_OPACITY)
