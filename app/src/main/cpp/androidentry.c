@@ -39,6 +39,7 @@ jmethodID jRenderStatus;
 jmethodID jShowExtCmdMenu;
 jmethodID jGetMessageHistory;
 jmethodID jPutMessageHistory;
+jmethodID jIsAutoSave;
 // sound
 jmethodID jInitNHSound;
 jmethodID jExitNHSound;
@@ -99,6 +100,7 @@ void initNetHackWin() {
     jShowExtCmdMenu = (*jEnv)->GetMethodID(jEnv, jApp, "showExtCmdMenu", "([Ljava/lang/String;)I");
     jGetMessageHistory = (*jEnv)->GetMethodID(jEnv, jApp, "getMessageHistory","(I)Ljava/lang/String;");
     jPutMessageHistory = (*jEnv)->GetMethodID(jEnv, jApp, "putMessageHistory", "(Ljava/lang/String;Z)V");
+    jIsAutoSave = (*jEnv)->GetMethodID(jEnv, jApp, "isAutoSave", "()Z");
 }
 
 void initNetHackSound() {

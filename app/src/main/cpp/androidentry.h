@@ -41,6 +41,7 @@ extern jmethodID jRenderStatus;
 extern jmethodID jShowExtCmdMenu;
 extern jmethodID jGetMessageHistory;
 extern jmethodID jPutMessageHistory;
+extern jmethodID jIsAutoSave;
 // sound
 extern jmethodID jInitNHSound;
 extern jmethodID jExitNHSound;
@@ -63,6 +64,8 @@ void and_check_jni_exception(const char *method);
 #define JNICallO(func, ...) ({ jobject jni_ret_ = (*jEnv)->CallObjectMethod(jEnv, jAppInstance, func, ## __VA_ARGS__); \
         and_check_jni_exception(#func); jni_ret_; });
 #define JNICallC(func, ...) ({ jchar jni_ret_ = (*jEnv)->CallCharMethod(jEnv, jAppInstance, func, ## __VA_ARGS__); \
+        and_check_jni_exception(#func); jni_ret_; });
+#define JNICallZ(func, ...) ({ jboolean jni_ret_ = (*jEnv)->CallBooleanMethod(jEnv, jAppInstance, func, ## __VA_ARGS__); \
         and_check_jni_exception(#func); jni_ret_; });
 
 #endif //ANETHACK_ANDROIDENTRY_H

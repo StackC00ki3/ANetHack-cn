@@ -150,6 +150,8 @@
     <string name="pref_other_lock_view_desc">始终将角色置于画面中心。</string>
     <string name="pref_other_immersive_mode">全屏显示</string>
     <string name="pref_other_immersive_mode_desc">隐藏状态栏和导航栏。</string>
+    <string name="pref_other_auto_save">自动保存</string>
+    <string name="pref_other_auto_save_desc">每次行动后保存进度，闪退或被系统后台关掉后再进游戏，最多丢一步。关闭后只能回到上次换层时的进度。</string>
 
     <string name="pref_keyboard_command_panel">轮盘自定义动作</string>
     <string name="pref_command_bar">底部按钮栏</string>

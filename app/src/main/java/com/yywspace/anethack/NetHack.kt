@@ -295,6 +295,9 @@ class NetHack(
         numberPadOption = state
         Log.d(TAG, "setNumPadOption(state:$state)")
     }
+
+    /** androidwin.c 每次等新指令前调用，决定上一步行动后要不要写检查点。 */
+    private fun isAutoSave(): Boolean = prefs.autoSave
     fun initNHSound(){
         sound.initNHSound()
     }

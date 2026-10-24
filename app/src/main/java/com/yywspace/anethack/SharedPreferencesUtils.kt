@@ -43,6 +43,7 @@ class SharedPreferencesUtils(val context: Context) {
     var messageHistorySize by SharedPreferenceDelegates.string2int(500)
     var menuType by SharedPreferenceDelegates.string("1")
     var immersiveMode by SharedPreferenceDelegates.boolean(true)
+    var autoSave by SharedPreferenceDelegates.boolean(true)
     var keyboardVibrate by SharedPreferenceDelegates.boolean(true)
     var tileSet by SharedPreferenceDelegates.string("4")
     var showIndicator by SharedPreferenceDelegates.boolean(true)

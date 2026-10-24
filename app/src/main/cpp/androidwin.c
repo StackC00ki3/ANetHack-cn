@@ -1089,8 +1089,32 @@ static uchar and_travel_key(void)
     return '\0';
 }
 
+//   自动保存：NetHack 只在换层时写检查点（save_currentstate()：当前层的关卡文件 +
+//   0 号锁文件里的游戏状态），进程被杀或闪退后 restore_aborted_games() 只能恢复到
+//   进入本层的那一刻。开启后每次 parse() 等下一条指令时，只要上一条指令花了时间
+//   （每次英雄行动 hero_seq 都会变），就补写一次检查点。只在等指令时写：这时上一条
+//   指令已经完整结束；getpos、菜单这类指令中途的提示期间游戏状态还没落定。
+static void and_autosave_checkpoint(void)
+{
+#ifdef INSURANCE
+    static long saved_seq = -1;
+    jboolean enabled;
+
+    if (!iflags.in_parse || program_state.input_state != commandInp
+        || !program_state.in_moveloop || !program_state.something_worth_saving
+        || gh.hero_seq == saved_seq)
+        return;
+    enabled = JNICallZ(jIsAutoSave)
+    if (!enabled)
+        return;
+    saved_seq = gh.hero_seq;
+    save_currentstate();
+#endif
+}
+
 int and_nh_poskey(coordxy *x, coordxy *y, int *mod)
 {
+    and_autosave_checkpoint();
     jintArray jEvent = (*jEnv)->NewIntArray(jEnv, 3);
     char ch = JNICallC(jRequirePosKeyCommand, jEvent)
     if(!ch) {
@@ -1386,7 +1410,6 @@ char* and_getmsghistory(boolean init)
     if (init) {
         nxtidx = 0;
     }
-    LOGD("and_getmsghistory(nxtidx:%d)", nxtidx);
     jstring result = (jstring)JNICallO(jGetMessageHistory, nxtidx++)
     free(msg);
     msg = jstring2Char(jEnv, result);

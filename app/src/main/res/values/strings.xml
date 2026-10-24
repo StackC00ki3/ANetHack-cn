@@ -339,6 +339,8 @@
     <string name="pref_other_lock_view_desc">Always put the player in the center of the view.</string>
     <string name="pref_other_immersive_mode">Full screen</string>
     <string name="pref_other_immersive_mode_desc">Hide the status bar and navigation bar.</string>
+    <string name="pref_other_auto_save">Auto save</string>
+    <string name="pref_other_auto_save_desc">Save progress after every action. If the app crashes or the system closes it in the background, you lose at most one move. When off, you can only go back to when you last changed levels.</string>
     <string name="floating_button_desc">Floating Action Button</string>
 
     <string name="permission_audio">Audio permission</string>
