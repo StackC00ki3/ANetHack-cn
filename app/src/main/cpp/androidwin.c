@@ -1085,15 +1085,20 @@ int and_nh_poskey(coordxy *x, coordxy *y, int *mod)
         *mod = event[2];
         (*jEnv)->ReleaseIntArrayElements(jEnv, jEvent, event, 0);
         crash_breadcrumb("nh_poskey: click x %d y %d mod %d", *x, *y, *mod);
-        if (*mod == AND_POS_SELF && isok(*x, *y) && u_at(*x, *y)
-            // 只在正常读取指令时替换成按键；getpos/getdir 等提示期间仍按点击处理，
-            // 否则返回的方向键会被当成选择键。
-            && program_state.input_state == commandInp) {
-            uchar key = and_self_click_key();
-            if (key) {
-                (*jEnv)->DeleteLocalRef(jEnv, jEvent);
-                return (char) key;
+        if (*mod == AND_POS_SELF) {
+            if (isok(*x, *y) && u_at(*x, *y)
+                // 只在正常读取指令时替换成按键；getpos/getdir 等提示期间保留点击，
+                // 否则返回的指令键会被当成位置选择键。
+                && program_state.input_state == commandInp) {
+                uchar key = and_self_click_key();
+                if (key) {
+                    (*jEnv)->DeleteLocalRef(jEnv, jEvent);
+                    return (char) key;
+                }
             }
+            // click_to_cmd() 会用 mod 去索引 NUM_MOUSE_BUTTONS 大小的数组，
+            // 3 会越界；没被接手时降级成普通左键点击。
+            *mod = CLICK_1;
         }
     } else {
         crash_breadcrumb("nh_poskey: %d", ch);
