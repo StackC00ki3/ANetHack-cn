@@ -56,16 +56,17 @@
     <string name="pref_map_tile_nevanda">Nevanda</string>
     <string name="pref_map_tile_pixelhack">PixelHack</string>
     <string name="pref_map_tile_ascii">ASCII</string>
-    <string name="pref_map_indicator">显示标记</string>
-    <string name="pref_map_last_travel_indicator">显示上次旅行位置标记</string>
-    <string name="pref_map_indicator_desc">在地图边缘显示屏幕外目标的标记。</string>
-    <string name="pref_map_indicator_symbols">标记符号</string>
-    <string name="pref_map_walk_range">移动范围</string>
-    <string name="pref_map_walk_range_desc">当角色移动超出该范围（%）时，画面会随之滚动。</string>
-    <string name="pref_map_travel_after_panned">平移地图后旅行</string>
-    <string name="pref_map_travel_after_panned_desc">当地图已平移且角色不在移动范围内时，触摸地图即向该处旅行。</string>
-    <string name="pref_map_smart_self_tap">智能动作</string>
-    <string name="pref_map_smart_self_tap_desc">智能拾取、上下楼、喝水、坐下或休息。</string>
+    <string name="pref_map_indicator">屏幕外提示</string>
+    <string name="pref_map_last_travel_indicator">提示上次旅行目的地</string>
+    <string name="pref_map_indicator_desc">角色或楼梯不在屏幕内时，在屏幕边缘显示图标，点击图标可查看该处。</string>
+    <string name="pref_map_indicator_symbols">提示哪些地图符号</string>
+    <string name="pref_map_indicator_symbols_desc">填写要提示的地图符号，例如 &lt;&gt; 表示上下楼梯。</string>
+    <string name="pref_map_walk_range">角色活动区域</string>
+    <string name="pref_map_walk_range_desc">角色走出屏幕中央这块区域（占屏幕的百分比）时，镜头才会跟着移动。数值越小，镜头跟得越紧。</string>
+    <string name="pref_map_travel_after_panned">拖动地图后点击直达</string>
+    <string name="pref_map_travel_after_panned_desc">拖动地图让角色离开活动区域后，点哪里角色就自动走到哪里；否则每次点击只走一步。</string>
+    <string name="pref_map_smart_self_tap">点击角色快捷操作</string>
+    <string name="pref_map_smart_self_tap_desc">按脚下情况拾取物品、上下楼、喝水、坐下或休息。关闭后点击角色改为打开动作轮盘。</string>
     <string name="pref_map_border">地图边框</string>
     <string name="pref_map_border_summary">调整地图外框的粗细、颜色与不透明度。</string>
     <string name="map_border_title">地图边框</string>
@@ -84,13 +85,14 @@
     <!-- Preference Sound -->
     <string name="pref_sound_header">声音</string>
     <string name="pref_sound_user">自定义音效</string>
-    <string name="pref_sound_user_summery">获得音频权限后播放自定义音效。</string>
+    <string name="pref_sound_user_summery">播放你在配置文件里设置的音效文件，需要音频权限。</string>
     <string name="pref_sound_internal">内置音效</string>
-    <string name="pref_sound_internal_summery">播放 NetHack 自带的内置音效。</string>
+    <string name="pref_sound_internal_summery">播放游戏自带的音效。</string>
 
     <!-- Preference Config -->
-    <string name="pref_option_header">配置</string>
+    <string name="pref_option_header">游戏选项</string>
     <string name="pref_option_edit">编辑配置文件</string>
+    <string name="pref_option_edit_summary">直接修改 nethackrc，调整自动拾取、颜色等游戏选项。</string>
     <string name="option_edit_title">选项</string>
     <string name="option_edit_save">保存</string>
     <string name="option_edit_cancel">取消</string>
@@ -100,9 +102,9 @@
 
     <!-- Preference PriceID -->
     <string name="pref_price_id_header">价格鉴定</string>
-    <string name="pref_price_id_enable">启用价格鉴定</string>
+    <string name="pref_price_id_enable">显示价格鉴定按钮</string>
     <string name="pride_id_title">价格鉴定</string>
-    <string name="pride_id_title_desc">显示价格鉴定按钮。</string>
+    <string name="pride_id_title_desc">根据商店报价推测未鉴定物品是什么。</string>
     <string name="pride_id_charisma_label">魅力</string>
     <string name="pride_id_price_label">价格</string>
     <string name="pride_id_surcharge_label">附加费</string>
@@ -120,41 +122,41 @@
 
     <!-- Preference Menu -->
     <string name="pref_menu_header">菜单</string>
-    <string name="pref_menu_type">菜单类型</string>
+    <string name="pref_menu_type">菜单样式</string>
     <string name="pref_menu_type_dialog">对话框</string>
     <string name="pref_menu_type_operate">操作面板</string>
 
     <!-- Preference Message -->
     <string name="pref_message_header">消息</string>
-    <string name="pref_message_history_size">消息历史条数上限</string>
+    <string name="pref_message_history_size">消息记录保留条数</string>
 
     <!-- Preference Keyboard -->
-    <string name="pref_keyboard_header">键盘</string>
-    <string name="pref_keyboard_vibrate">键盘震动</string>
+    <string name="pref_keyboard_header">操作</string>
+    <string name="pref_keyboard_vibrate">按键振动</string>
     <string name="pref_keyboard_command_panel_default"></string>
 
     <!-- Preference Log -->
     <string name="pref_log_header">日志</string>
-    <string name="pref_log_dump">转储日志</string>
-    <string name="pref_log_dump_summery">记录游戏结束时游戏状态的日志。</string>
-    <string name="pref_log_dump_max_size">转储日志保留数量</string>
+    <string name="pref_log_dump">游戏结束记录</string>
+    <string name="pref_log_dump_summery">查看每局结束时的角色属性、物品、地图等完整记录。</string>
+    <string name="pref_log_dump_max_size">结束记录保留份数</string>
     <string name="pref_log_error">错误日志</string>
-    <string name="pref_log_error_summery">Android 崩溃日志。</string>
+    <string name="pref_log_error_summery">查看游戏运行时记录的警告和错误信息。</string>
 
     <!-- Preference Other -->
     <string name="pref_other_header">其他</string>
     <string name="pref_other_lock_view">锁定视图</string>
     <string name="pref_other_lock_view_desc">始终将角色置于画面中心。</string>
-    <string name="pref_other_immersive_mode">沉浸模式</string>
-    <string name="pref_other_immersive_mode_desc">隐藏系统界面。</string>
+    <string name="pref_other_immersive_mode">全屏显示</string>
+    <string name="pref_other_immersive_mode_desc">隐藏状态栏和导航栏。</string>
 
-    <string name="pref_keyboard_command_panel">自定义轮盘动作</string>
-    <string name="pref_command_bar">自定义底边栏</string>
-    <string name="pref_command_bar_summary">可视化调整底边栏行数、每行显示上限、增删按钮与图标；第 1 行为最底部一行。</string>
-    <string name="activity_command_bar_edit_title">编辑底边栏</string>
+    <string name="pref_keyboard_command_panel">轮盘自定义动作</string>
+    <string name="pref_command_bar">底部按钮栏</string>
+    <string name="pref_command_bar_summary">增删按钮、更换图标、调整行数和每行显示个数。第 1 行在最下方。</string>
+    <string name="activity_command_bar_edit_title">编辑底部按钮栏</string>
     <string name="cmd_bar_add_row">添加行</string>
     <string name="cmd_bar_reset">恢复默认</string>
-    <string name="cmd_bar_reset_confirm">将底边栏恢复为默认按钮？</string>
+    <string name="cmd_bar_reset_confirm">将底部按钮栏恢复为默认按钮？</string>
     <string name="cmd_bar_row_title">第 %1$d 行</string>
     <string name="cmd_bar_visible_limit">上限</string>
     <string name="cmd_bar_drag_here_delete">拖到此处删除</string>
@@ -179,12 +181,12 @@
     <string name="cmd_bar_code_copied">配置码已复制到剪贴板</string>
     <string name="cmd_bar_code_invalid">无效的配置码</string>
     <string name="cmd_bar_code_too_new">配置码需要更新版本的应用（v%1$d）</string>
-    <string name="cmd_bar_import_confirm">导入并覆盖当前底边栏布局？</string>
-    <string name="pref_keyboard_command_panel_summary">在操作轮盘中增加“自定义”分类。空格分隔动作，换行分页；使用 command|标签 设置自定义名称。按键：^p 表示 Ctrl+P，M-p 表示 Alt+P（前缀 M 仅大写，字母区分大小写），esc 表示 Esc；其余字符按顺序依次执行，可混用 ^x、M-x 键位，如 10s^p。</string>
+    <string name="cmd_bar_import_confirm">导入并覆盖当前底部按钮栏布局？</string>
+    <string name="pref_keyboard_command_panel_summary">在动作轮盘中添加“自定义”分类。动作之间用空格隔开，换行即分页；写成 命令|名称 可自定义显示名。按键写法：^p 为 Ctrl+P，M-p 为 Alt+P（M 须大写，字母区分大小写），esc 为 Esc；其他字符按顺序输入，可与 ^x、M-x 混用，如 10s^p。</string>
     <string name="pref_action_wheel_enabled">动作轮盘</string>
-    <string name="pref_action_wheel_enabled_summary">点击地图上角色所在位置弹出径向动作轮盘。</string>
-    <string name="pref_action_wheel_opacity">轮盘面板不透明度</string>
-    <string name="pref_action_wheel_opacity_summary">数值越低，轮盘面板越透明；图标和文字始终保持清晰。</string>
+    <string name="pref_action_wheel_enabled_summary">点击角色弹出圆形动作菜单。需先关闭“点击角色快捷操作”。</string>
+    <string name="pref_action_wheel_opacity">轮盘不透明度</string>
+    <string name="pref_action_wheel_opacity_summary">数值越小轮盘越透明，图标和文字不受影响。</string>
 
     <string name="touch_category_combat">战斗</string>
     <string name="touch_category_items">物品</string>
@@ -322,7 +324,7 @@
     <string name="pref_icon_licenses_summary">触控按钮所用 game-icons.net 图标的署名信息</string>
     <string name="icon_licenses_title">game-icons.net 图标署名</string>
     <string name="pref_log_crash">导出崩溃日志</string>
-    <string name="pref_log_crash_summary">将原生/Java 崩溃报告、logcat 和系统退出记录打包为 zip 文件</string>
+    <string name="pref_log_crash_summary">把崩溃相关记录打包成 zip 文件，方便反馈问题。</string>
     <string name="pref_log_crash_test">触发原生测试崩溃</string>
     <string name="pref_log_crash_test_summary">仅调试版可见：在原生代码中故意崩溃，用于验证能否生成崩溃日志</string>
     <string name="crash_report_title">检测到上次运行崩溃</string>

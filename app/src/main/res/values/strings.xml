@@ -46,7 +46,7 @@
 
     <!-- Price identification -->
     <string name="pride_id_title">Price Identification</string>
-    <string name="pride_id_title_desc">Show price identification button.</string>
+    <string name="pride_id_title_desc">Guess unidentified items from shop prices.</string>
     <string name="pride_id_charisma_label">Charisma</string>
     <string name="pride_id_price_label">Price</string>
     <string name="pride_id_surcharge_label">Surcharge</string>
@@ -64,13 +64,13 @@
 
     <!-- Preference Log -->
     <string name="pref_log_header">Logs</string>
-    <string name="pref_log_dump">Dump log</string>
-    <string name="pref_log_dump_summery">The log that records game state at the end of a game.</string>
-    <string name="pref_log_dump_max_size">Dump log size</string>
+    <string name="pref_log_dump">Game-end records</string>
+    <string name="pref_log_dump_summery">View the full record of each finished game: attributes, items, map and more.</string>
+    <string name="pref_log_dump_max_size">Game-end records to keep</string>
     <string name="pref_log_error">Error log</string>
-    <string name="pref_log_error_summery">Android crash log.</string>
+    <string name="pref_log_error_summery">View warnings and errors logged while the game ran.</string>
     <string name="pref_log_crash">Export crash log</string>
-    <string name="pref_log_crash_summary">Pack native/Java crash reports, logcat and system exit records into a zip file.</string>
+    <string name="pref_log_crash_summary">Pack crash records into a zip file for bug reports.</string>
     <string name="pref_log_crash_test">Trigger native test crash</string>
     <string name="pref_log_crash_test_summary">Debug builds only. Crashes in native code to check that a crash report gets written.</string>
     <string name="crash_report_title">Crash detected</string>
@@ -82,28 +82,29 @@
 
     <!-- Preference Sound -->
     <string name="pref_sound_header">Sound</string>
-    <string name="pref_sound_user">User sound</string>
-    <string name="pref_sound_user_summery">Play user sound if permission granted.</string>
-    <string name="pref_sound_internal">Internal sound</string>
-    <string name="pref_sound_internal_summery">Play internal sound that NetHack provided.</string>
+    <string name="pref_sound_user">Custom sounds</string>
+    <string name="pref_sound_user_summery">Play sound files set in your config file. Needs audio permission.</string>
+    <string name="pref_sound_internal">Built-in sounds</string>
+    <string name="pref_sound_internal_summery">Play the game\'s built-in sounds.</string>
 
     <!-- Preference Config -->
-    <string name="pref_option_header">Config</string>
+    <string name="pref_option_header">Game options</string>
     <string name="pref_option_edit">Edit config file</string>
+    <string name="pref_option_edit_summary">Edit nethackrc directly to change autopickup, colors and other game options.</string>
 
     <!-- Preference PriceID -->
     <string name="pref_price_id_header">Price Identification</string>
-    <string name="pref_price_id_enable">Enable price identification</string>
+    <string name="pref_price_id_enable">Show price ID button</string>
 
     <!-- Preference Menu -->
     <string name="pref_menu_header">Menu</string>
-    <string name="pref_menu_type">Menu type</string>
+    <string name="pref_menu_type">Menu style</string>
     <string name="pref_menu_type_dialog">Dialog</string>
     <string name="pref_menu_type_operate">Operation</string>
 
     <!-- Preference Message -->
     <string name="pref_message_header">Message</string>
-    <string name="pref_message_history_size">Size of message history</string>
+    <string name="pref_message_history_size">Messages to keep</string>
 
     <!-- Preference Map -->
     <string name="pref_map_header">Map</string>
@@ -112,16 +113,17 @@
     <string name="pref_map_tile_nevanda">Nevanda</string>
     <string name="pref_map_tile_pixelhack">PixelHack</string>
     <string name="pref_map_tile_ascii">Ascii</string>
-    <string name="pref_map_indicator">Show indicator</string>
-    <string name="pref_map_last_travel_indicator">Show last travel indicator</string>
-    <string name="pref_map_indicator_desc">Show map symbol indicator.</string>
-    <string name="pref_map_indicator_symbols">Indicator symbols</string>
-    <string name="pref_map_walk_range">Walk range</string>
-    <string name="pref_map_walk_range_desc">When the player moves beyond the range(%), the screen will move along with it.</string>
-    <string name="pref_map_travel_after_panned">Travel after map panned</string>
-    <string name="pref_map_travel_after_panned_desc">Travel when you touch the map, if the map has been translated and player not in walk range.</string>
-    <string name="pref_map_smart_self_tap">Smart action</string>
-    <string name="pref_map_smart_self_tap_desc">Smart pick up, stairs, drink, sit or rest.</string>
+    <string name="pref_map_indicator">Off-screen hints</string>
+    <string name="pref_map_last_travel_indicator">Hint last travel destination</string>
+    <string name="pref_map_indicator_desc">When the hero or stairs are off screen, show an icon at the screen edge. Tap it to look there.</string>
+    <string name="pref_map_indicator_symbols">Map symbols to hint</string>
+    <string name="pref_map_indicator_symbols_desc">Enter the map symbols to hint, e.g. &lt;&gt; for stairs.</string>
+    <string name="pref_map_walk_range">Hero free-move area</string>
+    <string name="pref_map_walk_range_desc">The camera only follows the hero after they walk out of this middle area (percent of the screen). Lower makes it follow more closely.</string>
+    <string name="pref_map_travel_after_panned">Tap to travel after dragging</string>
+    <string name="pref_map_travel_after_panned_desc">After you drag the map so the hero is outside the free-move area, tapping a spot walks there. Otherwise each tap takes one step.</string>
+    <string name="pref_map_smart_self_tap">Tap hero for quick action</string>
+    <string name="pref_map_smart_self_tap_desc">Picks up, takes stairs, drinks, sits or rests, depending on what is underfoot. When off, tapping the hero opens the action wheel.</string>
     <string name="pref_map_border">Map border</string>
     <string name="pref_map_border_summary">Adjust the thickness, color and opacity of the frame around the map.</string>
     <string name="map_border_title">Map border</string>
@@ -138,11 +140,11 @@
     <string name="map_border_reset">Reset</string>
 
     <!-- Preference Keyboard -->
-    <string name="pref_keyboard_header">Keyboard</string>
-    <string name="pref_keyboard_vibrate">Keyboard vibration</string>
+    <string name="pref_keyboard_header">Controls</string>
+    <string name="pref_keyboard_vibrate">Vibrate on key press</string>
     <string name="pref_keyboard_command_panel">Custom wheel actions</string>
-    <string name="pref_command_bar">Bottom bar</string>
-    <string name="pref_command_bar_summary">Visually adjust bottom bar rows, per-row visible limit, buttons and icons. Row 1 is the bottommost row.</string>
+    <string name="pref_command_bar">Bottom button bar</string>
+    <string name="pref_command_bar_summary">Add or remove buttons, change icons, set rows and buttons per row. Row 1 is at the bottom.</string>
     <string name="activity_command_bar_edit_title">Edit bottom bar</string>
     <string name="cmd_bar_add_row">Add row</string>
     <string name="cmd_bar_reset">Reset to default</string>
@@ -175,9 +177,9 @@
     <string name="pref_keyboard_command_panel_summary">Adds a Custom category to the action wheel. Separate actions with spaces and pages with line breaks. Use command|label for custom labels. Keys: ^p = Ctrl-P, M-p = Alt-P (uppercase M only, case matters), esc = Escape; other characters run as a key sequence in order and may mix in ^x/M-x keys, e.g. 10s^p.</string>
     <string name="pref_keyboard_command_panel_default"></string>
     <string name="pref_action_wheel_enabled">Action wheel</string>
-    <string name="pref_action_wheel_enabled_summary">Tap your character on the map to open the radial action wheel.</string>
-    <string name="pref_action_wheel_opacity">Action wheel panel opacity</string>
-    <string name="pref_action_wheel_opacity_summary">Lower values make the wheel panels more transparent while keeping icons and text clear.</string>
+    <string name="pref_action_wheel_enabled_summary">Tap the hero to open a round action menu. Turn off \"Tap hero for quick action\" first.</string>
+    <string name="pref_action_wheel_opacity">Wheel opacity</string>
+    <string name="pref_action_wheel_opacity_summary">Lower makes the wheel more see-through. Icons and text stay clear.</string>
 
     <string name="touch_category_combat">Combat</string>
     <string name="touch_category_items">Items</string>
@@ -320,8 +322,8 @@
     <string name="pref_other_header">Other</string>
     <string name="pref_other_lock_view">Lock view</string>
     <string name="pref_other_lock_view_desc">Always put the player in the center of the view.</string>
-    <string name="pref_other_immersive_mode">Immersive mode</string>
-    <string name="pref_other_immersive_mode_desc">Hide system ui.</string>
+    <string name="pref_other_immersive_mode">Full screen</string>
+    <string name="pref_other_immersive_mode_desc">Hide the status bar and navigation bar.</string>
     <string name="floating_button_desc">Floating Action Button</string>
 
     <string name="permission_audio">Audio permission</string>

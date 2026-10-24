@@ -54,6 +54,7 @@
             app:key="indicatorSymbols"
             app:dependency="showIndicator"
             app:title="@string/pref_map_indicator_symbols"
+            app:dialogMessage="@string/pref_map_indicator_symbols_desc"
             app:useSimpleSummaryProvider="true"
             app:defaultValue="&#060;&#062;"
             app:iconSpaceReserved="false"/>
@@ -162,6 +163,7 @@
         <Preference
             app:key="optionEdit"
             app:title="@string/pref_option_edit"
+            app:summary="@string/pref_option_edit_summary"
             app:useSimpleSummaryProvider="false"
             app:iconSpaceReserved="false"/>
 
