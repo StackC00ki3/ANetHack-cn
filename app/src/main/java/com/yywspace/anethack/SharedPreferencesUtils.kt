@@ -26,6 +26,14 @@ class SharedPreferencesUtils(val context: Context) {
                 putBoolean("commandBarV2", true)
             }
         }
+        // 移动方案改版，旧配置一律迁移为总是旅行（只迁移一次）
+        if (!preferences.getBoolean("moveSchemeV2", false)) {
+            preferences.edit {
+                putString("moveScheme", MOVE_SCHEME_ALWAYS)
+                remove("travelAfterPanned")
+                putBoolean("moveSchemeV2", true)
+            }
+        }
     }
 
     private var _saves by SharedPreferenceDelegates.map()
@@ -40,8 +48,8 @@ class SharedPreferencesUtils(val context: Context) {
     var showIndicator by SharedPreferenceDelegates.boolean(true)
     var showLastTravelIndicator by SharedPreferenceDelegates.boolean(true)
     var indicatorSymbols by SharedPreferenceDelegates.string("<>")
-    /** 点按地图何时旅行：[MOVE_SCHEME_PANNED] 拖动地图后，[MOVE_SCHEME_ALWAYS] 总是。 */
-    var moveScheme by SharedPreferenceDelegates.string(MOVE_SCHEME_PANNED)
+    /** 点按地图何时旅行：[MOVE_SCHEME_PANNED] 拖动地图后，[MOVE_SCHEME_ALWAYS] 总是，[MOVE_SCHEME_LONG_PRESS] 仅长按。 */
+    var moveScheme by SharedPreferenceDelegates.string(MOVE_SCHEME_ALWAYS)
     var walkRange by SharedPreferenceDelegates.int(70)
     var smartSelfTap by SharedPreferenceDelegates.boolean(true)
     var mapBorderColor by SharedPreferenceDelegates.int(MapBorderStyle.DEFAULT_COLOR)
@@ -98,6 +106,7 @@ class SharedPreferencesUtils(val context: Context) {
         // 与 arrays.xml 的 move_scheme_value 对应
         const val MOVE_SCHEME_PANNED = "panned"
         const val MOVE_SCHEME_ALWAYS = "always"
+        const val MOVE_SCHEME_LONG_PRESS = "longPress"
     }
 
     private object SharedPreferenceDelegates {

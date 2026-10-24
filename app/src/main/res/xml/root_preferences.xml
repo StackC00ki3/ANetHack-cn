@@ -87,7 +87,7 @@
             app:title="@string/pref_map_move_scheme"
             app:iconSpaceReserved="false"
             app:useSimpleSummaryProvider="true"
-            app:defaultValue="panned"
+            app:defaultValue="always"
             app:entries="@array/move_scheme_array"
             app:entryValues="@array/move_scheme_value"/>
     </PreferenceCategory>

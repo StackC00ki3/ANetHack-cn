@@ -66,6 +66,7 @@
     <string name="pref_map_move_scheme">移动方案</string>
     <string name="pref_map_move_scheme_panned">拖动地图后旅行</string>
     <string name="pref_map_move_scheme_always">总是旅行</string>
+    <string name="pref_map_move_scheme_long_press">仅长按旅行</string>
     <string name="pref_map_smart_self_tap">点击角色快捷操作</string>
     <string name="pref_map_smart_self_tap_desc">按脚下情况拾取物品、上下楼、喝水、坐下或休息。关闭后点击角色改为打开动作轮盘。</string>
     <string name="pref_map_border">地图边框</string>

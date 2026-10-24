@@ -656,6 +656,7 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
             }
             val travelOnTap = when (nh.prefs.moveScheme) {
                 SharedPreferencesUtils.MOVE_SCHEME_ALWAYS -> true
+                SharedPreferencesUtils.MOVE_SCHEME_LONG_PRESS -> false
                 else -> mapTranslated && !playerInWalkRange(nh.prefs.walkRange)
             }
             nh.status.runMode =
