@@ -53,7 +53,7 @@ class MapBorderPanel(
         repeat(MapBorderStyle.PALETTE.size) { index ->
             swatches.addView(
                 makeSwatch(index),
-                LinearLayout.LayoutParams(0, dp(40), 1f).apply { marginEnd = dp(6) }
+                LinearLayout.LayoutParams(0, dp(36), 1f).apply { marginEnd = dp(8) }
             )
         }
 
