@@ -90,7 +90,6 @@
     <!-- Preference Config -->
     <string name="pref_option_header">Game options</string>
     <string name="pref_option_edit">Edit config file</string>
-    <string name="pref_option_edit_summary">Edit nethackrc directly to change autopickup, colors and other game options.</string>
 
     <!-- Preference PriceID -->
     <string name="pref_price_id_header">Price Identification</string>
@@ -124,7 +123,7 @@
     <string name="pref_map_move_scheme_panned">Travel after dragging the map</string>
     <string name="pref_map_move_scheme_always">Always travel</string>
     <string name="pref_map_move_scheme_long_press">Travel on long press only</string>
-    <string name="pref_map_smart_self_tap">Tap hero for quick action</string>
+    <string name="pref_map_smart_self_tap">Tap hero for smart action</string>
     <string name="pref_map_smart_self_tap_desc">Picks up, takes stairs, drinks, sits or rests, depending on what is underfoot. When off, tapping the hero opens the action wheel.</string>
     <string name="pref_map_border">Map border</string>
     <string name="pref_map_border_summary">Adjust the thickness, color and opacity of the frame around the map.</string>
@@ -179,7 +178,7 @@
     <string name="pref_keyboard_command_panel_summary">Adds a Custom category to the action wheel. Separate actions with spaces and pages with line breaks. Use command|label for custom labels. Keys: ^p = Ctrl-P, M-p = Alt-P (uppercase M only, case matters), esc = Escape; other characters run as a key sequence in order and may mix in ^x/M-x keys, e.g. 10s^p.</string>
     <string name="pref_keyboard_command_panel_default"></string>
     <string name="pref_action_wheel_enabled">Action wheel</string>
-    <string name="pref_action_wheel_enabled_summary">Tap the hero to open a round action menu. Turn off \"Tap hero for quick action\" first.</string>
+    <string name="pref_action_wheel_enabled_summary">Tap the hero to open a round action menu. Turn off \"Tap hero for smart action\" first.</string>
     <string name="pref_action_wheel_opacity">Wheel opacity</string>
     <string name="pref_action_wheel_opacity_summary">Lower makes the wheel more see-through. Icons and text stay clear.</string>
     <string name="pref_direction_pad">Direction pad</string>

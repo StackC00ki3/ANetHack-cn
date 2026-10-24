@@ -19,7 +19,6 @@
     <color name="map_border">#FFC9CEDB</color>
     <color name="map_indicator_text">#FFFFFFFF</color>
     <color name="map_travel_preview">#FFFFC94D</color>
-    <color name="map_travel_preview_halo">#99000000</color>
     <!-- Night variants of the in-game command bar and radial action wheel. -->
     <color name="touch_surface">#F21E1F24</color>
     <color name="touch_wheel_item">#FF2B2D35</color>

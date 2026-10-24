@@ -67,7 +67,7 @@
     <string name="pref_map_move_scheme_panned">拖动地图后旅行</string>
     <string name="pref_map_move_scheme_always">总是旅行</string>
     <string name="pref_map_move_scheme_long_press">仅长按旅行</string>
-    <string name="pref_map_smart_self_tap">点击角色快捷操作</string>
+    <string name="pref_map_smart_self_tap">点击角色智能操作</string>
     <string name="pref_map_smart_self_tap_desc">按脚下情况拾取物品、上下楼、喝水、坐下或休息。关闭后点击角色改为打开动作轮盘。</string>
     <string name="pref_map_border">地图边框</string>
     <string name="pref_map_border_summary">调整地图外框的粗细、颜色与不透明度。</string>
@@ -94,7 +94,6 @@
     <!-- Preference Config -->
     <string name="pref_option_header">游戏选项</string>
     <string name="pref_option_edit">编辑配置文件</string>
-    <string name="pref_option_edit_summary">直接修改 nethackrc，调整自动拾取、颜色等游戏选项。</string>
     <string name="option_edit_title">选项</string>
     <string name="option_edit_save">保存</string>
     <string name="option_edit_cancel">取消</string>
@@ -186,7 +185,7 @@
     <string name="cmd_bar_import_confirm">导入并覆盖当前底部按钮栏布局？</string>
     <string name="pref_keyboard_command_panel_summary">在动作轮盘中添加“自定义”分类。动作之间用空格隔开，换行即分页；写成 命令|名称 可自定义显示名。按键写法：^p 为 Ctrl+P，M-p 为 Alt+P（M 须大写，字母区分大小写），esc 为 Esc；其他字符按顺序输入，可与 ^x、M-x 混用，如 10s^p。</string>
     <string name="pref_action_wheel_enabled">动作轮盘</string>
-    <string name="pref_action_wheel_enabled_summary">点击角色弹出圆形动作菜单。需先关闭“点击角色快捷操作”。</string>
+    <string name="pref_action_wheel_enabled_summary">点击角色弹出圆形动作菜单。需先关闭“点击角色智能操作”。</string>
     <string name="pref_action_wheel_opacity">轮盘不透明度</string>
     <string name="pref_action_wheel_opacity_summary">数值越小轮盘越透明，图标和文字不受影响。</string>
     <string name="pref_direction_pad">方向键盘</string>

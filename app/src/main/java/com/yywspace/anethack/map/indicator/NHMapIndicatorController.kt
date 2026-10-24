@@ -3,6 +3,7 @@ package com.yywspace.anethack.map.indicator
 import android.graphics.Canvas
 import android.graphics.PointF
 import com.yywspace.anethack.NetHack
+import com.yywspace.anethack.R
 import com.yywspace.anethack.map.NHMapSurfaceView
 import com.yywspace.anethack.window.NHWMap
 
@@ -33,7 +34,9 @@ class NHMapIndicatorController(private val mapView: NHMapSurfaceView, val nh:Net
                 // 只显示对应楼层LastTravelIndicator
                 if (nh.status.dungeonLevel.realVal == first) {
                     val tile = map.getTile(second.x, second.y)
-                    tmpIndicators.add(NHMapIndicator(mapView, nh, tile))
+                    // 和点按旅行的目的地标记同色，和英雄、楼梯区分开
+                    val color = mapView.context.getColor(R.color.map_travel_preview)
+                    tmpIndicators.add(NHMapIndicator(mapView, nh, tile, color))
                 }
             }
         }

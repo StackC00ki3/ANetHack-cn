@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Path
 import android.graphics.Point
 import android.graphics.PointF
 import android.graphics.RectF
@@ -32,9 +33,13 @@ class TravelPreview(private val context: Context) {
     )
 
     private val candidate = AtomicReference<Candidate?>(null)
-    private val markPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val markPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
+        strokeCap = Paint.Cap.ROUND
+        strokeJoin = Paint.Join.ROUND
+    }
     private val dotPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL }
-    private val markRect = RectF()
+    private val markPath = Path()
 
     /**
      * 标出新的候选目的地，替换掉旧的。返回的函数用来送回路线，
@@ -72,12 +77,11 @@ class TravelPreview(private val context: Context) {
         val targetBorder = tileBorder(shown.target.x, shown.target.y)
         val tile = min(targetBorder.width(), targetBorder.height())
         val color = context.getColor(R.color.map_travel_preview)
-        val halo = context.getColor(R.color.map_travel_preview_halo)
 
         routePoints(shown, tileBorder)?.let { points ->
             drawDots(canvas, points, tile, color, fade)
         }
-        drawMark(canvas, targetBorder, tile, elapsed, color, halo, fade)
+        drawMark(canvas, targetBorder, tile, elapsed, color, fade)
     }
 
     /** 路线经过的格子中心；路线还没算好或没有已知路线时不画 */
@@ -101,28 +105,36 @@ class TravelPreview(private val context: Context) {
             canvas.drawCircle(points[i].x, points[i].y, radius, dotPaint)
     }
 
+    /** 只描出目的格的四个角，不挡住格子里的东西 */
     private fun drawMark(
-        canvas: Canvas, border: RectF, tile: Float, elapsed: Long,
-        color: Int, halo: Int, fade: Float,
+        canvas: Canvas, border: RectF, tile: Float, elapsed: Long, color: Int, fade: Float,
     ) {
         // 出现时从稍大一圈缩回格子里
         val pop = (elapsed / POP_MS.toFloat()).coerceAtMost(1f)
         val grow = tile * 0.18f * (1f - pop) * (1f - pop)
-        val inset = tile * 0.1f - grow
-        markRect.set(border.left + inset, border.top + inset, border.right - inset, border.bottom - inset)
-        val corner = tile * 0.22f
-        val stroke = max(2f, tile * 0.1f)
+        val inset = tile * 0.06f - grow
+        val left = border.left + inset
+        val top = border.top + inset
+        val right = border.right - inset
+        val bottom = border.bottom - inset
+        val arm = tile * 0.24f
 
-        markPaint.style = Paint.Style.FILL
-        markPaint.color = withAlpha(color, fade * 0.22f)
-        canvas.drawRoundRect(markRect, corner, corner, markPaint)
-        markPaint.style = Paint.Style.STROKE
-        markPaint.strokeWidth = stroke + max(2f, tile * 0.06f)
-        markPaint.color = withAlpha(halo, fade)
-        canvas.drawRoundRect(markRect, corner, corner, markPaint)
-        markPaint.strokeWidth = stroke
+        markPath.reset()
+        markPath.moveTo(left, top + arm)
+        markPath.lineTo(left, top)
+        markPath.lineTo(left + arm, top)
+        markPath.moveTo(right - arm, top)
+        markPath.lineTo(right, top)
+        markPath.lineTo(right, top + arm)
+        markPath.moveTo(right, bottom - arm)
+        markPath.lineTo(right, bottom)
+        markPath.lineTo(right - arm, bottom)
+        markPath.moveTo(left + arm, bottom)
+        markPath.lineTo(left, bottom)
+        markPath.lineTo(left, bottom - arm)
+        markPaint.strokeWidth = max(2f, tile * 0.08f)
         markPaint.color = withAlpha(color, fade)
-        canvas.drawRoundRect(markRect, corner, corner, markPaint)
+        canvas.drawPath(markPath, markPaint)
     }
 
     private fun withAlpha(color: Int, fade: Float): Int =

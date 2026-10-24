@@ -225,6 +225,17 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
         nh.command.sendCommand(NHQueryCommand { onPath(nh.queryTravelPath(point.x, point.y)) })
     }
 
+    /**
+     * 英雄走到上次旅行的目的地，或停在走不进去的目的地旁边，这趟旅行就算结束了，
+     * 不再提示，免得屏幕边缘一直挂着英雄脚边那一格。
+     */
+    private fun clearReachedTravelTile() {
+        val (level, point) = lastTravelTile ?: return
+        if (level == nh.status.dungeonLevel.realVal
+            && abs(map.player.x - point.x) <= 1 && abs(map.player.y - point.y) <= 1)
+            lastTravelTile = null
+    }
+
     private fun playerInWalkRange(walkRange: Int):Boolean {
         val offsetX = (1 - walkRange / 100f) * width / 2f
         val offsetY = (1 - walkRange / 100f) * height / 2f
@@ -654,6 +665,7 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
                 transformMapWithMove(nh.prefs.walkRange)
                 lastCurse = Point(map.curse)
             }
+            clearReachedTravelTile()
             val travelOnTap = when (nh.prefs.moveScheme) {
                 SharedPreferencesUtils.MOVE_SCHEME_ALWAYS -> true
                 SharedPreferencesUtils.MOVE_SCHEME_LONG_PRESS -> false

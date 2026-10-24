@@ -12,9 +12,11 @@ import com.yywspace.anethack.window.NHWMap
 import kotlin.math.abs
 
 
+/** [frameColor] 为空时边框跟着血量变色 */
 class NHMapIndicator(private val mapView: NHMapSurfaceView,
                      private val nh:NetHack,
-                     private val tile:NHWMap.Tile){
+                     private val tile:NHWMap.Tile,
+                     private val frameColor:Int? = null){
     private var canIndicatorDraw = false
     private val paint = Paint()
     private val textSize = 50f
@@ -54,7 +56,7 @@ class NHMapIndicator(private val mapView: NHMapSurfaceView,
         }
     }
     private fun drawAsciiIndicator(canvas:Canvas?, cx:Float, cy:Float) {
-        paint.color = nh.status.hitPoints.color
+        paint.color = frameColor ?: nh.status.hitPoints.color
         paint.style = Paint.Style.FILL
         canvas?.drawCircle(cx, cy, radius, paint)
         val textWidth = paint.measureText(tile.ch.toString())
@@ -71,7 +73,7 @@ class NHMapIndicator(private val mapView: NHMapSurfaceView,
                 RectF(cx-radius,cy-radius, cx+radius,cy+radius),
                 paint
             )
-            paint.color =  nh.status.hitPoints.color
+            paint.color =  frameColor ?: nh.status.hitPoints.color
             paint.style = Paint.Style.STROKE
             paint.strokeWidth = 3f
             canvas?.drawCircle(cx, cy, radius, paint)

@@ -170,8 +170,6 @@
         <Preference
             app:key="optionEdit"
             app:title="@string/pref_option_edit"
-            app:summary="@string/pref_option_edit_summary"
-            app:useSimpleSummaryProvider="false"
             app:iconSpaceReserved="false"/>
 
     </PreferenceCategory>
