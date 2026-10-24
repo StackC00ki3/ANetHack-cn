@@ -204,11 +204,14 @@ class NetHackActivity : AppCompatActivity() {
 
     /**
      * 连点冷却：[KEY_PRESS_COOLDOWN_MS] 内的重复按键直接丢弃，避免手滑把指令堆进队列。
+     * 另外待处理输入超过 [MAX_PENDING_INPUT] 条时也不再接受新按键——
+     * 按住不放时按键间隔可能略大于冷却时间，只靠时间窗挡不住积压。
      * 只用于底部命令栏和动作轮盘这类可连点的按钮；软键盘打字不节流，否则会丢字符。
      */
     private fun acceptButtonPress(): Boolean {
         val now = System.nanoTime()
         if (now - lastKeyPressNanos < KEY_PRESS_COOLDOWN_MS * 1_000_000L) return false
+        if (nethack.command.pendingUserInputCount() >= MAX_PENDING_INPUT) return false
         lastKeyPressNanos = now
         return true
     }
@@ -405,7 +408,9 @@ class NetHackActivity : AppCompatActivity() {
 
     companion object {
         /** 按钮连点冷却，略长于一次点击的最短间隔，但不影响正常连续操作。 */
-        private const val KEY_PRESS_COOLDOWN_MS = 80L
+        private const val KEY_PRESS_COOLDOWN_MS = 200L
+        /** 允许排队等待执行的玩家输入条数；超出的按键直接丢弃而不是堆进队列。 */
+        private const val MAX_PENDING_INPUT = 2
     }
 
 }

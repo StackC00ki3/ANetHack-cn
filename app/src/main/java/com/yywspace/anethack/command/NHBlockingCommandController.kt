@@ -28,6 +28,18 @@ class NHBlockingCommandController {
         return cmd
     }
 
+    /**
+     * 队列里还有多少条玩家输入没被游戏取走。
+     * 脚本序列和弹窗自己的回答不算，它们不属于"连按积压"。
+     */
+    fun pendingUserInputCount(): Int = cmdQueue.count { it.isUserInput() }
+
+    private fun NHCommand.isUserInput(): Boolean =
+        !fromSequence
+            && this !is NHAnswerCommand
+            && this !is NHMenuCommand
+            && this !is NHLineCommand
+
     inline fun <reified T:NHCommand>findAnyCommand():T?{
         for(cmd in cmdQueue) {
             if (cmd is T) {
@@ -65,11 +77,6 @@ class NHBlockingCommandController {
      * 所以按下按钮后的选择不会受影响。
      */
     fun discardPendingInput() {
-        cmdQueue.removeIf { cmd ->
-            !cmd.fromSequence
-                && cmd !is NHAnswerCommand
-                && cmd !is NHMenuCommand
-                && cmd !is NHLineCommand
-        }
+        cmdQueue.removeIf { it.isUserInput() }
     }
 }

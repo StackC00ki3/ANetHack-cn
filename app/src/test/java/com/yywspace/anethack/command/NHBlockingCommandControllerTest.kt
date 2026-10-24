@@ -42,4 +42,22 @@ class NHBlockingCommandControllerTest {
 
         assertEquals(listOf(scripted), controller.cmdQueue.toList())
     }
+
+    @Test
+    fun countsOnlyPendingUserInput() {
+        val controller = controllerOf(
+            NHKeyCommand('h'),
+            NHKeyCommand('h'),
+            NHAnswerCommand('y'),
+            NHKeyCommand('E').apply { fromSequence = true },
+        )
+
+        // 脚本序列和弹窗回答不算连按积压
+        assertEquals(2, controller.pendingUserInputCount())
+
+        controller.discardPendingInput()
+
+        assertEquals(0, controller.pendingUserInputCount())
+        assertEquals(2, controller.cmdQueue.size)
+    }
 }
