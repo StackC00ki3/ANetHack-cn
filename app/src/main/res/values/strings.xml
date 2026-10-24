@@ -83,7 +83,7 @@
     <!-- Preference Sound -->
     <string name="pref_sound_header">Sound</string>
     <string name="pref_sound_user">Custom sounds</string>
-    <string name="pref_sound_user_summery">Play sound files set in your config file. Needs audio permission.</string>
+    <string name="pref_sound_user_summery">Play sound files set in your config file.</string>
     <string name="pref_sound_internal">Built-in sounds</string>
     <string name="pref_sound_internal_summery">Play the game\'s built-in sounds.</string>
 
@@ -124,7 +124,7 @@
     <string name="pref_map_move_scheme_always">Always travel</string>
     <string name="pref_map_move_scheme_long_press">Travel on long press only</string>
     <string name="pref_map_smart_self_tap">Tap hero for smart action</string>
-    <string name="pref_map_smart_self_tap_desc">Picks up, takes stairs, drinks, sits or rests, depending on what is underfoot. When off, tapping the hero opens the action wheel.</string>
+    <string name="pref_map_smart_self_tap_desc">Picks up, takes stairs, drinks, sits or rests, depending on what is underfoot.</string>
     <string name="pref_map_border">Map border</string>
     <string name="pref_map_border_summary">Adjust the thickness, color and opacity of the frame around the map.</string>
     <string name="map_border_title">Map border</string>
@@ -145,7 +145,7 @@
     <string name="pref_keyboard_vibrate">Vibrate on key press</string>
     <string name="pref_keyboard_command_panel">Custom wheel actions</string>
     <string name="pref_command_bar">Bottom button bar</string>
-    <string name="pref_command_bar_summary">Add or remove buttons, change icons, set rows and buttons per row. Row 1 is at the bottom.</string>
+    <string name="pref_command_bar_summary">Add or remove buttons, change icons, set rows and buttons per row.</string>
     <string name="activity_command_bar_edit_title">Edit bottom bar</string>
     <string name="cmd_bar_add_row">Add row</string>
     <string name="cmd_bar_reset">Reset to default</string>
@@ -340,7 +340,7 @@
     <string name="pref_other_immersive_mode">Full screen</string>
     <string name="pref_other_immersive_mode_desc">Hide the status bar and navigation bar.</string>
     <string name="pref_other_auto_save">Auto save</string>
-    <string name="pref_other_auto_save_desc">Save progress after every action. If the app crashes or the system closes it in the background, you lose at most one move. When off, you can only go back to when you last changed levels.</string>
+    <string name="pref_other_auto_save_desc">Save progress after every action. You lose at most one move. When off, you can only go back to when you last changed levels.</string>
     <string name="floating_button_desc">Floating Action Button</string>
 
     <string name="permission_audio">Audio permission</string>

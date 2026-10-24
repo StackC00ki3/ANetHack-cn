@@ -68,7 +68,7 @@
     <string name="pref_map_move_scheme_always">总是旅行</string>
     <string name="pref_map_move_scheme_long_press">仅长按旅行</string>
     <string name="pref_map_smart_self_tap">点击角色智能操作</string>
-    <string name="pref_map_smart_self_tap_desc">按脚下情况拾取物品、上下楼、喝水、坐下或休息。关闭后点击角色改为打开动作轮盘。</string>
+    <string name="pref_map_smart_self_tap_desc">按脚下情况拾取物品、上下楼、喝水、坐下或休息。</string>
     <string name="pref_map_border">地图边框</string>
     <string name="pref_map_border_summary">调整地图外框的粗细、颜色与不透明度。</string>
     <string name="map_border_title">地图边框</string>
@@ -87,7 +87,7 @@
     <!-- Preference Sound -->
     <string name="pref_sound_header">声音</string>
     <string name="pref_sound_user">自定义音效</string>
-    <string name="pref_sound_user_summery">播放你在配置文件里设置的音效文件，需要音频权限。</string>
+    <string name="pref_sound_user_summery">播放你在配置文件里设置的音效文件。</string>
     <string name="pref_sound_internal">内置音效</string>
     <string name="pref_sound_internal_summery">播放游戏自带的音效。</string>
 
@@ -151,11 +151,11 @@
     <string name="pref_other_immersive_mode">全屏显示</string>
     <string name="pref_other_immersive_mode_desc">隐藏状态栏和导航栏。</string>
     <string name="pref_other_auto_save">自动保存</string>
-    <string name="pref_other_auto_save_desc">每次行动后保存进度，闪退或被系统后台关掉后再进游戏，最多丢一步。关闭后只能回到上次换层时的进度。</string>
+    <string name="pref_other_auto_save_desc">每次行动后保存进度，最多丢一步。关闭后只能回到上次换层时的进度。</string>
 
     <string name="pref_keyboard_command_panel">轮盘自定义动作</string>
     <string name="pref_command_bar">底部按钮栏</string>
-    <string name="pref_command_bar_summary">增删按钮、更换图标、调整行数和每行显示个数。第 1 行在最下方。</string>
+    <string name="pref_command_bar_summary">增删按钮、更换图标、调整行数和每行显示个数。</string>
     <string name="activity_command_bar_edit_title">编辑底部按钮栏</string>
     <string name="cmd_bar_add_row">添加行</string>
     <string name="cmd_bar_reset">恢复默认</string>
