@@ -88,7 +88,7 @@ class TravelPreview(private val context: Context) {
 
         val points = routePoints(shown, elapsed, hero, tileBorder)
         if (points != null)
-            drawRoute(canvas, points, tile, color, halo, fade, exact = shown.path != null)
+            drawRoute(canvas, points, tile, color, fade, exact = shown.path != null)
         drawMark(canvas, targetBorder, tile, elapsed, color, halo, fade)
     }
 
@@ -112,7 +112,7 @@ class TravelPreview(private val context: Context) {
 
     private fun drawRoute(
         canvas: Canvas, points: List<PointF>, tile: Float,
-        color: Int, halo: Int, fade: Float, exact: Boolean,
+        color: Int, fade: Float, exact: Boolean,
     ) {
         // 线从英雄格边上出发、停在目标框外，不压住英雄和标记
         val trimmed = trim(points, tile * 0.42f, tile * 0.38f) ?: return
@@ -121,25 +121,18 @@ class TravelPreview(private val context: Context) {
         for (i in 1 until trimmed.size)
             route.lineTo(trimmed[i].x, trimmed[i].y)
 
-        // 路线不明时用虚线，提醒这只是大致方向
-        linePaint.pathEffect = if (exact) null else dashFor(tile)
-        val width = max(2f, tile * 0.09f)
-        linePaint.strokeWidth = width + max(2f, tile * 0.06f)
-        linePaint.color = withAlpha(halo, fade)
-        canvas.drawPath(route, linePaint)
-        linePaint.strokeWidth = width
+        // 整条线都画虚线，路线不明时也一样，只差在有没有落脚点
+        linePaint.pathEffect = dashFor(tile)
+        linePaint.strokeWidth = max(2f, tile * 0.09f)
         linePaint.color = withAlpha(color, fade * 0.85f)
         canvas.drawPath(route, linePaint)
 
         if (!exact) return
         // 每一步落脚的格子打一个点，能看出要走几步
         val radius = max(2f, tile * 0.1f)
-        for (i in 1 until points.size - 1) {
-            dotPaint.color = withAlpha(halo, fade)
-            canvas.drawCircle(points[i].x, points[i].y, radius + max(1f, tile * 0.04f), dotPaint)
-            dotPaint.color = withAlpha(color, fade)
+        dotPaint.color = withAlpha(color, fade)
+        for (i in 1 until points.size - 1)
             canvas.drawCircle(points[i].x, points[i].y, radius, dotPaint)
-        }
     }
 
     private fun drawMark(
