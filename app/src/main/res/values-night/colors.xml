@@ -29,6 +29,9 @@
     <color name="touch_text">#FFFFFFFF</color>
     <color name="touch_secondary_text">#FFB8BAC7</color>
     <color name="touch_ripple">#557C83FF</color>
+    <!-- Direction pad keys float over the map, so they are tinted but see-through. -->
+    <color name="direction_pad_item">#992B2D35</color>
+    <color name="direction_pad_item_border">#CCC9CEDB</color>
     <color name="touch_bar_edit_accent">#FF6D72E6</color>
     <color name="touch_bar_edit_accent_soft">#336D72E6</color>
     <color name="touch_bar_edit_chip_border">#FF4A4D58</color>

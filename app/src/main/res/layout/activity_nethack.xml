@@ -63,13 +63,13 @@
                 android:src="@drawable/icon_detail"
                 app:fabSize="mini" />
 
-            <!-- Shown by NetHack.refreshDirectionPad() while the game waits for a direction. -->
+            <!-- Shown by NetHack.refreshDirectionPad() while the game waits for a direction.
+                 Sits just above the command bar, clear of the price-ID button. -->
             <com.yywspace.anethack.keybord.DirectionPadView
                 android:id="@+id/direction_pad"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_marginEnd="@dimen/direction_pad_edge_margin"
+                android:layout_gravity="bottom|center_horizontal"
                 android:layout_marginBottom="@dimen/direction_pad_edge_margin"
                 android:visibility="gone" />
         </FrameLayout>

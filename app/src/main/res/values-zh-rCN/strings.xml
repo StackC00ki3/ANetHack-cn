@@ -105,7 +105,7 @@
     <string name="pref_price_id_header">价格鉴定</string>
     <string name="pref_price_id_enable">显示价格鉴定按钮</string>
     <string name="pride_id_title">价格鉴定</string>
-    <string name="pride_id_title_desc">根据商店报价推测未鉴定物品是什么。</string>
+    <string name="pride_id_title_desc">根据商店报价推测未鉴定物品是什么。长按按钮可拖动位置。</string>
     <string name="pride_id_charisma_label">魅力</string>
     <string name="pride_id_price_label">价格</string>
     <string name="pride_id_surcharge_label">附加费</string>

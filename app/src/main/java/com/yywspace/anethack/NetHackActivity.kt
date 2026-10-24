@@ -25,6 +25,7 @@ import com.yywspace.anethack.command.NHExtendCommand
 import com.yywspace.anethack.command.NHKeyCommand
 import com.yywspace.anethack.databinding.ActivityNethackBinding
 import com.yywspace.anethack.identify.NHPriceIDialog
+import com.yywspace.anethack.keybord.LongPressDragHelper
 import com.yywspace.anethack.keybord.TouchActionCatalog
 import com.yywspace.anethack.keybord.TouchCommandBar
 import com.yywspace.anethack.setting.SettingsActivity
@@ -39,6 +40,7 @@ class NetHackActivity : AppCompatActivity() {
     private lateinit var handler:Handler
     private lateinit var binding: ActivityNethackBinding
     private lateinit var priceIDialog: NHPriceIDialog
+    private lateinit var floatingButtonDrag: LongPressDragHelper
     private var isKeyboardShow = false
     private var navBarInset = 0
     // 手滑连点的冷却：同一时刻只接受一次按钮输入，避免指令堆积后一路执行到底。
@@ -121,6 +123,10 @@ class NetHackActivity : AppCompatActivity() {
         binding.floatingButton.setOnClickListener {
             priceIDialog.show()
         }
+        // 长按拖动换位置，免得挡住地图
+        floatingButtonDrag = LongPressDragHelper(
+            binding.floatingButton, nethack.prefs::priceIdButtonPosition
+        )
     }
     private fun showCrashReportDialog() {
         AlertDialog.Builder(this)
@@ -286,12 +292,12 @@ class NetHackActivity : AppCompatActivity() {
             val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             navBarInset = bars.bottom
             binding.bottomCommandBar.setPadding(bars.left, 0, bars.right, bars.bottom)
-            // 横屏非沉浸模式下导航栏在侧边，方向键盘别被它挡住
-            binding.directionPad.updateLayoutParams<FrameLayout.LayoutParams> {
-                marginEnd = resources.getDimensionPixelSize(R.dimen.direction_pad_edge_margin) + bars.right
-            }
             updateKeyboardMargin()
-            binding.root.post { refreshActionWheelSafeInsets(bars.left, bars.top, bars.right) }
+            binding.root.post {
+                refreshActionWheelSafeInsets(bars.left, bars.top, bars.right)
+                refreshFloatingButtonSafeInsets(bars.left, bars.right)
+                refreshDirectionPadOffset(bars.left, bars.right)
+            }
             insets
         }
         ViewCompat.requestApplyInsets(binding.root)
@@ -357,6 +363,17 @@ class NetHackActivity : AppCompatActivity() {
             right = right,
             bottom = safeBottom,
         )
+    }
+
+    /** 拖动价格鉴定按钮时避开侧边导航栏，也别盖住顶部的状态栏和消息栏。 */
+    private fun refreshFloatingButtonSafeInsets(left: Int, right: Int) {
+        // 消息栏和按钮所在的 FrameLayout 都从根布局顶端算起
+        floatingButtonDrag.setSafeInsets(left, binding.messageView.bottom, right, 0)
+    }
+
+    /** 方向键盘贴着底部按钮栏上方居中，横屏非沉浸模式下导航栏在侧边，往中间让一让。 */
+    private fun refreshDirectionPadOffset(left: Int, right: Int) {
+        binding.directionPad.translationX = (left - right) / 2f
     }
 
     private fun hideSystemUi() {

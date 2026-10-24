@@ -56,13 +56,15 @@ class SharedPreferencesUtils(val context: Context) {
     var mapBorderWidth by SharedPreferenceDelegates.int(MapBorderStyle.DEFAULT_WIDTH_TENTHS)
     var mapBorderOpacity by SharedPreferenceDelegates.int(MapBorderStyle.DEFAULT_OPACITY)
     var priceId by SharedPreferenceDelegates.boolean(true)
+    /** 长按拖动后的位置，格式见 LongPressDragHelper；为空用布局里的默认位置。 */
+    var priceIdButtonPosition by SharedPreferenceDelegates.string()
     var userSound by SharedPreferenceDelegates.boolean(false)
     var internalSound by SharedPreferenceDelegates.boolean(true)
     var commandPanel by SharedPreferenceDelegates.string(context.getString(R.string.pref_keyboard_command_panel_default))
     var commandBar by SharedPreferenceDelegates.string(TouchCommandBar.DEFAULT_CONFIG)
     var actionWheelEnabled by SharedPreferenceDelegates.boolean(false)
     var actionWheelOpacity by SharedPreferenceDelegates.int(95)
-    var directionPad by SharedPreferenceDelegates.boolean(false)
+    var directionPad by SharedPreferenceDelegates.boolean(true)
 
     fun getInputPrompts():List<String> {
         return inputPrompts.map {

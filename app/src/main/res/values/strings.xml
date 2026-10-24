@@ -46,7 +46,7 @@
 
     <!-- Price identification -->
     <string name="pride_id_title">Price Identification</string>
-    <string name="pride_id_title_desc">Guess unidentified items from shop prices.</string>
+    <string name="pride_id_title_desc">Guess unidentified items from shop prices. Long-press the button to move it.</string>
     <string name="pride_id_charisma_label">Charisma</string>
     <string name="pride_id_price_label">Price</string>
     <string name="pride_id_surcharge_label">Surcharge</string>
