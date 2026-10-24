@@ -206,7 +206,7 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
     }
 
     /**
-     * 点按旅行要点两次：第一次标出目的格和路线，在标记淡完前再点同一格才出发，
+     * 点按旅行要点两次：第一次标出目的格和沿路的落脚点，在标记淡完前再点同一格才出发，
      * 免得误触一下就走远。路线交给游戏线程等输入时去算。
      */
     private fun tapToTravel(point: Point) {
@@ -672,7 +672,7 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
                 drawTileCurse(canvas)
             }
             drawLastTouchTile(canvas)
-            canvas?.let { travelPreview.draw(it, Point(map.curse), ::getTileBorder) }
+            canvas?.let { travelPreview.draw(it, ::getTileBorder) }
             drawBorder(canvas)
             // drawWalkRange(canvas)
             drawIndicator(canvas)
