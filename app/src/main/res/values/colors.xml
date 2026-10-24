@@ -31,6 +31,8 @@
     <!-- Map frame; warm near-black on parchment, light blue-grey on black. -->
     <color name="map_border">#FF3F3A33</color>
     <color name="map_indicator_text">#FF1B1B1F</color>
+    <color name="map_travel_preview">#FFC77700</color>
+    <color name="map_travel_preview_halo">#B3FFFFFF</color>
     <!-- Day variants of the in-game command bar and radial action wheel.
          Night variants live in values-night/colors.xml. -->
     <color name="touch_surface">#F2F7F7FA</color>

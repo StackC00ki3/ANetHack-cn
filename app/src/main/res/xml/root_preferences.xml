@@ -82,14 +82,14 @@
             app:iconSpaceReserved="false"
             app:summary="@string/pref_map_walk_range_desc"/>
 
-        <CheckBoxPreference
-            app:key="travelAfterPanned"
-            app:title="@string/pref_map_travel_after_panned"
-            app:dependency="showIndicator"
+        <ListPreference
+            app:key="moveScheme"
+            app:title="@string/pref_map_move_scheme"
             app:iconSpaceReserved="false"
-            app:defaultValue="true"
-            app:summary="@string/pref_map_travel_after_panned_desc"/>
-        />
+            app:useSimpleSummaryProvider="true"
+            app:defaultValue="panned"
+            app:entries="@array/move_scheme_array"
+            app:entryValues="@array/move_scheme_value"/>
     </PreferenceCategory>
 
     <PreferenceCategory

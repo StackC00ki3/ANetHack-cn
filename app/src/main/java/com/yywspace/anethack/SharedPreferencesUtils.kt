@@ -40,7 +40,8 @@ class SharedPreferencesUtils(val context: Context) {
     var showIndicator by SharedPreferenceDelegates.boolean(true)
     var showLastTravelIndicator by SharedPreferenceDelegates.boolean(true)
     var indicatorSymbols by SharedPreferenceDelegates.string("<>")
-    var travelAfterPanned by SharedPreferenceDelegates.boolean(true)
+    /** 点按地图何时旅行：[MOVE_SCHEME_PANNED] 拖动地图后，[MOVE_SCHEME_ALWAYS] 总是。 */
+    var moveScheme by SharedPreferenceDelegates.string(MOVE_SCHEME_PANNED)
     var walkRange by SharedPreferenceDelegates.int(70)
     var smartSelfTap by SharedPreferenceDelegates.boolean(true)
     var mapBorderColor by SharedPreferenceDelegates.int(MapBorderStyle.DEFAULT_COLOR)
@@ -93,6 +94,12 @@ class SharedPreferencesUtils(val context: Context) {
             put(player, mode)
         }
     }
+    companion object {
+        // 与 arrays.xml 的 move_scheme_value 对应
+        const val MOVE_SCHEME_PANNED = "panned"
+        const val MOVE_SCHEME_ALWAYS = "always"
+    }
+
     private object SharedPreferenceDelegates {
 
         fun map() = object : ReadWriteProperty<SharedPreferencesUtils, Map<String, String>> {

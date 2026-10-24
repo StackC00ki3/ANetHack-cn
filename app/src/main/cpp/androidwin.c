@@ -1074,6 +1074,21 @@ static uchar and_self_click_key(void)
     return and_bound_key(donull, '.');
 }
 
+//   AND_POS_TRAVEL_TO：确认过的点按旅行。普通点击走 therecmdmenu，远处会先弹出
+//   "旅行到这里"菜单；这里直接设好目的地，再返回 #retravel 绑定的按键，
+//   让它执行 dotravel_target()（静态函数，只能按指令名找绑定）。
+static uchar and_travel_key(void)
+{
+    struct Cmd_bind *bind = gc.Cmd.cmdbinds;
+
+    while (bind) {
+        if (bind->cmd && !strcmp(bind->cmd->ef_txt, "retravel"))
+            return bind->key;
+        bind = bind->next;
+    }
+    return '\0';
+}
+
 int and_nh_poskey(coordxy *x, coordxy *y, int *mod)
 {
     jintArray jEvent = (*jEnv)->NewIntArray(jEnv, 3);
@@ -1098,6 +1113,20 @@ int and_nh_poskey(coordxy *x, coordxy *y, int *mod)
             }
             // click_to_cmd() 会用 mod 去索引 NUM_MOUSE_BUTTONS 大小的数组，
             // 3 会越界；没被接手时降级成普通左键点击。
+            *mod = CLICK_1;
+        } else if (*mod == AND_POS_TRAVEL_TO) {
+            if (isok(*x, *y) && !u_at(*x, *y)
+                && program_state.in_moveloop
+                && program_state.input_state == commandInp) {
+                uchar key = and_travel_key();
+                if (key) {
+                    iflags.travelcc.x = u.tx = *x;
+                    iflags.travelcc.y = u.ty = *y;
+                    (*jEnv)->DeleteLocalRef(jEnv, jEvent);
+                    return (char) key;
+                }
+            }
+            // 同上，4 也会越界
             *mod = CLICK_1;
         }
     } else {

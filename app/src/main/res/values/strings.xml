@@ -120,8 +120,9 @@
     <string name="pref_map_indicator_symbols_desc">Enter the map symbols to hint, e.g. &lt;&gt; for stairs.</string>
     <string name="pref_map_walk_range">Hero free-move area</string>
     <string name="pref_map_walk_range_desc">The camera only follows the hero after they walk out of this middle area (percent of the screen). Lower makes it follow more closely.</string>
-    <string name="pref_map_travel_after_panned">Tap to travel after dragging</string>
-    <string name="pref_map_travel_after_panned_desc">After you drag the map so the hero is outside the free-move area, tapping a spot walks there. Otherwise each tap takes one step.</string>
+    <string name="pref_map_move_scheme">Movement</string>
+    <string name="pref_map_move_scheme_panned">Travel after dragging the map</string>
+    <string name="pref_map_move_scheme_always">Always travel</string>
     <string name="pref_map_smart_self_tap">Tap hero for quick action</string>
     <string name="pref_map_smart_self_tap_desc">Picks up, takes stairs, drinks, sits or rests, depending on what is underfoot. When off, tapping the hero opens the action wheel.</string>
     <string name="pref_map_border">Map border</string>

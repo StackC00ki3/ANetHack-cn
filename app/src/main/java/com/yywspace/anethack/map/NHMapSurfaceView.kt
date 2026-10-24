@@ -27,11 +27,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yywspace.anethack.NetHack
 import com.yywspace.anethack.R
+import com.yywspace.anethack.SharedPreferencesUtils
 import com.yywspace.anethack.ThemeManager
 import com.yywspace.anethack.command.NHCommand
 import com.yywspace.anethack.command.NHKeyCommand
 import com.yywspace.anethack.command.NHPosCommand
 import com.yywspace.anethack.command.NHPosCommand.PosMod
+import com.yywspace.anethack.command.NHQueryCommand
 import com.yywspace.anethack.entity.NHStatus
 import com.yywspace.anethack.map.indicator.NHMapIndicatorController
 import com.yywspace.anethack.map.operation.NHMapOperation
@@ -70,6 +72,7 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
     @Volatile private var isDrawing = false
     private var drawThread: Thread? = null
     private lateinit var indicatorController:NHMapIndicatorController
+    private val travelPreview = TravelPreview(context)
     var onPlayerTap: ((PointF) -> Unit)? = null
 
     private var mapTouchListener: NHMapTouchListener = NHMapTouchListener().apply {
@@ -81,6 +84,7 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
             override fun onClick(e: PointF) {
                 val point = getTileLocation(e.x, e.y)
                 if (point.x == map.curse.x && point.y == map.curse.y) {
+                    travelPreview.clear()
                     // 点自己：按 3.6.6 的鼠标语义，脚下有物品就拾取、在楼梯上就上下楼、
                     // 什么都不做就原地休息。关掉该设置后仍回到动作轮盘。
                     if (nh.prefs.smartSelfTap) {
@@ -92,21 +96,21 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
                 }
                 if(indicatorController.onIndicatorClick(e))
                     return
-                lastTouchTile = point.also {
-                    if (nh.status.runMode == NHStatus.RunMode.RUN) {
-                        nh.command.sendCommand(NHPosCommand(it.x, it.y, PosMod.TRAVEL))
-                        mapTranslated = false
-                    }else {
-                        val curseBorder = getTileBorder(map.curse.x, map.curse.y)
-                        val direction = getMoveDirection(
-                            PointF(curseBorder.centerX(), curseBorder.centerY()),
-                            PointF(e.x, e.y)
-                        )
-                        Log.d("direction", "$direction")
-                        playerMove(direction, false)
-                    }
+                // 紧挨着英雄的格子直接走一步，旅行过去也只是这一步
+                val nextToHero = abs(point.x - map.curse.x) <= 1 && abs(point.y - map.curse.y) <= 1
+                if (nh.status.runMode == NHStatus.RunMode.RUN && !nextToHero) {
+                    tapToTravel(point)
+                    return
                 }
-
+                travelPreview.clear()
+                lastTouchTile = point
+                val curseBorder = getTileBorder(map.curse.x, map.curse.y)
+                val direction = getMoveDirection(
+                    PointF(curseBorder.centerX(), curseBorder.centerY()),
+                    PointF(e.x, e.y)
+                )
+                Log.d("direction", "$direction")
+                playerMove(direction, false)
             }
 
             override fun onLongPressUp(e: PointF) {
@@ -199,6 +203,26 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
             }
 
         })
+    }
+
+    /**
+     * 点按旅行要点两次：第一次标出目的格和路线，在标记淡完前再点同一格才出发，
+     * 免得误触一下就走远。路线交给游戏线程等输入时去算。
+     */
+    private fun tapToTravel(point: Point) {
+        if (point.x !in 1 until map.width || point.y !in 0 until map.height) {
+            travelPreview.clear()
+            return
+        }
+        lastTouchTile = point
+        if (travelPreview.isCandidate(point.x, point.y)) {
+            travelPreview.clear()
+            nh.command.sendCommand(NHPosCommand(point.x, point.y, PosMod.TRAVEL_TO))
+            mapTranslated = false
+            return
+        }
+        val onPath = travelPreview.show(point)
+        nh.command.sendCommand(NHQueryCommand { onPath(nh.queryTravelPath(point.x, point.y)) })
     }
 
     private fun playerInWalkRange(walkRange: Int):Boolean {
@@ -630,10 +654,12 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
                 transformMapWithMove(nh.prefs.walkRange)
                 lastCurse = Point(map.curse)
             }
-            if (mapTranslated && nh.prefs.travelAfterPanned && !playerInWalkRange(nh.prefs.walkRange))
-                nh.status.runMode = NHStatus.RunMode.RUN
-            else
-                nh.status.runMode = NHStatus.RunMode.WALK
+            val travelOnTap = when (nh.prefs.moveScheme) {
+                SharedPreferencesUtils.MOVE_SCHEME_ALWAYS -> true
+                else -> mapTranslated && !playerInWalkRange(nh.prefs.walkRange)
+            }
+            nh.status.runMode =
+                if (travelOnTap) NHStatus.RunMode.RUN else NHStatus.RunMode.WALK
             // 绘制
             val lightBackground = !ThemeManager.isNightMode(context)
             val mapBackground = context.getColor(R.color.map_background)
@@ -646,6 +672,7 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
                 drawTileCurse(canvas)
             }
             drawLastTouchTile(canvas)
+            canvas?.let { travelPreview.draw(it, Point(map.curse), ::getTileBorder) }
             drawBorder(canvas)
             // drawWalkRange(canvas)
             drawIndicator(canvas)

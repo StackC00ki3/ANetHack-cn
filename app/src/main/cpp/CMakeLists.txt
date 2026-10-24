@@ -182,6 +182,7 @@ set(NETHACK_SRC
         "androidrecover.c"
         "androidunix.c"
         "androidwin.c"
+        "androidtravel.c"
         "androidsound.c"
         "androidentry.c"
         "androidcrash.c"

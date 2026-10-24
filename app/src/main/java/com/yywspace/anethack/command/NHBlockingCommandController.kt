@@ -1,5 +1,6 @@
 package com.yywspace.anethack.command
 
+import android.util.Log
 import java.time.LocalDateTime
 import java.util.concurrent.LinkedBlockingQueue
 
@@ -20,12 +21,30 @@ class NHBlockingCommandController {
     }
 
     fun waitForCommand(): NHCommand {
-        val cmd = cmdQueue.take()
+        val cmd = takeInput()
         try {
             Thread.sleep(50)
         } catch (_: InterruptedException) {
         }
         return cmd
+    }
+
+    /** 取下一条输入；排在前面的 [NHQueryCommand] 就地执行掉，不当成输入返回。 */
+    fun takeInput(): NHCommand {
+        while (true) {
+            val cmd = cmdQueue.take()
+            if (cmd !is NHQueryCommand)
+                return cmd
+            runQuery(cmd)
+        }
+    }
+
+    fun runQuery(query: NHQueryCommand) {
+        try {
+            query.task()
+        } catch (e: Exception) {
+            Log.w("NHCommand", "query failed", e)
+        }
     }
 
     /**
@@ -39,13 +58,17 @@ class NHBlockingCommandController {
             && this !is NHAnswerCommand
             && this !is NHMenuCommand
             && this !is NHLineCommand
+            && this !is NHQueryCommand
 
     inline fun <reified T:NHCommand>findAnyCommand():T?{
         for(cmd in cmdQueue) {
             if (cmd is T) {
                 while (cmdQueue.isNotEmpty()) {
-                    if(cmd == cmdQueue.take())
+                    val taken = cmdQueue.take()
+                    if(cmd == taken)
                         return cmd
+                    if (taken is NHQueryCommand)
+                        runQuery(taken)
                 }
                 return null
             }
@@ -55,7 +78,7 @@ class NHBlockingCommandController {
 
     inline fun <reified T:NHCommand>waitForAnyCommand(noinline otherCommandDiscard:((NHCommand)->Unit)? = null):T{
         while (true) {
-            val cmd = cmdQueue.take()
+            val cmd = takeInput()
             if (cmd is T)
                 return cmd
             try {

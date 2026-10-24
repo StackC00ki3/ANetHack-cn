@@ -76,8 +76,20 @@ class NetHack(
         stopNetHack()
     }
 
+    /**
+     * 旅行到 <x,y> 时英雄会走过的格子 [x0, y0, x1, y1, ...]（含起点和终点），
+     * 路线不明时返回 null。会读关卡数据，只能放进 [com.yywspace.anethack.command.NHQueryCommand]
+     * 由游戏线程在等待输入时调用，其他线程直接返回 null。
+     */
+    fun queryTravelPath(x: Int, y: Int): IntArray? {
+        if (Thread.currentThread() !== runNHThread)
+            return null
+        return travelPath(x, y)
+    }
+
     private external fun runNetHack(path: String)
     private external fun stopNetHack()
+    private external fun travelPath(x: Int, y: Int): IntArray?
 
     private fun createWindow(type: Int): Int {
         Log.d(TAG, "createWindow(type:$type)")

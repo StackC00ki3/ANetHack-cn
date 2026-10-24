@@ -14,6 +14,7 @@ extern jobject jAppInstance;
 #define AND_POS_TRAVEL 1
 #define AND_POS_LOOK   2
 #define AND_POS_SELF   3
+#define AND_POS_TRAVEL_TO 4
 // window
 extern jmethodID jRequireKeyCommand;
 extern jmethodID jRequirePosKeyCommand;
