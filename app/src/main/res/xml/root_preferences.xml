@@ -149,6 +149,13 @@
             app:iconSpaceReserved="false"/>
 
         <CheckBoxPreference
+            app:key="directionPad"
+            app:title="@string/pref_direction_pad"
+            app:summary="@string/pref_direction_pad_summary"
+            app:iconSpaceReserved="false"
+            app:defaultValue="false"/>
+
+        <CheckBoxPreference
             app:key="keyboardVibrate"
             app:title="@string/pref_keyboard_vibrate"
             app:iconSpaceReserved="false"

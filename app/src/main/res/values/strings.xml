@@ -182,6 +182,20 @@
     <string name="pref_action_wheel_enabled_summary">Tap the hero to open a round action menu. Turn off \"Tap hero for quick action\" first.</string>
     <string name="pref_action_wheel_opacity">Wheel opacity</string>
     <string name="pref_action_wheel_opacity_summary">Lower makes the wheel more see-through. Icons and text stay clear.</string>
+    <string name="pref_direction_pad">Direction pad</string>
+    <string name="pref_direction_pad_summary">Show a 3×3 direction pad when the game asks for a direction.</string>
+    <string name="direction_pad_up_left">Up-left</string>
+    <string name="direction_pad_up">Up</string>
+    <string name="direction_pad_up_right">Up-right</string>
+    <string name="direction_pad_left">Left</string>
+    <string name="direction_pad_self">Yourself</string>
+    <string name="direction_pad_right">Right</string>
+    <string name="direction_pad_down_left">Down-left</string>
+    <string name="direction_pad_down">Down</string>
+    <string name="direction_pad_down_right">Down-right</string>
+    <string name="direction_pad_upward">Upward (&lt;)</string>
+    <string name="direction_pad_downward">Downward (&gt;)</string>
+    <string name="direction_pad_cancel">Cancel</string>
 
     <string name="touch_category_combat">Combat</string>
     <string name="touch_category_items">Items</string>

@@ -85,6 +85,9 @@ class NetHackActivity : AppCompatActivity() {
         binding.keyboardView.refreshTheme()
         binding.actionWheel.refreshTheme()
         binding.actionWheel.setPanelOpacity(nethack.prefs.actionWheelOpacity)
+        binding.directionPad.refreshTheme()
+        // 等方向时进了设置页开关方向键盘，回来立即生效
+        nethack.refreshDirectionPad()
         refreshCommandBar()
     }
 
@@ -99,6 +102,7 @@ class NetHackActivity : AppCompatActivity() {
         refreshCommandBar()
         binding.keyboardView.refreshTheme()
         binding.actionWheel.refreshTheme()
+        binding.directionPad.refreshTheme()
         ViewCompat.requestApplyInsets(binding.root)
         if(isKeyboardShow) {
             binding.keyboardView.apply {
@@ -274,10 +278,18 @@ class NetHackActivity : AppCompatActivity() {
         binding.bottomCommandBar.onCommandPress = ::processButtonPress
         refreshCommandBar()
         binding.mapView.onPlayerTap = ::showActionWheel
+        binding.directionPad.onKey = {
+            if (nethack.isRunning)
+                nethack.command.sendCommand(NHKeyCommand(it))
+        }
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
             val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             navBarInset = bars.bottom
             binding.bottomCommandBar.setPadding(bars.left, 0, bars.right, bars.bottom)
+            // 横屏非沉浸模式下导航栏在侧边，方向键盘别被它挡住
+            binding.directionPad.updateLayoutParams<FrameLayout.LayoutParams> {
+                marginEnd = resources.getDimensionPixelSize(R.dimen.direction_pad_edge_margin) + bars.right
+            }
             updateKeyboardMargin()
             binding.root.post { refreshActionWheelSafeInsets(bars.left, bars.top, bars.right) }
             insets

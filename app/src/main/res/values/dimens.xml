@@ -21,4 +21,8 @@
     <dimen name="touch_wheel_center_text">10sp</dimen>
     <dimen name="touch_wheel_connector_width">2dp</dimen>
     <dimen name="touch_wheel_anchor_radius">4dp</dimen>
+    <dimen name="direction_pad_button_size">54dp</dimen>
+    <dimen name="direction_pad_icon_size">26dp</dimen>
+    <dimen name="direction_pad_button_margin">3dp</dimen>
+    <dimen name="direction_pad_edge_margin">10dp</dimen>
 </resources>

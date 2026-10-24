@@ -5,4 +5,6 @@
     <dimen name="touch_wheel_item_width">80dp</dimen>
     <dimen name="touch_wheel_item_height">64dp</dimen>
     <dimen name="touch_wheel_item_icon">24dp</dimen>
+    <dimen name="direction_pad_button_size">44dp</dimen>
+    <dimen name="direction_pad_icon_size">22dp</dimen>
 </resources>

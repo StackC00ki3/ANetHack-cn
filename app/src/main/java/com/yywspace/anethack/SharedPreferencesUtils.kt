@@ -62,6 +62,7 @@ class SharedPreferencesUtils(val context: Context) {
     var commandBar by SharedPreferenceDelegates.string(TouchCommandBar.DEFAULT_CONFIG)
     var actionWheelEnabled by SharedPreferenceDelegates.boolean(false)
     var actionWheelOpacity by SharedPreferenceDelegates.int(95)
+    var directionPad by SharedPreferenceDelegates.boolean(false)
 
     fun getInputPrompts():List<String> {
         return inputPrompts.map {

@@ -25,6 +25,7 @@ jmethodID jRawPrint;
 jmethodID jCurs;
 jmethodID jPrintTile;
 jmethodID jYNFunction;
+jmethodID jSetDirectionPrompt;
 jmethodID jGetLine;
 jmethodID jStartMenu;
 jmethodID jAddMenu;
@@ -92,6 +93,7 @@ void initNetHackWin() {
     jSetNumPadOption = (*jEnv)->GetMethodID(jEnv, jApp, "setNumPadOption", "(I)V");
     jYNFunction = (*jEnv)->GetMethodID(jEnv, jApp, "ynFunction",
                                        "(Ljava/lang/String;Ljava/lang/String;[JC)C");
+    jSetDirectionPrompt = (*jEnv)->GetMethodID(jEnv, jApp, "setDirectionPrompt", "(Z)V");
     jGetLine = (*jEnv)->GetMethodID(jEnv, jApp, "getLine", "(Ljava/lang/String;Ljava/lang/String;I)Ljava/lang/String;");
     jAskName = (*jEnv)->GetMethodID(jEnv, jApp, "askName","(I[Ljava/lang/String;)[Ljava/lang/String;");
     jShowExtCmdMenu = (*jEnv)->GetMethodID(jEnv, jApp, "showExtCmdMenu", "([Ljava/lang/String;)I");

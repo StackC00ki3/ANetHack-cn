@@ -1184,6 +1184,11 @@ char and_yn_function(const char *question, const char *choices, char def)
     char ch = 0;
     int allow_num = choices != NULL && (strchr(choices, '#') != 0);
     int has_esc = choices != NULL && (strchr(choices, '\033') != 0);
+    // getdir() 的方向提示（提示语已汉化，只能看 input_state）：通知 Java 端，
+    // 开启方向键盘设置时浮出方向键，读到方向后收起
+    int getdir_prompt = program_state.input_state == getdirInp;
+    if (getdir_prompt)
+        JNICallV(jSetDirectionPrompt, JNI_TRUE)
     // if choice is not null or question contain [], treat it as question
     if(choices || ((strchr(question, '[') != 0) && (strchr(question, ']') != 0)))
     {
@@ -1219,6 +1224,8 @@ char and_yn_function(const char *question, const char *choices, char def)
         putstr(WIN_MESSAGE, 1<<ATR_BOLD, question);
         ch = nhgetch();
     }
+    if (getdir_prompt)
+        JNICallV(jSetDirectionPrompt, JNI_FALSE)
     crash_breadcrumb("yn_function: %s [%s] -> %d", question, choices ? choices : "", ch);
     return ch;
 }

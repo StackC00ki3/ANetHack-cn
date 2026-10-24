@@ -62,6 +62,16 @@
                 android:contentDescription="@string/floating_button_desc"
                 android:src="@drawable/icon_detail"
                 app:fabSize="mini" />
+
+            <!-- Shown by NetHack.refreshDirectionPad() while the game waits for a direction. -->
+            <com.yywspace.anethack.keybord.DirectionPadView
+                android:id="@+id/direction_pad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginEnd="@dimen/direction_pad_edge_margin"
+                android:layout_marginBottom="@dimen/direction_pad_edge_margin"
+                android:visibility="gone" />
         </FrameLayout>
 
         <com.yywspace.anethack.keybord.BottomCommandBar

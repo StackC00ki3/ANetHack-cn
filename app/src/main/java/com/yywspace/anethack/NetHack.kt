@@ -250,10 +250,30 @@ class NetHack(
     }
 
     fun ynFunction(question: String, choices: String, ynNumber:LongArray, def: Char):Char {
-        if (question.startsWith("In what direction")) {
+        // 带 [..] 选项的方向提示（如挖掘）在开启方向键盘时也交给方向键盘，不再弹选择框
+        if (question.startsWith("In what direction") || (directionPrompt && prefs.directionPad)) {
             return command.waitForCommand().key
         }
         return this.question.answerSelectQuestion(question, choices, ynNumber, def)
+    }
+
+    @Volatile private var directionPrompt = false
+
+    /** getdir() 开始/结束等方向时由 androidwin.c 的 and_yn_function 调用。 */
+    private fun setDirectionPrompt(active: Boolean) {
+        directionPrompt = active
+        refreshDirectionPad()
+    }
+
+    /** 按当前是否在等方向及设置显示/收起方向键盘；设置页返回时也会调用。 */
+    fun refreshDirectionPad() {
+        runOnUi { binding, _ ->
+            // 以执行时的状态为准：方向已经从队列里读到时就不再闪一下
+            if (directionPrompt && prefs.directionPad)
+                binding.directionPad.show()
+            else
+                binding.directionPad.hide()
+        }
     }
 
     fun getLine(question: String, input: String, bufSize: Int):String {

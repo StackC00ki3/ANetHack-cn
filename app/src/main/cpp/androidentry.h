@@ -27,6 +27,7 @@ extern jmethodID jRawPrint;
 extern jmethodID jCurs;
 extern jmethodID jPrintTile;
 extern jmethodID jYNFunction;
+extern jmethodID jSetDirectionPrompt;
 extern jmethodID jGetLine;
 extern jmethodID jStartMenu;
 extern jmethodID jAddMenu;
