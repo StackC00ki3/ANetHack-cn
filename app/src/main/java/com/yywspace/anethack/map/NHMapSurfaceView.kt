@@ -488,7 +488,7 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
             val tb = getTileBorder(curse.x, curse.y)
             paint.color = nh.status.hitPoints.color
             paint.style = Paint.Style.STROKE
-            paint.strokeWidth = borderWidth
+            paint.strokeWidth = maxOf(borderWidth * 2f, 1.5f * resources.displayMetrics.density)
             canvas?.drawRect(tb, paint)
         }
     }
