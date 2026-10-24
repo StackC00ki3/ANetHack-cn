@@ -66,6 +66,8 @@ class NHWMenu(wid: Int, type:NHWindowType, private val nh: NetHack) : NHWindow(w
     }
 
     fun selectMenu(how: Int): LongArray {
+        // 先丢掉连按积累的按键，再检查队列里是否有能命中的预设指令
+        nh.command.discardPendingInput()
         // 如果指令序列中有能命中的则直接选择不显示弹窗
         nh.command.findAnyCommand<NHKeyCommand>()?.apply {
             val selectList = mutableListOf<Long>()

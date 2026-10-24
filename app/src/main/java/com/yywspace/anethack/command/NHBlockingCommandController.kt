@@ -1,7 +1,6 @@
 package com.yywspace.anethack.command
 
 import java.time.LocalDateTime
-import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.LinkedBlockingQueue
 
 class NHBlockingCommandController {
@@ -58,5 +57,19 @@ class NHBlockingCommandController {
     fun clear() {
         cmdQueue.clear()
         lastCmdTime = LocalDateTime.now()
+    }
+
+    /**
+     * 弹窗即将弹出时调用：丢弃连按积累下来的普通按键，避免它们被当成对弹窗的回答。
+     * 脚本序列排入的指令（[NHCommand.fromSequence]）和弹窗自己的回答指令都保留，
+     * 所以按下按钮后的选择不会受影响。
+     */
+    fun discardPendingInput() {
+        cmdQueue.removeIf { cmd ->
+            !cmd.fromSequence
+                && cmd !is NHAnswerCommand
+                && cmd !is NHMenuCommand
+                && cmd !is NHLineCommand
+        }
     }
 }

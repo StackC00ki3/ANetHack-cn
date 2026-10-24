@@ -41,6 +41,8 @@ class NetHackActivity : AppCompatActivity() {
     private lateinit var priceIDialog: NHPriceIDialog
     private var isKeyboardShow = false
     private var navBarInset = 0
+    // 手滑连点的冷却：同一时刻只接受一次按钮输入，避免指令堆积后一路执行到底。
+    private var lastKeyPressNanos = 0L
     private val exportCrashLog = registerForActivityResult(
         ActivityResultContracts.CreateDocument("application/zip")
     ) { uri -> uri?.let { CrashReporter.export(this, it) } }
@@ -200,6 +202,23 @@ class NetHackActivity : AppCompatActivity() {
 
 
 
+    /**
+     * 连点冷却：[KEY_PRESS_COOLDOWN_MS] 内的重复按键直接丢弃，避免手滑把指令堆进队列。
+     * 只用于底部命令栏和动作轮盘这类可连点的按钮；软键盘打字不节流，否则会丢字符。
+     */
+    private fun acceptButtonPress(): Boolean {
+        val now = System.nanoTime()
+        if (now - lastKeyPressNanos < KEY_PRESS_COOLDOWN_MS * 1_000_000L) return false
+        lastKeyPressNanos = now
+        return true
+    }
+
+    /** 底部命令栏 / 动作轮盘的入口：先过冷却，再走正常按键处理。 */
+    private fun processButtonPress(cmd: String) {
+        if (!acceptButtonPress()) return
+        processKeyPress(cmd)
+    }
+
     private fun processKeyPress(cmd:String) {
         if (cmd.isEmpty()) return
         when (cmd) {
@@ -232,9 +251,15 @@ class NetHackActivity : AppCompatActivity() {
             }
             else -> {
                 if(nethack.isRunning) {
-                    NHCommandParser.parseNHCommand(cmd).forEach {
+                    val commands = NHCommandParser.parseNHCommand(cmd)
+                    // 多键序列是一次性脚本，弹窗出现时仍可作为预设回答。
+                    if (commands.size > 1)
+                        commands.forEach { it.fromSequence = true }
+                    commands.forEach {
                         if (it is NHExtendCommand)
-                            nethack.command.sendCommand(NHKeyCommand('#'))
+                            nethack.command.sendCommand(NHKeyCommand('#').apply {
+                                fromSequence = it.fromSequence
+                            })
                         nethack.command.sendCommand(it)
                     }
                 }
@@ -243,7 +268,7 @@ class NetHackActivity : AppCompatActivity() {
     }
 
     private fun initTouchControls() {
-        binding.bottomCommandBar.onCommandPress = ::processKeyPress
+        binding.bottomCommandBar.onCommandPress = ::processButtonPress
         refreshCommandBar()
         binding.mapView.onPlayerTap = ::showActionWheel
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
@@ -297,7 +322,7 @@ class NetHackActivity : AppCompatActivity() {
             right = insets?.right ?: 0,
         )
         binding.actionWheel.setPanelOpacity(nethack.prefs.actionWheelOpacity)
-        binding.actionWheel.show(anchor, categories, ::processKeyPress)
+        binding.actionWheel.show(anchor, categories, ::processButtonPress)
     }
 
     private fun refreshActionWheelSafeInsets(left: Int, top: Int, right: Int) {
@@ -376,6 +401,11 @@ class NetHackActivity : AppCompatActivity() {
             FileOutputStream(userConfTarget).use { fileOut ->
                 FileInputStream(userConf).copyTo(fileOut)
             }
+    }
+
+    companion object {
+        /** 按钮连点冷却，略长于一次点击的最短间隔，但不影响正常连续操作。 */
+        private const val KEY_PRESS_COOLDOWN_MS = 80L
     }
 
 }

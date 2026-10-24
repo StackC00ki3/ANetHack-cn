@@ -31,6 +31,8 @@ class NHQuestion(val nh: NetHack) {
     }
 
     fun answerInputQuestion(question: String, input:String, bufSize: Int):String {
+        // 先丢掉连按积累的按键，避免它们被当成输入内容
+        nh.command.discardPendingInput()
         // 弹窗前首先查找是否已存在NHLineCommand,如果有直接返回
         nh.command.findAnyCommand<NHLineCommand>()?.apply {
             return line
@@ -106,6 +108,8 @@ class NHQuestion(val nh: NetHack) {
     }
 
     fun answerSelectQuestion(question: String, choices: String, ynNumber:LongArray, def: Char):Char {
+        // 先丢掉连按积累的按键，避免它们被当成对弹窗的回答
+        nh.command.discardPendingInput()
         // 弹窗前首先查找是否已存在NHKeyCommand
         nh.command.findAnyCommand<NHKeyCommand>()?.apply {
             return key
