@@ -1,4 +1,4 @@
-  1      149     1763     3293  1483533
+  1      149     1763     3293  1483066
 nDirectory        0
 nhelp     3293
 nhh    14501
@@ -17,137 +17,137 @@ nbigrm-1.lua   486642
 nbigrm-10.lua   489745
 nbigrm-11.lua   492375
 nbigrm-12.lua   493432
-nbigrm-13.lua   496554
-nbigrm-2.lua   499391
-nbigrm-3.lua   502077
-nbigrm-4.lua   505212
-nbigrm-5.lua   507556
-nbigrm-6.lua   509772
-nbigrm-7.lua   511787
-nbigrm-8.lua   514000
-nbigrm-9.lua   516181
-ncastle.lua   518404
-nfakewiz1.lua   527024
-nfakewiz2.lua   528639
-njuiblex.lua   530134
-nknox.lua   534132
-nmedusa-1.lua   541015
-nmedusa-2.lua   545757
-nmedusa-3.lua   551353
-nmedusa-4.lua   557349
-nminend-1.lua   563380
-nminend-2.lua   567704
-nminend-3.lua   573036
-nminefill.lua   576450
-nminetn-1.lua   577576
-nminetn-2.lua   583462
-nminetn-3.lua   590125
-nminetn-4.lua   594676
-nminetn-5.lua   599580
-nminetn-6.lua   604688
-nminetn-7.lua   608612
-noracle.lua   615894
-norcus.lua   618398
-nsanctum.lua   623624
-nsoko1-1.lua   629040
-nsoko1-2.lua   632255
-nsoko2-1.lua   635449
-nsoko2-2.lua   637292
-nsoko3-1.lua   639297
-nsoko3-2.lua   641550
-nsoko4-1.lua   643630
-nsoko4-2.lua   646670
-ntower1.lua   648607
-ntower2.lua   651215
-ntower3.lua   653017
-nvalley.lua   654552
-nwizard1.lua   660369
-nwizard2.lua   664079
-nwizard3.lua   666361
-nnhcore.lua   669694
-nnhlib.lua   674473
-nthemerms.lua   681575
-nastral.lua   715524
-nair.lua   725045
-nearth.lua   730324
-nfire.lua   736483
-nwater.lua   742260
-nhellfill.lua   746791
-ntut-1.lua   758676
-ntut-2.lua   773882
-nArc-goal.lua   774489
-nBar-goal.lua   778817
-nCav-goal.lua   782658
-nHea-goal.lua   785206
-nKni-goal.lua   787943
-nMon-goal.lua   792216
-nPri-goal.lua   794170
-nRan-goal.lua   796341
-nRog-goal.lua   800970
-nSam-goal.lua   805770
-nTou-goal.lua   809127
-nVal-goal.lua   815388
-nWiz-goal.lua   818919
-nArc-fila.lua   824429
-nArc-filb.lua   825859
-nBar-fila.lua   827298
-nBar-filb.lua   828141
-nCav-fila.lua   829362
-nCav-filb.lua   830326
-nHea-fila.lua   831399
-nHea-filb.lua   832559
-nKni-fila.lua   833886
-nKni-filb.lua   834821
-nMon-fila.lua   835891
-nMon-filb.lua   837487
-nPri-fila.lua   839059
-nPri-filb.lua   840383
-nRan-fila.lua   841875
-nRan-filb.lua   842869
-nRog-fila.lua   843913
-nRog-filb.lua   845718
-nSam-fila.lua   847523
-nSam-filb.lua   848353
-nTou-fila.lua   850257
-nTou-filb.lua   851541
-nVal-fila.lua   852541
-nVal-filb.lua   853459
-nWiz-fila.lua   854483
-nWiz-filb.lua   856023
-nArc-loca.lua   857536
-nBar-loca.lua   862678
-nCav-loca.lua   867338
-nHea-loca.lua   871485
-nKni-loca.lua   874223
-nMon-loca.lua   878472
-nPri-loca.lua   882210
-nRan-loca.lua   885039
-nRog-loca.lua   888236
-nSam-loca.lua   892477
-nTou-loca.lua   897413
-nVal-loca.lua   904759
-nWiz-loca.lua   907197
-nArc-strt.lua   912854
-nBar-strt.lua   917418
-nCav-strt.lua   921761
-nHea-strt.lua   926231
-nKni-strt.lua   930414
-nMon-strt.lua   934531
-nPri-strt.lua   938864
-nRan-strt.lua   942877
-nRog-strt.lua   947267
-nSam-strt.lua   953315
-nTou-strt.lua   957444
-nVal-strt.lua   963114
-nWiz-strt.lua   967102
-nbogusmon   971780
-ndata   979435
-nengrave  1283169
-nepitaph  1286096
-noracles  1310521
-noptions  1314223
-nquest.lua  1315956
-nrumors  1434866
+nbigrm-13.lua   496607
+nbigrm-2.lua   499444
+nbigrm-3.lua   502130
+nbigrm-4.lua   505265
+nbigrm-5.lua   507609
+nbigrm-6.lua   509825
+nbigrm-7.lua   511840
+nbigrm-8.lua   514053
+nbigrm-9.lua   516234
+ncastle.lua   518457
+nfakewiz1.lua   527077
+nfakewiz2.lua   528692
+njuiblex.lua   530187
+nknox.lua   534185
+nmedusa-1.lua   541491
+nmedusa-2.lua   546233
+nmedusa-3.lua   551829
+nmedusa-4.lua   557825
+nminend-1.lua   563856
+nminend-2.lua   568180
+nminend-3.lua   573487
+nminefill.lua   576901
+nminetn-1.lua   578027
+nminetn-2.lua   583913
+nminetn-3.lua   590576
+nminetn-4.lua   595127
+nminetn-5.lua   600031
+nminetn-6.lua   605139
+nminetn-7.lua   609063
+noracle.lua   616345
+norcus.lua   618849
+nsanctum.lua   624075
+nsoko1-1.lua   629491
+nsoko1-2.lua   632706
+nsoko2-1.lua   635900
+nsoko2-2.lua   637743
+nsoko3-1.lua   639748
+nsoko3-2.lua   642001
+nsoko4-1.lua   644081
+nsoko4-2.lua   647121
+ntower1.lua   649058
+ntower2.lua   651666
+ntower3.lua   653468
+nvalley.lua   655003
+nwizard1.lua   660820
+nwizard2.lua   664530
+nwizard3.lua   666812
+nnhcore.lua   670145
+nnhlib.lua   674924
+nthemerms.lua   681997
+nastral.lua   716480
+nair.lua   726001
+nearth.lua   731280
+nfire.lua   737439
+nwater.lua   743216
+nhellfill.lua   747747
+ntut-1.lua   759632
+ntut-2.lua   774506
+nArc-goal.lua   775101
+nBar-goal.lua   779429
+nCav-goal.lua   783270
+nHea-goal.lua   785818
+nKni-goal.lua   788555
+nMon-goal.lua   792828
+nPri-goal.lua   794782
+nRan-goal.lua   796953
+nRog-goal.lua   801582
+nSam-goal.lua   806382
+nTou-goal.lua   809739
+nVal-goal.lua   816000
+nWiz-goal.lua   819531
+nArc-fila.lua   825041
+nArc-filb.lua   826471
+nBar-fila.lua   827910
+nBar-filb.lua   828753
+nCav-fila.lua   829974
+nCav-filb.lua   830938
+nHea-fila.lua   832011
+nHea-filb.lua   833171
+nKni-fila.lua   834498
+nKni-filb.lua   835433
+nMon-fila.lua   836503
+nMon-filb.lua   838099
+nPri-fila.lua   839671
+nPri-filb.lua   840995
+nRan-fila.lua   842487
+nRan-filb.lua   843481
+nRog-fila.lua   844525
+nRog-filb.lua   846330
+nSam-fila.lua   848135
+nSam-filb.lua   848965
+nTou-fila.lua   850869
+nTou-filb.lua   852153
+nVal-fila.lua   853153
+nVal-filb.lua   854071
+nWiz-fila.lua   855095
+nWiz-filb.lua   856635
+nArc-loca.lua   858148
+nBar-loca.lua   863278
+nCav-loca.lua   867938
+nHea-loca.lua   872085
+nKni-loca.lua   874823
+nMon-loca.lua   879072
+nPri-loca.lua   881744
+nRan-loca.lua   884573
+nRog-loca.lua   887770
+nSam-loca.lua   892011
+nTou-loca.lua   896947
+nVal-loca.lua   904292
+nWiz-loca.lua   906730
+nArc-strt.lua   912387
+nBar-strt.lua   916951
+nCav-strt.lua   921294
+nHea-strt.lua   925764
+nKni-strt.lua   929947
+nMon-strt.lua   934064
+nPri-strt.lua   938397
+nRan-strt.lua   942410
+nRog-strt.lua   946800
+nSam-strt.lua   952848
+nTou-strt.lua   956977
+nVal-strt.lua   962647
+nWiz-strt.lua   966635
+nbogusmon   971313
+ndata   978968
+nengrave  1282702
+nepitaph  1285629
+noracles  1310054
+noptions  1313756
+nquest.lua  1315489
+nrumors  1434399
         欢迎来到NetHack!
 
 NetHack是一款类似"龙与地下城"的游戏, 在游戏中, 你(作为冒险者)将深入地牢深处, 
@@ -12265,7 +12265,7 @@ for i = 1,28 do
   des.monster();
 end
 
--- NetHack bigroom bigrm-12.lua	$NHDT-Date: $  $NHDT-Branch: NetHack-5.0 $
+-- NetHack bigroom bigrm-12.lua	$NHDT-Date: 1791741080 2026/10/11 17:51:20 $  $NHDT-Branch: NetHack-5.0 $ $NHDT-Revision: 1.2 $
 --	Copyright (c) 2024 by Pasi Kallinen
 -- NetHack may be freely redistributed.  See license for details.
 --
@@ -13452,6 +13452,14 @@ des.region(selection.area(19,06,21,06),"lit")
 des.region(selection.area(46,06,48,06),"lit")
 des.region(selection.area(19,13,21,13),"lit")
 des.region(selection.area(46,13,48,13),"lit")
+
+--  Monsters are not allowed to spawn in the vault and treasuries
+des.exclusion({ type = "monster-generation", region = {21,08,35,11} })
+des.exclusion({ type = "monster-generation", region = {19,06,21,06} })
+des.exclusion({ type = "monster-generation", region = {19,13,21,13} })
+des.exclusion({ type = "monster-generation", region = {46,06,48,06} })
+des.exclusion({ type = "monster-generation", region = {46,13,48,13} })
+
 --   A welcoming committee
 des.region({ region={03,10,07,13},lit=1,type="zoo",filled=1,irregular=1 })
 --   arrival chamber; needs to be a real room to control migrating monsters,
@@ -14285,8 +14293,8 @@ des.non_diggable(selection.area(53,14,61,14))
 -- The Gnome King's wine cellar.
 -- the Trespassers sign is a long-running joke
 des.engraving({12,03}, "engrave",
-	      "You are now entering the Gnome King's wine cellar.")
-des.engraving({12,04}, "engrave", "Trespassers will be persecuted!")
+	      "你已闯入侏儒王的酒窖.")
+des.engraving({12,04}, "engrave", "非法侵入严究不贷!")
 des.object("potion of booze", 10, 07)
 des.object("potion of booze", 10, 07)
 des.object("!", 10, 07)
@@ -17611,8 +17619,8 @@ local tutorial_events = {
          if (u.uhunger < 148) then
             local o = obj.new("blessed food ration");
             o:placeobj(u.ux, u.uy);
-            nh.pline("Looks like you're getting hungry.  You'll starve to death, unless you eat something.", true);
-            nh.pline("Comestibles are eaten with '" .. nh.eckey("eat") .. "'", true);
+            nh.pline("看上去你在饿肚子. 要是再不吃的话就要饿死了.", true);
+            nh.pline("按'" .. nh.eckey("eat") .. "'可以吃东西.", true);
             return true;
          end
       end
@@ -17909,6 +17917,24 @@ themeroom_fills = {
          end
       end,
    },
+
+   {
+      name = "Meat",
+      contents = function(rm)
+         local meats = { "meatball", "meatball", "meat ring",
+                         "meat stick", "enormous meatball" };
+         local i = d(5, 5);
+         while (i > 0) do
+            local meatidx = math.random(#meats);
+            des.object({ id = meats[meatidx] });
+            i = i - meatidx;
+         end
+         if (nh.level_difficulty() > 8 and percent(75)) then
+            des.monster({ id = "flesh golem", waiting = true });
+         end
+      end,
+   },
+
 };
 
 themerooms = {
@@ -18691,13 +18717,13 @@ function make_dig_engraving(data)
       dig = " here";
    else
       if (tx < 0 or tx > 0) then
-         dig = string.format(" %i %s", math.abs(tx), (tx > 0) and "east" or "west");
+         dig = string.format("%s挖%i格", (tx > 0) and "东" or "西", math.abs(tx));
       end
       if (ty < 0 or ty > 0) then
-         dig = dig .. string.format(" %i %s", math.abs(ty), (ty > 0) and "south" or "north");
+         dig = dig .. string.format("%s挖%i格", (ty > 0) and "南" or "北", math.abs(ty));
       end
    end
-   des.engraving({ coord = pos, type = "burn", text = "Dig" .. dig });
+   des.engraving({ coord = pos, type = "burn", text = "向" .. dig });
 end
 
 -- postprocess callback: turn room walls into trees
@@ -19878,7 +19904,7 @@ end
 
 function tut_key_help(x, y)
    if (tut_ctrl_key ~= nil) then
-      des.engraving({ coord = { x,y }, type = "engrave", text = "Note: Outside the tutorial, Ctrl-key combinations are shown prefixed with a caret, like '^" .. tut_ctrl_key .. "'", degrade = false });
+      des.engraving({ coord = { x,y }, type = "engrave", text = "注意: 出了教程, Ctrl-键组合会写成插入符号前缀, 像这样: '^" .. tut_ctrl_key .. "'", degrade = false });
       tut_ctrl_key = nil;
    end
 end
@@ -19940,47 +19966,47 @@ local diagmovekeys = tut_key("movesouthwest") .. " " ..
    tut_key("movesoutheast") .. " " ..
    tut_key("movenorthwest");
 
-des.engraving({ coord = { 9,3 }, type = "engrave", text = "Move around with " .. movekeys, degrade = false });
-des.engraving({ coord = { 5,2 }, type = "engrave", text = "Move diagonally with " .. diagmovekeys, degrade = false });
+des.engraving({ coord = { 9,3 }, type = "engrave", text = "按" .. movekeys .. "移动", degrade = false });
+des.engraving({ coord = { 5,2 }, type = "engrave", text = "按" .. diagmovekeys .. "斜向移动", degrade = false });
 
 if (u.role == "Knight") then
-   des.engraving({ coord = { 12,1 }, type = "engrave", text = "Knights can jump with '" .. tut_key("jump") .. "'", degrade = false });
+   des.engraving({ coord = { 12,1 }, type = "engrave", text = "骑士可以按'" .. tut_key("jump") .. "'跳跃", degrade = false });
 end
 
 --
 
-des.engraving({ coord = { 2,4 }, type = "engrave", text = "Some actions may require multiple tries before succeeding", degrade = false });
-des.engraving({ coord = { 2,5 }, type = "engrave", text = "Open the door by moving into it", degrade = false });
+des.engraving({ coord = { 2,4 }, type = "engrave", text = "某些操作可能需要尝试多次才能成功", degrade = false });
+des.engraving({ coord = { 2,5 }, type = "engrave", text = "朝门移动以开门", degrade = false });
 des.door({ coord = { 2,6 }, state = "closed" });
 
-des.engraving({ coord = { 2,7 }, type = "engrave", text = "Close the door with '" .. tut_key("close") .. "'", degrade = false });
+des.engraving({ coord = { 2,7 }, type = "engrave", text = "按'" .. tut_key("close") .. "'关门", degrade = false });
 
 
 --
 
-des.engraving({ coord = { 4,5 }, type = "engrave", text = "You can leave the tutorial via the magic portal.", degrade = false });
+des.engraving({ coord = { 4,5 }, type = "engrave", text = "通过魔法传送门离开本教程.", degrade = false });
 des.trap({ type = "magic portal", coord = { 4,4 }, seen = true });
 
 --
 
-des.engraving({ coord = { 5,9 }, type = "engrave", text = "This door is locked. Kick it with '" .. tut_key("kick") .. "'", degrade = false });
+des.engraving({ coord = { 5,9 }, type = "engrave", text = "这扇门是锁着的. 按'" .. tut_key("kick") .. "'踢开它", degrade = false });
 des.door({ coord = { 5,10 }, state = "locked" });
 
 -- by default, kick is the first command that can be a ctrl-key combo
 tut_key_help(6, 8);
 
 
-des.engraving({ coord = { 5,12 }, type = "engrave", text = "Look around the map with '" .. tut_key("glance") .. "', press ESC when you're done", degrade = false });
+des.engraving({ coord = { 5,12 }, type = "engrave", text = "按'" .. tut_key("glance") .. "'查看周围, ESC键退出", degrade = false });
 
 --
 
-des.engraving({ coord = { 10,13 }, type = "engrave", text = "Use '" .. tut_key("search") .. "' to search for secret doors", degrade = false });
+des.engraving({ coord = { 10,13 }, type = "engrave", text = "按'" .. tut_key("search") .. "'搜索隐藏门", degrade = false });
 
-des.engraving({ coord = { 10,15 }, type = "engrave", text = "Wrong secret", degrade = false });
+des.engraving({ coord = { 10,15 }, type = "engrave", text = "没有秘密", degrade = false });
 
 --
 
-des.engraving({ coord = { 10,10 }, type = "engrave", text = "Behind this door is a dark corridor", degrade = false });
+des.engraving({ coord = { 10,10 }, type = "engrave", text = "门后面是个昏暗的走廊", degrade = false });
 des.door({ coord = { 10,9 }, state = percent(50) and "locked" or "closed" });
 des.region(selection.match("#"), "unlit");
 des.region(selection.match(" "), "unlit");
@@ -19988,7 +20014,7 @@ des.door({ coord = { 15,10 }, state = percent(50) and "locked" or "closed" });
 
 --
 
-des.engraving({ coord = { 15,11 }, type = "engrave", text = "There are four traps next to you! Search for them.", degrade = false });
+des.engraving({ coord = { 15,11 }, type = "engrave", text = "你身边有四个陷阱! 去找找看.", degrade = false });
 local locs = { {14,11}, {14,12}, {15,12}, {16,12}, {16,11} };
 shuffle(locs);
 for i = 1, 4 do
@@ -19996,55 +20022,55 @@ for i = 1, 4 do
               coord = locs[i], victim = false });
 end
 
-des.engraving({ coord = { 15,15 }, type = "engrave", text = "Some traps can be disabled with '" .. tut_key("untrap") .. "'", degrade = false });
+des.engraving({ coord = { 15,15 }, type = "engrave", text = "有些陷阱可以按'" .. tut_key("untrap") .. "'解除", degrade = false });
 des.trap({ coord = { 15,16 }, type = "web", spider_on_web = false });
 
 --
 
 des.door({ coord = { 18,13 }, state = "closed" });
 
-des.engraving({ coord = { 19,13 }, type = "engrave", text = "Pick up items with '" .. tut_key("pickup") .. "'", degrade = false });
+des.engraving({ coord = { 19,13 }, type = "engrave", text = "按'" .. tut_key("pickup") .. "'捡起", degrade = false });
 
 local armor = (u.role == "Monk") and "leather gloves" or "leather armor";
 
 des.object({ id = armor, spe = 0, buc = "cursed", coord = { 19,14} });
 
-des.engraving({ coord = { 19,15 }, type = "engrave", text = "Wear armor with '" .. tut_key("wear") .. "'", degrade = false });
+des.engraving({ coord = { 19,15 }, type = "engrave", text = "按'" .. tut_key("wear") .. "'穿上防具", degrade = false });
 
 des.object({ id = "dagger", spe = 0, buc = "not-cursed", coord = { 21,15} });
 
-des.engraving({ coord = { 21,14 }, type = "engrave", text = "Wield weapons with '" .. tut_key("wield") .. "'", degrade = false });
+des.engraving({ coord = { 21,14 }, type = "engrave", text = "按'" .. tut_key("wield") .. "'装备武器", degrade = false });
 
 
-des.engraving({ coord = { 22,13 }, type = "engrave", text = "Hit monsters by walking into them.", degrade = false });
+des.engraving({ coord = { 22,13 }, type = "engrave", text = "朝怪物移动以攻击.", degrade = false });
 
 des.monster({ id = "lichen", coord = { 23,15 }, waiting = true, countbirth = false });
 
 --
 
-des.engraving({ coord = { 24,16 }, type = "engrave", text = "Now you know the very basics. You can leave the tutorial via the magic portal.", degrade = false });
+des.engraving({ coord = { 24,16 }, type = "engrave", text = "现在你已经掌握了最基础的知识. 你可以通过魔法传送门离开本教程.", degrade = false });
 
-des.engraving({ coord = { 26,16 }, type = "engrave", text = "Step into this portal to leave the tutorial", degrade = false });
+des.engraving({ coord = { 26,16 }, type = "engrave", text = "走到这个传送门上即可离开教程", degrade = false });
 des.trap({ type = "magic portal", coord = { 27,16 }, seen = true });
 
 --
 
-des.engraving({ coord = { 25,13 }, type = "engrave", text = "Push boulders by moving into them", degrade = false });
+des.engraving({ coord = { 25,13 }, type = "engrave", text = "朝巨石移动以推动", degrade = false });
 des.object({ id = "boulder", coord = {25,12} });
 
 --
 
-des.engraving({ coord = { 27,9 }, type = "engrave", text = "Take off armor with '" .. tut_key("takeoff") .. "'", degrade = false });
+des.engraving({ coord = { 27,9 }, type = "engrave", text = "按'" .. tut_key("takeoff") .. "'脱下防具", degrade = false });
 
 --
 
 des.object({ class = "?", id = "remove curse", buc = "blessed", coord = {23,11} })
-des.engraving({ coord = { 22,11 }, type = "engrave", text = "Some items have shuffled descriptions, different each game", degrade = false });
-des.engraving({ coord = { 23,11 }, type = "engrave", text = "Pick up this scroll, read it with '" .. tut_key("read") .. "', and try to remove the armor again", degrade = false });
+des.engraving({ coord = { 22,11 }, type = "engrave", text = "某些物品的描述会随机变化, 每局游戏都不一样", degrade = false });
+des.engraving({ coord = { 23,11 }, type = "engrave", text = "捡起这张卷轴, 按'" .. tut_key("read") .. "'读出来, 然后再试试脱下防具", degrade = false });
 
 --
 
-des.engraving({ coord = { 19,10 }, type = "engrave", text = "Another magic portal, a way to leave this tutorial", degrade = false });
+des.engraving({ coord = { 19,10 }, type = "engrave", text = "另一个魔法传送门, 可以离开教程", degrade = false });
 des.trap({ type = "magic portal", coord = { 19,11 }, seen = true });
 
 --
@@ -20059,15 +20085,15 @@ des.object({ coord = {14, 6}, id = "boulder" });
 
 des.door({ coord = { 20,3 }, state = percent(50) and "open" or "closed" });
 
-des.engraving({ coord = { 21,3 }, type = "engrave", text = "Avoid being burdened, it slows you down", degrade = false });
-des.engraving({ coord = { 22,3 }, type = "engrave", text = "Drop items with '" .. tut_key("drop") .. "'", degrade = false });
-des.engraving({ coord = { 22,4 }, type = "engrave", text = "You can drop partial stacks by prefixing the item slot letter with a number", degrade = false });
+des.engraving({ coord = { 21,3 }, type = "engrave", text = "不要负重, 不然你行动会很慢", degrade = false });
+des.engraving({ coord = { 22,3 }, type = "engrave", text = "按'" .. tut_key("drop") .. "'丢下物品", degrade = false });
+des.engraving({ coord = { 22,4 }, type = "engrave", text = "你可以在输入物品栏字母前加上数字, 以丢弃部分堆叠的物品", degrade = false });
 
 --
 
 des.monster({ id = "yellow mold", coord = { 26,2 }, waiting = true, countbirth = false });
 
-des.engraving({ coord = { 25,5 }, type = "engrave", text = "Throw items with '" .. tut_key("throw") .. "'", degrade = false });
+des.engraving({ coord = { 25,5 }, type = "engrave", text = "按'" .. tut_key("throw") .. "'扔出物品", degrade = false });
 
 des.trap({ type = "magic portal", coord = { 21,1 }, seen = true });
 
@@ -20075,40 +20101,40 @@ des.trap({ type = "magic portal", coord = { 21,1 }, seen = true });
 
 des.monster({ id = "wolf", coord = { 29,2 }, peaceful = 0, waiting = true, countbirth = false });
 
-des.engraving({ coord = { 37,4 }, type = "engrave", text = "Missiles, such as rocks, work better when fired from appropriate launcher", degrade = false });
+des.engraving({ coord = { 37,4 }, type = "engrave", text = "发射物, 比如岩石, 用合适的发射器射出去比扔出去伤害更高", degrade = false });
 
 des.object({ coord = { 37,3 }, id = "sling", buc = "not-cursed", spe = 9 });
-des.engraving({ coord = { 37,3 }, type = "engrave", text = "Wield the sling", degrade = false });
-des.engraving({ coord = { 36,1 }, type = "engrave", text = "Use '" .. tut_key("fire") .. "' to fire missiles with the wielded launcher", degrade = false });
+des.engraving({ coord = { 37,3 }, type = "engrave", text = "装备投石器", degrade = false });
+des.engraving({ coord = { 36,1 }, type = "engrave", text = "按'" .. tut_key("fire") .. "'用发射器发射弹药", degrade = false });
 
-des.engraving({ coord = { 35,4 }, type = "engrave", text = "Firing launches items from your quiver; Use '" .. tut_key("quiver") .. "' to put items in it", degrade = false });
+des.engraving({ coord = { 35,4 }, type = "engrave", text = "开火会从你的箭袋中发射; 按'" .. tut_key("quiver") .. "'往里面放东西", degrade = false });
 
-des.engraving({ coord = { 33,4 }, type = "engrave", text = "You can wait a turn with '" .. tut_key("wait") .. "'", degrade = false });
+des.engraving({ coord = { 33,4 }, type = "engrave", text = "按'" .. tut_key("wait") .. "'可以等待一回合", degrade = false });
 
 
 --
 
 des.door({ coord = { 38,6 }, state = "closed" });
 
-des.engraving({ coord = { 39,6 }, type = "engrave", text = "You loot containers with '" .. tut_key("loot") .. "'", degrade = false });
+des.engraving({ coord = { 39,6 }, type = "engrave", text = "按'" .. tut_key("loot") .. "'搜刮容器", degrade = false });
 
 des.object({ coord = { 41,6 }, id = "large box", broken = true, trapped = false,
              contents = function(obj)
                 des.object({ id = "secret door detection", class = "/", spe = 30 }); end
 });
-des.engraving({ coord = { 42,6 }, type = "engrave", text = "Containers can also be emptied with '" .. tut_key("tip") .. "'", degrade = false });
+des.engraving({ coord = { 42,6 }, type = "engrave", text = "也可以按'" .. tut_key("tip") .. "'倒空容器", degrade = false });
 
-des.engraving({ coord = { 45,6 }, type = "engrave", text = "Magic wands are used with '" .. tut_key("zap") .. "'", degrade = false });
+des.engraving({ coord = { 45,6 }, type = "engrave", text = "按'" .. tut_key("zap") .. "'挥舞魔杖", degrade = false });
 
 --
 
 des.door({ coord = { 35,9 }, state = "nodoor" });
-des.engraving({ coord = { 34,9 }, type = "engrave", text = "You can run by prefixing a movement key with '" .. tut_key("run") .. "'", degrade = false });
+des.engraving({ coord = { 34,9 }, type = "engrave", text = "在移动前加'" .. tut_key("run") .. "'可以奔跑", degrade = false });
 
 --
 
 des.door({ coord = { 33,16 }, state = "nodoor" });
-des.engraving({ coord = { 35,15 }, type = "engrave", text = "Travel across the level with '" .. tut_key("travel") .. "'", degrade = false });
+des.engraving({ coord = { 35,15 }, type = "engrave", text = "按'" .. tut_key("travel") .. "'可以在地图中快速旅行", degrade = false });
 
 --
 
@@ -20116,7 +20142,7 @@ des.trap({ type = "magic portal", coord = { 27,14 }, seen = true });
 
 --
 
-des.engraving({ coord = { 48,1 }, type = "burn", text = "Use '" .. tut_key("eat") .. "' to eat edible things", degrade = false });
+des.engraving({ coord = { 48,1 }, type = "burn", text = "按'" .. tut_key("eat") .. "'可以吃东西", degrade = false });
 
 des.object({ coord = { 50,3 }, id = "apple", buc = "not-cursed"  });
 des.object({ coord = { 50,3 }, id = "candy bar", buc = "not-cursed"  });
@@ -20127,11 +20153,11 @@ des.object({ coord = { 50,3 }, id = "corpse", montype = "lichen", buc = "not-cur
 
 des.door({ coord = { 46,11 }, state = "closed" });
 
-des.engraving({ coord = { 43,11 }, type = "burn", text = "Use '" .. tut_key("twoweapon") .. "' to use two weapons at once", degrade = false });
+des.engraving({ coord = { 43,11 }, type = "burn", text = "按'" .. tut_key("twoweapon") .. "'同时使用两件武器", degrade = false });
 des.object({ coord = { 43,13 }, id = "knife", buc = "uncursed" });
 des.object({ coord = { 43,14 }, id = "dagger", buc = "blessed" });
 
-des.engraving({ coord = { 43,16 }, type = "burn", text = "Swap weapons quickly with '" .. tut_key("swap") .. "'", degrade = false });
+des.engraving({ coord = { 43,16 }, type = "burn", text = "按'" .. tut_key("swap") .. "'快速切换武器", degrade = false });
 
 des.door({ coord = { 40,15 }, state = "random" });
 
@@ -20139,16 +20165,16 @@ des.door({ coord = { 40,15 }, state = "random" });
 
 des.object({ coord = { 48,7 }, id = "ring of levitation", buc = "not-cursed" });
 
-des.engraving({ coord = { 48,10 }, type = "burn", text = "Put on accessories with '" .. tut_key("puton") .. "'", degrade = false });
+des.engraving({ coord = { 48,10 }, type = "burn", text = "按'" .. tut_key("puton") .. "'戴上饰品", degrade = false });
 
-des.engraving({ coord = { 48,16 }, type = "burn", text = "Remove accessories with '" .. tut_key("remove") .. "'", degrade = false });
+des.engraving({ coord = { 48,16 }, type = "burn", text = "按'" .. tut_key("remove") .. "'摘下饰品", degrade = false });
 
 des.door({ coord = { 50,16 }, state = "closed" });
 
 
 --
 
-des.engraving({ coord = { 58,9 }, type = "burn", text = "Use '" .. tut_key("down") .. "' to go down the stairs", degrade = false });
+des.engraving({ coord = { 58,9 }, type = "burn", text = "按'" .. tut_key("down") .. "'下楼梯", degrade = false });
 des.stair({ dir = "down", coord = { 58,10 } });
 
 --
@@ -20156,7 +20182,7 @@ des.stair({ dir = "down", coord = { 58,10 } });
 -- one more ctrl-key help, if needed
 tut_key_help(64, 4);
 
-des.engraving({ coord = { 65,3 }, type = "burn", text = "UNDER CONSTRUCTION", degrade = false });
+des.engraving({ coord = { 65,3 }, type = "burn", text = "建设中", degrade = false });
 
 des.trap({ type = "magic portal", coord = { 66,2 }, seen = true });
 
@@ -20164,7 +20190,7 @@ des.trap({ type = "magic portal", coord = { 66,2 }, seen = true });
 
 -- squeezing through small gaps
 
-des.engraving({ coord = { 69,12 }, type = "burn", text = "Can't get through?  You're carrying too much.", degrade = false });
+des.engraving({ coord = { 69,12 }, type = "burn", text = "过不来? 你带的东西太多了.", degrade = false });
 
 -- try to squeeze over boulders, find a trap door
 
@@ -20175,21 +20201,21 @@ des.trap({ type = "trap door", coord = { 73,15 } });
 
 --
 
-des.engraving({ coord = { 60,2 }, type = "engrave", text = "Spellcasting", degrade = false });
+des.engraving({ coord = { 60,2 }, type = "engrave", text = "施法", degrade = false });
 if (u.uenmax < 5) then
    -- TODO: make sure hero has enough Pw to cast the spell (5 pw) instead?
    -- TODO: ensure the first cast of this spell succeeds?
-   des.engraving({ coord = { 59,2 }, type = "engrave", text = "Unfortunately you don't have enough energy to cast spells.", degrade = false });
+   des.engraving({ coord = { 59,2 }, type = "engrave", text = "不幸的是, 你的能量不够用来施放法术.", degrade = false });
 end
-des.engraving({ coord = { 57,2 }, type = "engrave", text = "Pick up the spellbook with '" .. tut_key("pickup") .. "'", degrade = false });
+des.engraving({ coord = { 57,2 }, type = "engrave", text = "按'" .. tut_key("pickup") .. "'捡起魔法书", degrade = false });
 des.object({ coord = { 57,2 }, id = "spellbook of light", buc = "blessed" });
-des.engraving({ coord = { 55,2 }, type = "engrave", text = "Read the spellbook with '" .. tut_key("read") .. "'", degrade = false });
-des.engraving({ coord = { 53,2 }, type = "engrave", text = "Use '" .. tut_key("cast") .. "' to cast a spell", degrade = false });
+des.engraving({ coord = { 55,2 }, type = "engrave", text = "按'" .. tut_key("read") .. "'阅读魔法书", degrade = false });
+des.engraving({ coord = { 53,2 }, type = "engrave", text = "按'" .. tut_key("cast") .. "'施放法术", degrade = false });
 des.region(selection.area(53,01, 59, 3), "unlit");
 
 --
 
-des.engraving({ coord = { 72,2 }, type = "engrave", text = "You \"quaff\" potions with '" .. tut_key("quaff") .. "'", degrade = false });
+des.engraving({ coord = { 72,2 }, type = "engrave", text = "按'" .. tut_key("quaff") .. "'喝药水", degrade = false });
 des.object({ coord = { 72,2 }, id = "potion of object detection", buc = "blessed" });
 
 
@@ -20229,7 +20255,7 @@ des.region(selection.area(01,01, 73, 16), "lit");
 
 des.stair({ dir = "up", coord = { 2,2 } });
 
-des.engraving({ coord = { 1,1 }, type = "burn", text = "Use '" .. nh.eckey("up") .. "' to go up the stairs", degrade = false });
+des.engraving({ coord = { 1,1 }, type = "burn", text = "按'" .. nh.eckey("up") .. "'上楼梯", degrade = false });
 
 
 des.trap({ type = "magic portal", coord = { 11,5 }, seen = true });
@@ -22921,10 +22947,10 @@ des.object()
 des.object()
 des.object()
 -- Treasure?
-des.engraving({ type="engrave", text="X marks the spot." })
-des.engraving({ type="engrave", text="X marks the spot." })
-des.engraving({ type="engrave", text="X marks the spot." })
-des.engraving({ type="engrave", text="X marks the spot." })
+des.engraving({ type="engrave", text="X即为地点." })
+des.engraving({ type="engrave", text="X即为地点." })
+des.engraving({ type="engrave", text="X即为地点." })
+des.engraving({ type="engrave", text="X即为地点." })
 -- Random traps
 des.trap("spiked pit",24,02)
 des.trap("spiked pit",37,00)
@@ -23424,44 +23450,45 @@ des.monster({ class = "j", peaceful=0 })
 --	Copyright (c) 1991-2 by M. Stephenson
 -- NetHack may be freely redistributed.  See license for details.
 --
-des.level_init({ style = "solidfill", fg = " " });
+des.level_init({ style = "mines", fg = ".", smoothed = true, joined = true, lit = 1, walled = true });
 
-des.level_flags("mazelevel");
+des.level_flags("mazelevel", "noflip");
 
---         1         2         3         4         5         6         7 
---123456789012345678901234567890123456789012345678901234567890123456789012345
-des.map([[
-             ----------------------------------------------------   --------
-           ---.................................................-    --.....|
-         ---...--------........------........................---     ---...|
-       ---.....-      --.......-    ----..................----         --.--
-     ---.....----      ---------       --..................--         --..| 
-   ---...-----                       ----.----.....----.....---      --..|| 
-----..----                       -----..---  |...---  |.......---   --...|  
-|...---                       ----....---    |.---    |.........-- --...||  
-|...-                      ----.....---     ----      |..........---....|   
-|...----                ----......---       |         |...|.......-....||   
-|......-----          ---.........-         |     -----...|............|    
-|..........-----   ----...........---       -------......||...........||    
-|..............-----................---     |............|||..........|     
-|-S----...............................---   |...........|| |.........||     
-|.....|..............------.............-----..........||  ||........|      
-|.....|.............--    ---.........................||    |.......||      
-|.....|.............-       ---.....................--|     ||......|       
-|---S--------.......----      --.................----        |.....||       
-|...........|..........--------..............-----           ||....|        
-|...........|............................-----                |....|        
-------------------------------------------                    ------        
-]]);
--- Random Monsters
+local floor = selection.match("."):grow();
+des.terrain({ selection = floor, typ = ".", lit = 1 });
+des.terrain({ selection = selection.rect(00,00,78,20), typ = " " });
 
 -- Dungeon Description
-des.region(selection.area(00,00,75,20), "lit")
+des.region(selection.area(00,00,78,20), "lit")
+des.non_diggable(selection.area(00,00,75,20))
+
+
+-- wu wei
+local formation = [[
+......................xxxx
+..L............L...L....xx
+..LLLLLLLLL.....L..L.....x
+.L.L.L.L.L....LLLLLLLLL..x
+...L.L.L.L........L...L...
+.LLLLLLLLLLL.....LLLLLLL..
+...L.L.L.L.......L.....L..
+...L.L.L.L......LLLLLLLLL.
+..LLLLLLLLL....L........L.
+..............L.L.L.L.L.L.
+..L.L..L..L.....L.L.L...L.
+.L...L..L..L...L..L....LL.
+..........................
+]];
+
+des.map({ halign = "center", valign = "center",
+          map = formation, lit = 1,
+          contents = function() end });
+
+des.wallify();
+
 -- Stairs
 des.stair("up")
 des.stair("down")
--- Non diggable walls
-des.non_diggable(selection.area(00,00,75,20))
 -- Objects
 des.object()
 des.object()
@@ -24074,7 +24101,7 @@ if percent(10) then
 end
 if percent(10) then
 	des.monster({id="wizard", name="Ridcully", male=1, peaceful=1, keep_default_invent=false})
-end=
+end
 if percent(10) then
 	des.monster({id="wizard", name="the Bursar", male=1, peaceful=1, keep_default_invent=false})
 end
@@ -29245,7 +29272,7 @@ discworld novel*
 	Anu was the Babylonian god of the heavens, the monarch of
 	the north star.  He was the oldest of the Babylonian gods,
 	the father of all gods, and the ruler of heaven and destiny.
-	Anu features strongly in the _atiku_ festival in
+	Anu features strongly in the _akitu_ festival in
 	Babylon, Uruk and other cities.
 	The most highly evolved of all the primates, as shown by
 	all their anatomical characters and particularly the
