@@ -90,6 +90,12 @@
             app:defaultValue="always"
             app:entries="@array/move_scheme_array"
             app:entryValues="@array/move_scheme_value"/>
+
+        <CheckBoxPreference
+            app:key="doubleTapTravel"
+            app:title="@string/pref_map_double_tap_travel"
+            app:iconSpaceReserved="false"
+            app:defaultValue="true"/>
     </PreferenceCategory>
 
     <PreferenceCategory

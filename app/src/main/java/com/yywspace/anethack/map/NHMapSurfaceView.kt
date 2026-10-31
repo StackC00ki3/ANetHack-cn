@@ -208,6 +208,7 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
     /**
      * 点按旅行要点两次：第一次标出目的格和沿路的落脚点，在标记淡完前再点同一格才出发，
      * 免得误触一下就走远。路线交给游戏线程等输入时去算。
+     * 关掉“双击旅行”后点一下就出发，也不预览路线。
      */
     private fun tapToTravel(point: Point) {
         if (point.x !in 1 until map.width || point.y !in 0 until map.height) {
@@ -215,6 +216,12 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
             return
         }
         lastTouchTile = point
+        if (!nh.prefs.doubleTapTravel) {
+            travelPreview.clear()
+            nh.command.sendCommand(NHPosCommand(point.x, point.y, PosMod.TRAVEL_TO))
+            mapTranslated = false
+            return
+        }
         if (travelPreview.isCandidate(point.x, point.y)) {
             travelPreview.clear()
             nh.command.sendCommand(NHPosCommand(point.x, point.y, PosMod.TRAVEL_TO))
@@ -685,6 +692,8 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
                 drawTileCurse(canvas)
             }
             drawLastTouchTile(canvas)
+            // 关掉双击旅行后就只剩立即出发，之前的候选标记不该残留
+            if (!nh.prefs.doubleTapTravel) travelPreview.clear()
             canvas?.let { travelPreview.draw(it, ::getTileBorder) }
             drawBorder(canvas)
             // drawWalkRange(canvas)

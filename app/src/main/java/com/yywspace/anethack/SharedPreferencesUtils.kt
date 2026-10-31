@@ -51,6 +51,8 @@ class SharedPreferencesUtils(val context: Context) {
     var indicatorSymbols by SharedPreferenceDelegates.string("<>")
     /** 点按地图何时旅行：[MOVE_SCHEME_PANNED] 拖动地图后，[MOVE_SCHEME_ALWAYS] 总是，[MOVE_SCHEME_LONG_PRESS] 仅长按。 */
     var moveScheme by SharedPreferenceDelegates.string(MOVE_SCHEME_ALWAYS)
+    /** 点按旅行要点两次才出发并画出路线；关掉后点一下就立即旅行，也不画路线。 */
+    var doubleTapTravel by SharedPreferenceDelegates.boolean(true)
     var walkRange by SharedPreferenceDelegates.int(70)
     var smartSelfTap by SharedPreferenceDelegates.boolean(true)
     var mapBorderColor by SharedPreferenceDelegates.int(MapBorderStyle.DEFAULT_COLOR)
