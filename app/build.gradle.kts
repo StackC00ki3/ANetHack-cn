@@ -81,7 +81,7 @@ android {
         releaseKeyPassword
     ).all { !it.isNullOrBlank() }
 
-    val versionNameValue = "5.0.1.a2.2"
+    val versionNameValue = "5.0.1.a2.3"
 
     defaultConfig {
         applicationId = "com.yywspace.anethack.cn"
