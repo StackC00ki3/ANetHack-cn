@@ -1,4 +1,4 @@
-  1      149     1763     3293  1483066
+  1      149     1763     3293  1483250
 nDirectory        0
 nhelp     3293
 nhh    14501
@@ -74,80 +74,80 @@ nfire.lua   737439
 nwater.lua   743216
 nhellfill.lua   747747
 ntut-1.lua   759632
-ntut-2.lua   774506
-nArc-goal.lua   775101
-nBar-goal.lua   779429
-nCav-goal.lua   783270
-nHea-goal.lua   785818
-nKni-goal.lua   788555
-nMon-goal.lua   792828
-nPri-goal.lua   794782
-nRan-goal.lua   796953
-nRog-goal.lua   801582
-nSam-goal.lua   806382
-nTou-goal.lua   809739
-nVal-goal.lua   816000
-nWiz-goal.lua   819531
-nArc-fila.lua   825041
-nArc-filb.lua   826471
-nBar-fila.lua   827910
-nBar-filb.lua   828753
-nCav-fila.lua   829974
-nCav-filb.lua   830938
-nHea-fila.lua   832011
-nHea-filb.lua   833171
-nKni-fila.lua   834498
-nKni-filb.lua   835433
-nMon-fila.lua   836503
-nMon-filb.lua   838099
-nPri-fila.lua   839671
-nPri-filb.lua   840995
-nRan-fila.lua   842487
-nRan-filb.lua   843481
-nRog-fila.lua   844525
-nRog-filb.lua   846330
-nSam-fila.lua   848135
-nSam-filb.lua   848965
-nTou-fila.lua   850869
-nTou-filb.lua   852153
-nVal-fila.lua   853153
-nVal-filb.lua   854071
-nWiz-fila.lua   855095
-nWiz-filb.lua   856635
-nArc-loca.lua   858148
-nBar-loca.lua   863278
-nCav-loca.lua   867938
-nHea-loca.lua   872085
-nKni-loca.lua   874823
-nMon-loca.lua   879072
-nPri-loca.lua   881744
-nRan-loca.lua   884573
-nRog-loca.lua   887770
-nSam-loca.lua   892011
-nTou-loca.lua   896947
-nVal-loca.lua   904292
-nWiz-loca.lua   906730
-nArc-strt.lua   912387
-nBar-strt.lua   916951
-nCav-strt.lua   921294
-nHea-strt.lua   925764
-nKni-strt.lua   929947
-nMon-strt.lua   934064
-nPri-strt.lua   938397
-nRan-strt.lua   942410
-nRog-strt.lua   946800
-nSam-strt.lua   952848
-nTou-strt.lua   956977
-nVal-strt.lua   962647
-nWiz-strt.lua   966635
-nbogusmon   971313
-ndata   978968
-nengrave  1282702
-nepitaph  1285629
-noracles  1310054
-noptions  1313756
-nquest.lua  1315489
-nrumors  1434399
+ntut-2.lua   774640
+nArc-goal.lua   775235
+nBar-goal.lua   779563
+nCav-goal.lua   783404
+nHea-goal.lua   785952
+nKni-goal.lua   788689
+nMon-goal.lua   792962
+nPri-goal.lua   794916
+nRan-goal.lua   797087
+nRog-goal.lua   801716
+nSam-goal.lua   806516
+nTou-goal.lua   809873
+nVal-goal.lua   816134
+nWiz-goal.lua   819665
+nArc-fila.lua   825175
+nArc-filb.lua   826605
+nBar-fila.lua   828044
+nBar-filb.lua   828887
+nCav-fila.lua   830108
+nCav-filb.lua   831072
+nHea-fila.lua   832145
+nHea-filb.lua   833305
+nKni-fila.lua   834632
+nKni-filb.lua   835567
+nMon-fila.lua   836637
+nMon-filb.lua   838233
+nPri-fila.lua   839805
+nPri-filb.lua   841129
+nRan-fila.lua   842621
+nRan-filb.lua   843615
+nRog-fila.lua   844659
+nRog-filb.lua   846464
+nSam-fila.lua   848269
+nSam-filb.lua   849099
+nTou-fila.lua   851003
+nTou-filb.lua   852287
+nVal-fila.lua   853287
+nVal-filb.lua   854205
+nWiz-fila.lua   855229
+nWiz-filb.lua   856769
+nArc-loca.lua   858282
+nBar-loca.lua   863412
+nCav-loca.lua   868072
+nHea-loca.lua   872219
+nKni-loca.lua   874957
+nMon-loca.lua   879206
+nPri-loca.lua   881878
+nRan-loca.lua   884707
+nRog-loca.lua   887904
+nSam-loca.lua   892145
+nTou-loca.lua   897081
+nVal-loca.lua   904442
+nWiz-loca.lua   906880
+nArc-strt.lua   912537
+nBar-strt.lua   917101
+nCav-strt.lua   921444
+nHea-strt.lua   925914
+nKni-strt.lua   930097
+nMon-strt.lua   934214
+nPri-strt.lua   938547
+nRan-strt.lua   942560
+nRog-strt.lua   946950
+nSam-strt.lua   952998
+nTou-strt.lua   957127
+nVal-strt.lua   962837
+nWiz-strt.lua   966825
+nbogusmon   971503
+ndata   979158
+nengrave  1282892
+nepitaph  1285819
+noracles  1310244
+noptions  1313946
+nquest.lua  1315679
+nrumors  1434583
         欢迎来到NetHack!
 
 NetHack是一款类似"龙与地下城"的游戏, 在游戏中, 你(作为冒险者)将深入地牢深处, 
@@ -20190,7 +20190,9 @@ des.trap({ type = "magic portal", coord = { 66,2 }, seen = true });
 
 -- squeezing through small gaps
 
+
 des.engraving({ coord = { 69,12 }, type = "burn", text = "过不来? 你带的东西太多了.", degrade = false });
+des.engraving({ coord = { 70,13 }, type = "burn", text = "按'" .. tut_key("droptype") .. "'批量丢下物品", degrade = false });
 
 -- try to squeeze over boulders, find a trap door
 
@@ -24091,31 +24093,31 @@ des.monster("s")
 des.monster("s")
 -- Selection of Discworld NPCs
 if percent(10) then
-	des.monster({id="wizard", name="Rincewind", male=1, peaceful=1, keep_default_invent=false})
+	des.monster({id="wizard", name="Rincewind", female=0, peaceful=1, keep_default_invent=false})
 end
 if percent(10) then
-	des.monster({id="barbarian", name="Cohen", male=1, peaceful=1, keep_default_invent=false})
+	des.monster({id="barbarian", name="Cohen", female=0, peaceful=1, keep_default_invent=false})
 end
 if percent(10) then
-	des.monster({id="barbarian", name="Hrun", male=1, peaceful=1, keep_default_invent=false})
+	des.monster({id="barbarian", name="Hrun", female=0, peaceful=1, keep_default_invent=false})
 end
 if percent(10) then
-	des.monster({id="wizard", name="Ridcully", male=1, peaceful=1, keep_default_invent=false})
+	des.monster({id="wizard", name="Ridcully", female=0, peaceful=1, keep_default_invent=false})
 end
 if percent(10) then
-	des.monster({id="wizard", name="the Bursar", male=1, peaceful=1, keep_default_invent=false})
+	des.monster({id="wizard", name="the Bursar", female=0, peaceful=1, keep_default_invent=false})
 end
 if percent(10) then
-	des.monster({id="priest", name="Mightily Oats", male=1, peaceful=1, keep_default_invent=false})
+	des.monster({id="cleric", name="Mightily Oats", female=0, peaceful=1, keep_default_invent=false})
 end
 if percent(10) then
-	des.monster({id="watch captain", name="Vimes", male=1, peaceful=1})
+	des.monster({id="watch captain", name="Vimes", female=0, peaceful=1})
 end
 if percent(10) then
 	des.monster({id="dwarf", name="Cheery", female=1, peaceful=1, keep_default_invent=false}) -- no pick-axe
 end
 if percent(10) then
-	des.monster({id="clay golem", name="Dorfl", male=1, peaceful=1, keep_default_invent=false})
+	des.monster({id="clay golem", name="Dorfl", female=0, peaceful=1, keep_default_invent=false})
 end
 if percent(10) then
 	des.monster({id="clay golem", name="Gladys", female=1, peaceful=1, keep_default_invent=false})
@@ -25578,8 +25580,8 @@ des.monster("guide", 57, 03)
 des.monster("guide", 62, 04)
 des.monster("guide", 66, 04)
 -- path guards
-des.monster({"watchman", 35, 08, name="Sergeant Colon", male=1})
-des.monster({"watchman", 36, 08, name="Corporal Nobbs", male=1})
+des.monster({id="watchman", x=35, y=08, name="Sergeant Colon", female=0})
+des.monster({id="watchman", x=36, y=08, name="Corporal Nobbs", female=0})
 -- river monsters
 des.monster("giant eel", 62, 12)
 des.monster("piranha", 47, 10)
@@ -25587,15 +25589,15 @@ des.monster("piranha", 29, 11)
 des.monster("kraken", 34, 09)
 des.monster("kraken", 37, 09)
 -- a few more Discworld NPCs for flavour
-des.monster({"barbarian", peaceful=1, name="Bravd", male=1, keep_default_invent=false})
-des.monster({"rogue", peaceful=1, name="the Weasel", male=1, keep_default_invent=false})
-des.monster({"werewolf", peaceful=1, name="Angua", female=1})
-des.monster({"rock troll", peaceful=1, name="Detritus", male=1})
+des.monster({id="barbarian", peaceful=1, name="Bravd", female=0, keep_default_invent=false})
+des.monster({id="rogue", peaceful=1, name="the Weasel", female=0, keep_default_invent=false})
+des.monster({id="werewolf", peaceful=1, name="Angua", female=1})
+des.monster({id="rock troll", peaceful=1, name="Detritus", female=0})
 -- the Brass Bridge is lined with statues of 'hippos'
-des.object({id="statue", montype="wumpus" x=34,y=8, historic=1, contents=0})
-des.object({id="statue", montype="wumpus" x=37,y=8, historic=1, contents=0})
-des.object({id="statue", montype="wumpus" x=34,y=10, historic=1, contents=0})
-des.object({id="statue", montype="wumpus" x=37,y=10, historic=1, contents=0})
+des.object({id="statue", montype="wumpus", x=34,y=8, historic=1, contents=0})
+des.object({id="statue", montype="wumpus", x=37,y=8, historic=1, contents=0})
+des.object({id="statue", montype="wumpus", x=34,y=10, historic=1, contents=0})
+des.object({id="statue", montype="wumpus", x=37,y=10, historic=1, contents=0})
 -- Random traps
 des.trap()
 des.trap()
@@ -35156,7 +35158,7 @@ questtext = {
     暗洞穴之中, 如今他正潜伏于此, 伺机而动.
 
 你的%G%d企图夺取这枚护身符, 并借此获得
-理应属于他的神权, 凌驾于其他诸神之上. 
+其应得的神权, 凌驾于其他诸神之上. 
 
 你, 一位新近受训的%r, 自出生起便被预言为
 %G%d的器具. 你注定要为你的神夺回护符, 
