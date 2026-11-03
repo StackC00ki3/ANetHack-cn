@@ -637,9 +637,24 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
     override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
     }
 
+    /**
+     * 必须等绘制线程真正退出再返回：SurfaceView 在回调返回后就会释放 Surface，
+     * 线程还在 lockCanvas / unlockCanvasAndPost 里就会锁到已销毁的 mutex 被 FORTIFY 直接 abort。
+     */
     override fun surfaceDestroyed(holder: SurfaceHolder) {
         isDrawing = false
-        drawThread?.interrupt()
+        val thread = drawThread
+        if (thread != null) {
+            thread.interrupt()
+            if (thread !== Thread.currentThread()) {
+                try {
+                    thread.join(1000)
+                } catch (e: InterruptedException) {
+                    Thread.currentThread().interrupt()
+                }
+            }
+            if (!thread.isAlive) drawThread = null
+        }
     }
 
     private fun draw() {
@@ -653,6 +668,8 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
             Log.w("NHMapSurfaceView", "lockCanvas failed", e)
             return
         }
+        // lockCanvas 拿不到会返回 null，此时并没有持锁，不能再 unlock（会在下一轮误放掉别人的锁）
+        if (canvas == null) return
         try {
             // 绘制前检测是否改变了TileSet
             if (nh.tileSet.isTileSetChange())
@@ -701,19 +718,23 @@ class NHMapSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
             // 每一帧绘制完成后才更新Tile
             map.updateTiles()
         } finally {
-            if (canvas != null) {
-                try {
-                    surfaceHolder.unlockCanvasAndPost(canvas)
-                } catch (e: RuntimeException) {
-                    Log.w("NHMapSurfaceView", "unlockCanvasAndPost failed", e)
-                }
+            try {
+                surfaceHolder.unlockCanvasAndPost(canvas)
+            } catch (e: RuntimeException) {
+                Log.w("NHMapSurfaceView", "unlockCanvasAndPost failed", e)
             }
         }
     }
     override fun run() {
         while (isDrawing && !Thread.currentThread().isInterrupted) {
             val startMs = System.currentTimeMillis()
-            draw()
+            try {
+                draw()
+            } catch (e: RuntimeException) {
+                // 绘制线程一旦被未捕获异常带走，surfaceDestroyed 会等到超时；
+                // 记一笔继续跑，下一轮会因 surface 失效自行退出。
+                Log.w("NHMapSurfaceView", "draw failed", e)
+            }
             val endMs = System.currentTimeMillis()
             val needTime = 1000 / fps
             val usedTime = endMs - startMs

@@ -68,9 +68,24 @@ class NHMessageSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
     override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
     }
 
+    /**
+     * 必须等绘制线程真正退出再返回：SurfaceView 在回调返回后就会释放 Surface，
+     * 线程还在 lockCanvas / unlockCanvasAndPost 里就会锁到已销毁的 mutex 被 FORTIFY 直接 abort。
+     */
     override fun surfaceDestroyed(holder: SurfaceHolder) {
         isDrawing = false
-        drawThread?.interrupt()
+        val thread = drawThread
+        if (thread != null) {
+            thread.interrupt()
+            if (thread !== Thread.currentThread()) {
+                try {
+                    thread.join(1000)
+                } catch (e: InterruptedException) {
+                    Thread.currentThread().interrupt()
+                }
+            }
+            if (!thread.isAlive) drawThread = null
+        }
     }
     private fun drawMessageList(canvas: Canvas?) {
         canvas?.apply {
@@ -105,29 +120,36 @@ class NHMessageSurfaceView: SurfaceView, SurfaceHolder.Callback,Runnable {
         if (!surfaceHolder.surface.isValid) {
             return
         }
+        val lockedCanvas = try {
+            surfaceHolder.lockCanvas()
+        } catch (e: RuntimeException) {
+            Log.w("NHMessageSurfaceView", "lockCanvas failed", e)
+            return
+        }
+        // lockCanvas 拿不到会返回 null，此时并没有持锁，不能再 unlock（会在下一轮误放掉别人的锁）
+        if (lockedCanvas == null) return
+        canvas = lockedCanvas
         try {
-            canvas = try {
-                surfaceHolder.lockCanvas()
-            } catch (e: RuntimeException) {
-                Log.w("NHMessageSurfaceView", "lockCanvas failed", e)
-                return
-            }
-            canvas?.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
-            drawMessageList(canvas)
+            lockedCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
+            drawMessageList(lockedCanvas)
         } finally {
-            canvas?.let {
-                try {
-                    surfaceHolder.unlockCanvasAndPost(it)
-                } catch (e: RuntimeException) {
-                    Log.w("NHMessageSurfaceView", "unlockCanvasAndPost failed", e)
-                }
-            }
             canvas = null
+            try {
+                surfaceHolder.unlockCanvasAndPost(lockedCanvas)
+            } catch (e: RuntimeException) {
+                Log.w("NHMessageSurfaceView", "unlockCanvasAndPost failed", e)
+            }
         }
     }
     override fun run() {
         while (isDrawing && !Thread.currentThread().isInterrupted) {
-            draw()
+            try {
+                draw()
+            } catch (e: RuntimeException) {
+                // 绘制线程一旦被未捕获异常带走，surfaceDestroyed 会等到超时；
+                // 记一笔继续跑，下一轮会因 surface 失效自行退出。
+                Log.w("NHMessageSurfaceView", "draw failed", e)
+            }
             try {
                 Thread.sleep(100)
             } catch (_: InterruptedException) {
