@@ -18,6 +18,7 @@ import com.yywspace.anethack.extensions.show
 
 class NHPriceIDialog (val context: Context, val nh: NetHack){
     private lateinit var typeAdapter:ArrayAdapter<String>
+    private lateinit var typeKeys:List<String>
     private lateinit var surchargeAdapter:ArrayAdapter<String>
     private lateinit var idModeAdapter:ArrayAdapter<String>
     private lateinit var currentType: String
@@ -52,10 +53,12 @@ class NHPriceIDialog (val context: Context, val nh: NetHack){
 
 
     private fun initAdapter() {
+        // The type list shows localized labels but the query API works on type keys.
+        typeKeys = priceID.getObjTypes()
         typeAdapter = ArrayAdapter(
             context,
             androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,
-            priceID.getObjTypes().toTypedArray()
+            typeKeys.map { PriceIDStrings.typeLabel(context, it) }.toTypedArray()
         )
         val surchargeData = context.resources.getStringArray(R.array.surcharge_cond_array)
         surchargeAdapter =
@@ -63,18 +66,19 @@ class NHPriceIDialog (val context: Context, val nh: NetHack){
         val idModeData = context.resources.getStringArray(R.array.pride_id_mode_array)
         idModeAdapter =
             ArrayAdapter(context, android.R.layout.simple_list_item_1, idModeData)
-        currentType = if(typeAdapter.isEmpty) "" else typeAdapter.getItem(0)?:""
+        currentType = if (typeKeys.isEmpty()) "" else typeKeys[0]
         currentSurcharge = if(surchargeAdapter.isEmpty) "" else surchargeAdapter.getItem(0)?:""
         currentIdMode = if(idModeAdapter.isEmpty) "" else idModeAdapter.getItem(0)?:""
         objListAdapter = NHPriceObjListAdapter(objList).apply {
             onItemClick = { _, _, obj ->
                 var objDesc = ""
                 obj.keys.forEach {
-                    if (it != "name" && (obj[it]?:"").trim().isNotEmpty())
-                        objDesc += "${it}:${obj[it]}\n"
+                    if (it != "name" && !it.endsWith("Zh") && (obj[it] ?: "").trim().isNotEmpty())
+                        objDesc += "${PriceIDStrings.fieldLabel(context, it)}:" +
+                            "${PriceIDStrings.fieldValue(context, it, obj)}\n"
                 }
                 AlertDialog.Builder(context).run {
-                    setTitle(obj["name"])
+                    setTitle(PriceIDStrings.objName(context, obj))
                     setMessage(objDesc)
                     setPositiveButton(R.string.dialog_confirm, null)
                     create()
@@ -88,7 +92,7 @@ class NHPriceIDialog (val context: Context, val nh: NetHack){
         binding = DialogPriceIdentifyBinding.bind(view)
         binding.objTypeInput.apply {
             setAdapter(typeAdapter)
-            setText(currentType)
+            setText(PriceIDStrings.typeLabel(context, currentType))
             showSoftInputOnFocus = false
             setOnFocusChangeListener { _, hasFocus ->
                 if (hasFocus) {
@@ -99,7 +103,7 @@ class NHPriceIDialog (val context: Context, val nh: NetHack){
                 }
             }
             setOnItemClickListener { _, _, position, _ ->
-                currentType = typeAdapter.getItem(position) ?: ""
+                currentType = typeKeys[position]
                 setSelection(0)
             }
         }
@@ -209,7 +213,7 @@ class NHPriceIDialog (val context: Context, val nh: NetHack){
 
         binding.objPriceInput.setText(tradePrice)
         binding.objIdModInput.setText(currentIdMode)
-        binding.objTypeInput.setText(currentType)
+        binding.objTypeInput.setText(PriceIDStrings.typeLabel(context, currentType))
 
         AlertDialog.Builder(context).run {
             setView(binding.root)

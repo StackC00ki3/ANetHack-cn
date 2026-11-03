@@ -61,6 +61,32 @@
     <string name="price_id_mode_buy">Buy</string>
     <string name="price_id_mode_base">Base</string>
     <string name="price_id_invalid_json">Invalid json format.</string>
+    <string name="price_id_obj_type_potion">Potion</string>
+    <string name="price_id_obj_type_scroll">Scroll</string>
+    <string name="price_id_obj_type_spellbook">Spellbook</string>
+    <string name="price_id_obj_type_ring">Ring</string>
+    <string name="price_id_obj_type_wand">Wand</string>
+    <string name="price_id_obj_type_amulet">Amulet</string>
+    <string name="price_id_obj_type_boots">Boots</string>
+    <string name="price_id_obj_type_cloak">Cloak</string>
+    <string name="price_id_obj_type_helm">Helm</string>
+    <string name="price_id_obj_type_gloves">Gloves</string>
+    <string name="price_id_field_name">Name</string>
+    <string name="price_id_field_cost">Cost</string>
+    <string name="price_id_field_weight">Weight</string>
+    <string name="price_id_field_appearance">Appearance</string>
+    <string name="price_id_field_ink">Ink</string>
+    <string name="price_id_field_school">School</string>
+    <string name="price_id_field_actions_to_read">Actions to read</string>
+    <string name="price_id_field_extrinsic_granted">Extrinsic granted</string>
+    <string name="price_id_field_notes">Notes</string>
+    <string name="price_id_field_starting_charges">Starting charges</string>
+    <string name="price_id_field_attack_type">Attack type</string>
+    <string name="price_id_field_when_eaten">When eaten</string>
+    <string name="price_id_field_ac">AC</string>
+    <string name="price_id_field_material">Material</string>
+    <string name="price_id_field_effect">Effect</string>
+    <string name="price_id_field_mc">MC</string>
 
     <!-- Preference Log -->
     <string name="pref_log_header">Logs</string>

@@ -121,6 +121,32 @@
     <string name="price_id_mode_buy">买入价</string>
     <string name="price_id_mode_base">基础价</string>
     <string name="price_id_invalid_json">JSON 格式无效。</string>
+    <string name="price_id_obj_type_potion">药水</string>
+    <string name="price_id_obj_type_scroll">卷轴</string>
+    <string name="price_id_obj_type_spellbook">魔法书</string>
+    <string name="price_id_obj_type_ring">戒指</string>
+    <string name="price_id_obj_type_wand">魔杖</string>
+    <string name="price_id_obj_type_amulet">护身符</string>
+    <string name="price_id_obj_type_boots">靴子</string>
+    <string name="price_id_obj_type_cloak">斗篷</string>
+    <string name="price_id_obj_type_helm">头盔</string>
+    <string name="price_id_obj_type_gloves">手套</string>
+    <string name="price_id_field_name">名称</string>
+    <string name="price_id_field_cost">价格</string>
+    <string name="price_id_field_weight">重量</string>
+    <string name="price_id_field_appearance">外观</string>
+    <string name="price_id_field_ink">墨水用量</string>
+    <string name="price_id_field_school">法术学派</string>
+    <string name="price_id_field_actions_to_read">阅读耗时</string>
+    <string name="price_id_field_extrinsic_granted">赋予属性</string>
+    <string name="price_id_field_notes">备注</string>
+    <string name="price_id_field_starting_charges">初始充能</string>
+    <string name="price_id_field_attack_type">作用方式</string>
+    <string name="price_id_field_when_eaten">食用效果</string>
+    <string name="price_id_field_ac">防御等级</string>
+    <string name="price_id_field_material">材质</string>
+    <string name="price_id_field_effect">效果</string>
+    <string name="price_id_field_mc">魔法护甲</string>
 
     <!-- Preference Menu -->
     <string name="pref_menu_header">菜单</string>

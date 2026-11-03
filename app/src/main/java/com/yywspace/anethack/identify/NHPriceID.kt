@@ -59,6 +59,10 @@ class NHPriceID(context: Context) {
         return objects[type]?.sortedWith(compareBy({it["Cost"]?.toInt()?:0}, {it["Name"]}))?: emptyList()
     }
 
+    /**
+     * Object type keys in display order.  Callers show a localized label for each
+     * key via [PriceIDStrings.typeLabel] and pass the key back to the query methods.
+     */
     fun getObjTypes(): List<String> {
         return objects.keys.toList().sorted()
     }
